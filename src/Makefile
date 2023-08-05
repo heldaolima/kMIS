@@ -1,12 +1,15 @@
 CC=g++
+HEADERS= graph.cpp element.cpp solution.cpp build_entry.cpp
 
 all: main
 
-main: graph
-	$(CC) -o main.out main.cpp graph.o
+main: dependencies
+	clear
+	$(CC) -o main.out main.cpp *.o
+	./main.out
 
-graph:
-	$(CC) -c graph.cpp
+dependencies:
+	$(CC) -c $(HEADERS)
 
 clean:
 	rm -f *.o *.out
