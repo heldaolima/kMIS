@@ -1,6 +1,12 @@
-#ifndef KMIS_GLOBALS
-#define KMIS_GLOBALS
+#ifndef __globals_h__
+#define __globals_h__
 
-#define nElems 50
+#include <bitset>
+
+using std::bitset;
+
+#define numberOfBits 50
+
+bitset<numberOfBits> intersection(bitset<numberOfBits> setA, bitset<numberOfBits> setB);
 
 #endif

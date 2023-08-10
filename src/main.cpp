@@ -1,23 +1,25 @@
-#include "graph.h"
-#include "build_entry.h"
+#include <iostream>
+#include "data_structures/entry.h"
+#include "heuristics/greedy.h"
+#include "dbg.h"
 
-int main(int argc, char* argv[])
-{
-  // if (argc < 2) {
-  //   std::cout << "usage: main.out [filename]\n";
-  //   exit(1);
+int main(int argc, char* argv[]) {
+  Entry entry("classe_1_40_40.txt");
+  // for (const Subset subset: entry.subsets) {
+  //   debug("%d", subset.identifier);
+  //   std::cout << subset.bits.to_string() << "\n";
+  //   // debug("%s", subset.bits.to_string());
+  //   debug("%d\n", subset.bits.count());
   // }
 
-  int tam_L, tam_R, k;
-  vector<Element> mainSet;
-  build_entry("classe_1_40_40.txt", tam_L, tam_R, k, mainSet);
-  std::cout << tam_L << " " << tam_R << " " << k << "\n";
-  for (const Element el: mainSet) {
-    std::cout << el.id << "\n";
-    std::cout << el.bits.to_string() << "\n";
-    std::cout << el.bits.count() << "\n\n";
-  }
+  // std::cout << "\n\n";
 
+  Solution solution = greedySolution(entry);
+  std::cout << "Elements in solution: ";
+  for (const int el : solution.subsetsInSolution) {
+    std::cout << el << " ";
+  }
+  std::cout << "\n";
   // Graph graph(argv[1]);
 
   return 0;

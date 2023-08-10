@@ -1,5 +1,5 @@
 CC=g++
-HEADERS= graph.cpp element.cpp solution.cpp build_entry.cpp
+HEADERS= graph.cpp globals.cpp data_structures/*.cpp heuristics/*.cpp
 
 all: main
 
