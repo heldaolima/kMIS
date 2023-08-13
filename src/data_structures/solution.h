@@ -16,7 +16,7 @@ public:
   void clean();
   void initializeIsSubsetInSolutionVec(int);
   void addSubset(int);
-
+  void print();
 };
 
 #endif

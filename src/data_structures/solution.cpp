@@ -1,4 +1,7 @@
 #include "solution.h"
+#include <iostream>
+
+using std::cout;
 
 Solution::Solution(int quantityOfSubsets) {
   this->initializeIsSubsetInSolutionVec(quantityOfSubsets);
@@ -19,4 +22,19 @@ void Solution::clean() {
 void Solution::addSubset(int subset) {
   this->subsetsInSolution.push_back(subset);
   this->isSubsetInSolution[subset] = true;
+}
+
+void Solution::print() {
+  cout << "Subsets in solution: ";
+  for (const int el : this->subsetsInSolution) {
+    cout << el << " ";
+  }
+  cout << "\n";
+  cout << "Elements in solution: ";
+  for (int i = 0; i < numberOfBits; i++) {
+    if (this->bits[i]) {
+      cout << i << " ";
+    }
+  }
+  cout << "\n";
 }

@@ -3,8 +3,12 @@
 #include "../globals.h"
 #include <algorithm>
 
-#define NDEBUG
-
+/*
+  A cada iteração, incluir um subconjunto ainda não incluso na solução
+  tal que a interseção de seus elementos com os da solução parcial
+  seja máxima. Para tanto, inicia-se com o subconjunto que contenha o 
+  maior número de elementos.
+*/
 Solution greedySolution(Entry entry) {
   Solution solution(entry.quantityOfSubsets);
   vector<Subset> subsets = entry.subsets;
@@ -22,9 +26,10 @@ Solution greedySolution(Entry entry) {
       subsets[i].qtd = subsets[i].bits.count();
     }
     std::sort(subsets.begin() + currentK, subsets.end(), sortFunc);
-    Subset aux = subsets[currentK];
-    partialSolution = aux.bits;
-    solution.addSubset(aux.identifier);
+
+    partialSolution = subsets[currentK].bits;
+    solution.addSubset(subsets[currentK].identifier);
+
     currentK++;
   }
 
