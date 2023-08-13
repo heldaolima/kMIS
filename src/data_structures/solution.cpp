@@ -4,6 +4,7 @@
 using std::cout;
 
 Solution::Solution(int quantityOfSubsets) {
+  this->bits.set();
   this->initializeIsSubsetInSolutionVec(quantityOfSubsets);
 }
 
@@ -13,10 +14,11 @@ void Solution::initializeIsSubsetInSolutionVec(int quantityOfSubsets) {
   }
 }
 
-void Solution::clean() {
+void Solution::clean(int qtdSubsets) {
   this->bits.set();
   this->isSubsetInSolution.clear();
   this->subsetsInSolution.clear();
+  this->initializeIsSubsetInSolutionVec(qtdSubsets);
 }
 
 void Solution::addSubset(int subset) {
@@ -37,4 +39,8 @@ void Solution::print() {
     }
   }
   cout << "\n";
+}
+
+int Solution::getSubsetInSolution(int i) {
+  return (i > 0 && i < subsetsInSolution.size()) ? subsetsInSolution[i] : -1;
 }

@@ -13,10 +13,11 @@ public:
   vector<int> subsetsInSolution;
 
   Solution(int);
-  void clean();
+  void clean(int);
   void initializeIsSubsetInSolutionVec(int);
   void addSubset(int);
   void print();
+  int getSubsetInSolution(int);
 };
 
 #endif

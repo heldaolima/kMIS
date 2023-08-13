@@ -1,10 +1,11 @@
 #include <iostream>
+#include "dbg.h"
 #include "data_structures/entry.h"
 #include "heuristics/greedy.h"
-#include "dbg.h"
+#include "heuristics/local_search.h"
 
 int main(int argc, char* argv[]) {
-  Entry entry("classe_1_40_40.txt");
+  Entry entry("input/classe_1_40_40.txt");
   // for (const Subset subset: entry.subsets) {
   //   debug("subset %d", subset.identifier);
   //   debug("%s", subset.bits.to_string().c_str());
@@ -15,5 +16,9 @@ int main(int argc, char* argv[]) {
 
   Solution solution = greedySolution(entry);
   solution.print();
+
+  localSearch(entry, solution);
+  solution.print();
+  
   return 0;
 }
