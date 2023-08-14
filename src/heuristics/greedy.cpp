@@ -9,9 +9,9 @@
   seja máxima. Para tanto, inicia-se com o subconjunto que contenha o 
   maior número de elementos.
 */
-Solution greedySolution(Entry entry) {
-  Solution solution(entry.quantityOfSubsets);
-  vector<Subset> subsets = entry.subsets;
+Solution greedySolution(Input input) {
+  Solution solution(input.quantityOfSubsets);
+  vector<Subset> subsets = input.subsets;
 
   std::sort(subsets.begin(), subsets.end(), sortFunc);
 
@@ -20,7 +20,7 @@ Solution greedySolution(Entry entry) {
   bitset<numberOfBits> partialSolution = biggestSet.bits;
 
   int currentK = 1, i = 0;
-  while (currentK < entry.k) {
+  while (currentK < input.k) {
     for (i = currentK; i < subsets.size(); i++) {
       subsets[i].bits = intersection(partialSolution, subsets[i].bits);
       subsets[i].qtd = subsets[i].bits.count();

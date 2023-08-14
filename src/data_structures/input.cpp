@@ -1,4 +1,4 @@
-#include "entry.h"
+#include "input.h"
 #include "../globals.h"
 #include <iostream>
 #include <fstream>
@@ -6,7 +6,7 @@
 
 using std::fstream;
 
-Entry::Entry(const char *path) {
+Input::Input(const char *path) {
   int num_instances, set, value;
   fstream inFile(path);
   if (inFile.is_open())

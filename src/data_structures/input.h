@@ -1,9 +1,9 @@
-#ifndef __entry_h__
-#define __entry_h__
+#ifndef __input_h__
+#define __input_h__
 
 #include "subset.h" 
 
-class Entry
+class Input
 {
   public: 
   int quantityOfSubsets; // |L|
@@ -11,7 +11,7 @@ class Entry
   int k;
   vector<Subset> subsets;
 
-  Entry(const char *);
+  Input(const char *);
 };
 
 #endif

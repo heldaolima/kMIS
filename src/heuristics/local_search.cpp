@@ -2,49 +2,38 @@
 #include "../globals.h"
 #include "../dbg.h"
 
-void localSearch(Entry entry, Solution &initialSolution) {
-  Solution newSolution(entry.quantityOfSubsets);
+void localSearch(Input input, Solution &initialSolution) {
+  Solution newSolution(input.quantityOfSubsets);
 
-  for (int subsetOfInitialSolution = 0; 
-      subsetOfInitialSolution < initialSolution.subsetsInSolution.size();
-      subsetOfInitialSolution++) 
-  {
-    int sLine = 0;
-    
-    for (int idx_subsets = 0; idx_subsets < entry.quantityOfSubsets; idx_subsets++) {
-      if (!initialSolution.isSubsetInSolution[idx_subsets]) {
-        sLine = idx_subsets; // will get into new solution
+  vector<int> subsetsNotInSolution;
 
-        newSolution.clean(entry.quantityOfSubsets);
-        
-        for (int innerSubsetInInitialSolution = 0;
-            innerSubsetInInitialSolution < initialSolution.subsetsInSolution.size();
-            innerSubsetInInitialSolution++) 
-        {
-          int subsetInSolution = initialSolution.getSubsetInSolution(innerSubsetInInitialSolution);
-          if (subsetOfInitialSolution != innerSubsetInInitialSolution) {  // intersection without s
-            newSolution.bits = intersection(
-              newSolution.bits,
-              entry.subsets[subsetInSolution].bits
-            );
+  for (int i = 0; i < input.quantityOfSubsets; i++) {
+    if (!initialSolution.isSubsetInSolution[i])
+      subsetsNotInSolution.push_back(i);
+  }
 
-            newSolution.addSubset(initialSolution.subsetsInSolution[innerSubsetInInitialSolution]);
-          }
-        }
+  for (const int toBeRemoved: initialSolution.subsetsInSolution) {
 
-        newSolution.bits = intersection(newSolution.bits, entry.subsets[sLine].bits);
-        debug("%s", newSolution.bits.to_string().c_str());
-        
-        newSolution.addSubset(sLine);
-
-        if (newSolution.bits.count() > initialSolution.bits.count()) {
-          initialSolution.bits = newSolution.bits;
-          initialSolution.subsetsInSolution = newSolution.subsetsInSolution;
-          initialSolution.isSubsetInSolution = newSolution.isSubsetInSolution;
-          debug("switching");
-          return;
+    for (const int notInSolution : subsetsNotInSolution) {
+      newSolution.clean(input.quantityOfSubsets);
+      
+      for (const int inSolution: initialSolution.subsetsInSolution) {
+        if (inSolution != toBeRemoved) {
+          newSolution.bits = intersection(newSolution.bits, input.subsets[inSolution].bits);
+          newSolution.addSubset(inSolution);
         }
       }
+
+      newSolution.bits = intersection(newSolution.bits, input.subsets[notInSolution].bits);
+      newSolution.addSubset(notInSolution);
+      
+      newSolution.print();
+      
+      if (newSolution.bits.count() > initialSolution.bits.count()) {
+        initialSolution = newSolution;
+        return;
+      }
     }
-  } 
+
+  }
 }
