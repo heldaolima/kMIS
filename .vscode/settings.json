@@ -1,6 +1,8 @@
 {
   "files.associations": {
     "vector": "cpp",
-    "bitset": "cpp"
+    "bitset": "cpp",
+    "iostream": "cpp",
+    "iosfwd": "cpp"
   }
 }
