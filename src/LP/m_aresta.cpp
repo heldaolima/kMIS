@@ -28,8 +28,13 @@ S.A:
 
 using namespace std;
 
-int main() {
-  Input input("entry.dat");
+int main(int argc, char* argv[]) {
+  if (argc < 2) {
+    cout << "USAGE: ./m_aresta <input_file>";
+    exit(1);
+  }
+
+  Input input(argv[1]);
   
   unsigned int i = 0, j = 0;
 
@@ -56,14 +61,12 @@ int main() {
 
   IloExpr expr(env);
 
-  // constraints
-  
   // contraint [1]
   for (j = 0; j < input.quantityOfSubsets; j++) {
     expr += y[j];
   }
-  IloRange sumY(env, input.k, expr, input.k, "somatorio");
-  model.add(sumY);
+
+  model.add(expr == input.k);
 
   expr.clear();
 
@@ -71,15 +74,7 @@ int main() {
   for (j = 0; j < input.quantityOfSubsets; j++) {
     for (i = 0; i <input.quantityOfElements; i++) {
       if (input.nonNeighbors(j, i)) {
-        name << "non_neighbors_" << j << "_" << i;
-
-        IloExpr restrExpr(env);
-        restrExpr += y[j] + x[i];
-        IloRange nonNeighborsConstraint(env, -IloInfinity, restrExpr, 1, name.str().c_str());
-        model.add(nonNeighborsConstraint);
-        
-        restrExpr.end();
-        name.str("");
+        model.add(y[j] + x[i] <= 1);
       }
     }
   }
@@ -106,14 +101,14 @@ int main() {
 
       cout << "Subsets: ";
       for (j = 0; j < input.quantityOfSubsets; j++) {
-        if (cplex.getValue(y[j]) == 1) {
+        if (cplex.getValue(y[j])) {
           cout << j+1 << " ";
         }
       }
 
       cout << "\nIntersection: ";
       for (i = 0; i < input.quantityOfElements; i++) {
-        if (cplex.getValue(x[i]) == 1) {
+        if (cplex.getValue(x[i])) {
           cout << i+1 << " ";
         }
       }
