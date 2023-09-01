@@ -76,7 +76,7 @@ Solution Grasp::grasp(Input input) {
   Solution bestSolution(input.quantityOfSubsets);
   for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
     idxAlpha = getIdxAlpha(arrays);
-    alpha = idxAlpha;
+    alpha = this->X[idxAlpha];
 
     Solution currentSolution = construction(input, alpha);
     localSearch(input, currentSolution);
@@ -98,7 +98,7 @@ Solution Grasp::grasp(Input input) {
   }
 }
 
-Solution construction(Input input, double alphaIdx) {
+Solution construction(Input input, double alpha) {
   double probabilidadeDeEscolher[TAM_X];
   
 
@@ -190,19 +190,5 @@ int getSubsetInLRC(vector<bool> lrc, int ithSet) {
     }
 
     if (idx == ithSet) return idx;
-  }
-}
-
-void atualizarProbabilidades(double p[], int zStar, int cont[]) {
-  double avg[TAM_X], q[TAM_X];
-
-  bool failed = false;
-  for (int i = 0; i < TAM_X; i++) {
-    if (cont[i] == 0) {
-      failed = true;
-      break;
-    }
-
-    avg[i] = 
   }
 }
