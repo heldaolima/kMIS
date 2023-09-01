@@ -13,6 +13,10 @@ Subset::Subset(vector<int> array) {
   }
 }
 
+int Subset::getNumberOfElements() {
+  return this->bits.count();
+}
+
 bool sortFunc(const Subset &a, const Subset &b) {
   return a.bits.count() > b.bits.count();
 }

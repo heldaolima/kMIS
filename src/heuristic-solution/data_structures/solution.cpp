@@ -44,3 +44,7 @@ void Solution::print() {
 int Solution::getSubsetInSolution(int i) {
   return (i > 0 && i < subsetsInSolution.size()) ? subsetsInSolution[i] : -1;
 }
+
+int Solution::getObjective() {
+  return this->bits.count();
+}

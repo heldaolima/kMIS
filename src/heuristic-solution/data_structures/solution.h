@@ -18,6 +18,7 @@ public:
   void addSubset(int);
   void print();
   int getSubsetInSolution(int);
+  int getObjective();
 };
 
 #endif

@@ -14,6 +14,7 @@ public:
 
   Subset(int);
   Subset(vector<int>);
+  int getNumberOfElements();
 };
 
 bool sortFunc(const Subset &a, const Subset &b);
