@@ -34,8 +34,12 @@ int main(int argc, char* argv[]) {
     exit(1);
   }
 
-  Input input(argv[1]);
-  
+  stringstream path;
+
+  path << "../instances/" << argv[1];
+
+  Input input(path.str().c_str());
+
   unsigned int i = 0, j = 0;
 
   IloEnv env;

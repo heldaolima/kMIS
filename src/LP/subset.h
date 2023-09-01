@@ -4,7 +4,7 @@
 #include <bitset>
 #include <vector>
 
-#define numberOfBits 70
+#define numberOfBits 301
 
 using std::bitset, std::vector;
 
