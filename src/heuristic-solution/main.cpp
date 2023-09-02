@@ -30,12 +30,16 @@ int main(int argc, char* argv[]) {
   // solution.print();
 
   localSearch(input, solution);
-  std::cout << "Greedy + Local Search: " << "\n";
+  std::cout << "Greedy + Local Search: \n" ;
   solution.print();
 
-  Solution graspSolution = grasp(input);
-  std::cout << "GRASP: " << "\n";
-  graspSolution.print();
+  Solution nonReactiveGraspSolution = grasp(input, false);
+  std::cout << "GRASP (nao reativo): \n";
+  nonReactiveGraspSolution.print();
+
+  Solution reactiveGraspSolution = grasp(input, true);
+  std::cout << "GRASP (reativo): \n";
+  reactiveGraspSolution.print();
   
   return 0;
 }

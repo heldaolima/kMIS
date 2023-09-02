@@ -5,6 +5,8 @@
 #include "local_search.h"
 #include <iostream>
 
+#define MAX_ELITE 10
+
 typedef struct constructionArrays {
   int numberOfTimesAnXValueWasChosen[TAM_X];
   double probX[TAM_X];
@@ -25,20 +27,23 @@ typedef struct constructionArrays {
 int getIdxAlpha(constructionArrays&);
 void updateProbabilities(constructionArrays&, int);
 int getSubsetInLRC(vector<bool>, int);
+void updateEliteSolutions(vector<Solution>&, Solution);
 Solution construction(Input, double);
 
-Solution grasp(Input input) {
-  vector<Solution> eliteSolutions;
-  int bestCost = 0;
-  int bestSolutionInConstruction = -1;
-  
+Solution grasp(Input input, bool reactive) {
   constructionArrays arrays;
+
+  int bestFound = 0;
+  int uselessRepetition = 0;
 
   int i = 0;
   int idxAlpha = 0;
   double alpha = 0.0;
 
   Solution bestSolution(input.quantityOfSubsets);
+
+  vector<Solution> eliteSolutions;
+  int chosenEliteSolution = 0;
 
   for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
     idxAlpha = getIdxAlpha(arrays);
@@ -49,24 +54,38 @@ Solution grasp(Input input) {
     debug("currentSolution before LS: %d", currentSolution.getObjective());
     localSearch(input, currentSolution);
     debug("currentSolution after LS: %d", currentSolution.getObjective());
-    // pathRelinking(currentSolution);
+    bool usePathRelinking = true;
+    
+    if (usePathRelinking) {
+      if (eliteSolutions.size() >= 1) {
+        chosenEliteSolution = randint(MAX_ELITE);
+        currentSolution = pathRelinking(currentSolution, eliteSolutions[chosenEliteSolution]);
+      }
 
+      if (eliteSolutions.size() < MAX_ELITE) {
+        eliteSolutions.push_back(currentSolution);
+      } else {
+        updateEliteSolutions(eliteSolutions, currentSolution);
+      }
+    }
 
     if (i == 0 || currentSolution.getObjective() > bestSolution.getObjective()) {
       bestSolution = currentSolution;
+      bestFound = i;
+      uselessRepetition = 0;
+    } else {
+      uselessRepetition++;
     }
-
-    // std::cout << "\n\n";
-    // std::cout << "Iteration #" << i << "\n";
-    // bestSolution.print();
 
     arrays.numberOfTimesAnXValueWasChosen[idxAlpha]++;
     arrays.score[idxAlpha] += currentSolution.getObjective();
 
-    // if (i % TAM_X == 0) {
-    //   updateProbabilities(arrays, currentSolution.getObjective());
-    // }
+    if (reactive) {
+      updateProbabilities(arrays, bestSolution.getObjective());
+    }
   }
+  std::cout << "\nBest found at the " << bestFound << "th iteration\n";
+  std::cout << "Useless repetitions: " << uselessRepetition << "\n";
   return bestSolution;
 }
 
@@ -194,4 +213,23 @@ int getSubsetInLRC(vector<bool> lrc, int ithSet) {
   }
 
   return -1;
+}
+
+void updateEliteSolutions(vector<Solution>& elite, Solution curr) {
+  int worstObjective, worstObjectiveIdx;
+  for (int j = 0; j < elite.size(); j++) {
+    if (j == 0) {
+      worstObjective = elite[j].getObjective();
+      worstObjectiveIdx = j;
+    }
+
+    if (elite[j].getObjective() < worstObjective) {
+      worstObjective = elite[j].getObjective();
+      worstObjectiveIdx = j;
+    }
+  }
+
+  if (worstObjective < curr.getObjective()) {
+    elite[worstObjectiveIdx] = curr;
+  }
 }
