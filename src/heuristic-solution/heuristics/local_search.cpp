@@ -27,10 +27,11 @@ void localSearch(Input input, Solution &initialSolution) {
       newSolution.bits = intersection(newSolution.bits, input.subsets[notInSolution].bits);
       newSolution.addSubset(notInSolution);
       
-      newSolution.print();
+      // newSolution.print();
       
       if (newSolution.bits.count() > initialSolution.bits.count()) {
         initialSolution = newSolution;
+        debug("busca local serviu de alguma coisa.");
         return;
       }
     }

@@ -3,18 +3,17 @@
 #include "../random_utlis.h"
 #include "../globals.h"
 #include "local_search.h"
-
+#include <iostream>
 
 typedef struct constructionArrays {
-  int cont[TAM_X];
-  double score[TAM_X];
+  int numberOfTimesAnXValueWasChosen[TAM_X];
   double probX[TAM_X];
   double avg[TAM_X];
   int score[TAM_X];
 
   constructionArrays() {
     for (int i = 0; i < TAM_X; i++) {
-      cont[i] = 0;
+      numberOfTimesAnXValueWasChosen[i] = 0;
       score[i] = 0.0;
       probX[i] = 1.0 / TAM_X;
       avg[i] = 0.0;
@@ -22,6 +21,54 @@ typedef struct constructionArrays {
     }
   }
 };
+
+int getIdxAlpha(constructionArrays&);
+void updateProbabilities(constructionArrays&, int);
+int getSubsetInLRC(vector<bool>, int);
+Solution construction(Input, double);
+
+Solution grasp(Input input) {
+  vector<Solution> eliteSolutions;
+  int bestCost = 0;
+  int bestSolutionInConstruction = -1;
+  
+  constructionArrays arrays;
+
+  int i = 0;
+  int idxAlpha = 0;
+  double alpha = 0.0;
+
+  Solution bestSolution(input.quantityOfSubsets);
+
+  for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
+    idxAlpha = getIdxAlpha(arrays);
+    alpha = X[idxAlpha];
+    debug("alpha: %lf", alpha);
+
+    Solution currentSolution = construction(input, alpha);
+    debug("currentSolution before LS: %d", currentSolution.getObjective());
+    localSearch(input, currentSolution);
+    debug("currentSolution after LS: %d", currentSolution.getObjective());
+    // pathRelinking(currentSolution);
+
+
+    if (i == 0 || currentSolution.getObjective() > bestSolution.getObjective()) {
+      bestSolution = currentSolution;
+    }
+
+    // std::cout << "\n\n";
+    // std::cout << "Iteration #" << i << "\n";
+    // bestSolution.print();
+
+    arrays.numberOfTimesAnXValueWasChosen[idxAlpha]++;
+    arrays.score[idxAlpha] += currentSolution.getObjective();
+
+    // if (i % TAM_X == 0) {
+    //   updateProbabilities(arrays, currentSolution.getObjective());
+    // }
+  }
+  return bestSolution;
+}
 
 int getIdxAlpha(constructionArrays& arrays) {
   int i = 0;
@@ -43,14 +90,14 @@ int getIdxAlpha(constructionArrays& arrays) {
 
 void updateProbabilities(constructionArrays& arrays, int zStar) {
   int i = 0;
-  double Q[TAM_X], sigma = 0;
+  double Q[TAM_X], sigma = 0.0;
 
   for (i = 0; i < TAM_X; i++) {
-    if (arrays.cont[i] == 0) {
+    if (arrays.numberOfTimesAnXValueWasChosen[i] == 0) {
       return;
     }
 
-    arrays.avg[i] = arrays.score[i] / arrays.cont[i];
+    arrays.avg[i] = arrays.score[i] / arrays.numberOfTimesAnXValueWasChosen[i];
     Q[i] = arrays.avg[i] / zStar;
     
     sigma += Q[i];
@@ -62,52 +109,8 @@ void updateProbabilities(constructionArrays& arrays, int zStar) {
 
 }
 
-Solution Grasp::grasp(Input input) {
-  vector<Solution> eliteSolutions;
-  int bestCost = 0;
-  int bestSolutionConst = -1;
-  
-  constructionArrays arrays;
-
-  int i = 0;
-  int idxAlpha = 0;
-  double alpha = 0.0;
-
-  Solution bestSolution(input.quantityOfSubsets);
-  for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
-    idxAlpha = getIdxAlpha(arrays);
-    alpha = this->X[idxAlpha];
-
-    Solution currentSolution = construction(input, alpha);
-    localSearch(input, currentSolution);
-    pathRelinking(currentSolution);
-
-
-    if (i == 0 || currentSolution.getObjective() > bestSolution.getObjective()) {
-      bestSolution = currentSolution;
-    }
-
-    arrays.cont[idxAlpha]++;
-    arrays.score[idxAlpha] += currentSolution.getObjective();
-
-    if (i % TAM_X == 0) {
-      updateProbabilities(arrays, currentSolution.getObjective());
-    }
-
-
-  }
-}
-
 Solution construction(Input input, double alpha) {
-  double probabilidadeDeEscolher[TAM_X];
-  
-
-  for (int i = 0; i < TAM_X; i++) {
-    probabilidadeDeEscolher[i] = 1 / TAM_X;
-  }
-
-
-
+  int i = 0;
   int incremental_cost[input.quantityOfSubsets] = 
     { input.subsets[0].getNumberOfElements() };
   
@@ -117,7 +120,7 @@ Solution construction(Input input, double alpha) {
 
   vector<bool> lrc(input.quantityOfSubsets, false);
 
-  for (int i = 1; i < input.quantityOfSubsets; i++) {
+  for (i = 1; i < input.quantityOfSubsets; i++) {
     incremental_cost[i] = input.subsets[i].getNumberOfElements();
 
     if (incremental_cost[i] > c_max) {
@@ -129,7 +132,7 @@ Solution construction(Input input, double alpha) {
     }
   }
 
-  int i = 0;
+  i = 0;
   while (i < input.k) {
 
     // limite mínimo de valor para que o subconjunto entre na LRC
@@ -155,7 +158,6 @@ Solution construction(Input input, double alpha) {
 
     if (i + 1 == input.k) break;
     
-
     // update costs
     int auxIdx = 0;
     for (int j = 0; j < input.quantityOfSubsets; j++) {
@@ -179,16 +181,17 @@ Solution construction(Input input, double alpha) {
     i++;
   }
   return solution;
-
 }
 
 int getSubsetInLRC(vector<bool> lrc, int ithSet) {
   int idx = 0;
   for (int i = 0; i < lrc.size(); i++) {
     if (lrc[i]) {
+      if (idx == ithSet) 
+        return i;
       idx++;
     }
-
-    if (idx == ithSet) return idx;
   }
+
+  return -1;
 }
