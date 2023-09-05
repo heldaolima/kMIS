@@ -3,11 +3,12 @@
 #include "../random_utlis.h"
 #include "../globals.h"
 #include "local_search.h"
+#include "path_relinking.h"
 #include <iostream>
 
 #define MAX_ELITE 10
 
-typedef struct constructionArrays {
+struct constructionArrays {
   int numberOfTimesAnXValueWasChosen[TAM_X];
   double probX[TAM_X];
   double avg[TAM_X];
@@ -51,15 +52,19 @@ Solution grasp(Input input, bool reactive) {
     debug("alpha: %lf", alpha);
 
     Solution currentSolution = construction(input, alpha);
-    debug("currentSolution before LS: %d", currentSolution.getObjective());
+    // debug("currentSolution before LS: %d", currentSolution.getObjective());
     localSearch(input, currentSolution);
-    debug("currentSolution after LS: %d", currentSolution.getObjective());
+    // debug("currentSolution after LS: %d", currentSolution.getObjective());
     bool usePathRelinking = true;
     
     if (usePathRelinking) {
       if (eliteSolutions.size() >= 1) {
-        chosenEliteSolution = randint(MAX_ELITE);
-        currentSolution = pathRelinking(currentSolution, eliteSolutions[chosenEliteSolution]);
+        chosenEliteSolution = randint(eliteSolutions.size());
+        log_info("size of elite: %d", eliteSolutions.size());
+        log_info("chosenElite solution: %d", chosenEliteSolution);
+        currentSolution = pathRelinking(
+          input, currentSolution, eliteSolutions[chosenEliteSolution]
+        );
       }
 
       if (eliteSolutions.size() < MAX_ELITE) {
@@ -170,7 +175,7 @@ Solution construction(Input input, double alpha) {
     int randIdx = randint(tam_lrc);
     int idxSubsetChosenInLRC = getSubsetInLRC(lrc, randIdx);
 
-    debug("chosen subset in LRC: %d", idxSubsetChosenInLRC);
+    // debug("chosen subset in LRC: %d", idxSubsetChosenInLRC);
 
     solution.addSubset(idxSubsetChosenInLRC);
     solution.bits = intersection(solution.bits, input.subsets[idxSubsetChosenInLRC].bits);

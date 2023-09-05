@@ -31,7 +31,6 @@ void localSearch(Input input, Solution &initialSolution) {
       
       if (newSolution.bits.count() > initialSolution.bits.count()) {
         initialSolution = newSolution;
-        debug("busca local serviu de alguma coisa.");
         return;
       }
     }

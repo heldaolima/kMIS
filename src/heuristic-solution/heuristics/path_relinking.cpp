@@ -9,25 +9,29 @@ using std::vector, std::cout;
 
 #define printVec(V) for(auto n: V) std::cout << n << " ";
 
-Solution pathRelinking(Input input, Solution& origin, Solution destiny) {
-  Solution bestSolution = origin;
-  int bestObjective = origin.getObjective();
+Solution pathRelinking(Input input, Solution origin, Solution destiny) {
+  int bestObjective = 0;
 
-  if (destiny.getObjective() > bestObjective) {
-    bestObjective = destiny.getObjective();
+  Solution bestSolution(input.quantityOfSubsets);
+
+  if (origin.getObjective() > destiny.getObjective()) {
+    bestSolution = origin;
+    bestObjective = origin.getObjective();
+  } else {
     bestSolution = destiny;
+    bestObjective = destiny.getObjective();
 
     destiny = origin;
     origin = bestSolution;
   }
-
-  int difference = symmetricDifference(origin, destiny);
+  
+  int difference = origin.symmetricDifference(destiny);
 
   #ifdef DEBUG
     cout << "Origin: \n";
-    origin.print();
+    printVec(origin.subsetsInSolution);
     cout << "\nDestiny: \n";
-    destiny.print();
+    printVec(destiny.subsetsInSolution);
     cout << "\n\tDiferença simétrica: " << difference << "\n";
   #endif
   
@@ -37,26 +41,30 @@ Solution pathRelinking(Input input, Solution& origin, Solution destiny) {
 
     vector<int> onlyInOrigin, onlyInDestiny;
 
-    for (const int destinySubset : destiny.subsetsInSolution) {
-      if (!origin.isSubsetInSolution[destinySubset]) {
-        onlyInOrigin.push_back(destinySubset);
+    for (int i = 0; i < destiny.subsetsInSolution.size(); i++) {
+      int q = destiny.subsetsInSolution[i];
+      if (origin.isSubsetInSolution[q] == false) {
+        onlyInDestiny.push_back(q);
       }
     }
 
-    for (const int originSubset : origin.subsetsInSolution) {
-      if (!destiny.isSubsetInSolution[originSubset]) {
-        onlyInDestiny.push_back(originSubset);
-      } else {
-        intersectionOriginDestiny = intersection(intersectionOriginDestiny, input.subsets[originSubset].bits);
+    for (int i = 0; i < origin.subsetsInSolution.size(); i++) {
+      int q = origin.subsetsInSolution[i];
+      
+      if (destiny.isSubsetInSolution[q] == false) {
+        onlyInOrigin.push_back(q);
+      }
+      else {
+        intersectionOriginDestiny = intersection(intersectionOriginDestiny, input.subsets[q].bits);
       }
     }
 
     #ifdef DEBUG
-      cout << "Only in origin: ";
+      cout << "\nOnly in origin: ";
       printVec(onlyInOrigin);
-      cout << "\n\nOnly in origin: ";
+      cout << "\n\nOnly in destiny: ";
       printVec(onlyInDestiny);
-      cout << "";
+      cout << "\nIntersectionOriginDestiny: " << intersectionOriginDestiny.to_string() << "\n";
     #endif
 
     int bestMovement = -1;
@@ -64,6 +72,7 @@ Solution pathRelinking(Input input, Solution& origin, Solution destiny) {
     bitset<numberOfBits> movementsBits;
 
     for (const int outOnlyInOrigin : onlyInOrigin) { // this will get out of origin
+      cout << "início do loop o que sai da origem: " << outOnlyInOrigin << "\n";
       bitset<numberOfBits> intersectionWithoutTheOneLeftOut = intersectionOriginDestiny;
       
       for (const int inOnlyInOrigin : onlyInOrigin) {
@@ -74,26 +83,45 @@ Solution pathRelinking(Input input, Solution& origin, Solution destiny) {
         }
       }
 
+      #ifdef DEBUG
+        cout << "\nintersectionWithoutTheOneLeftOut: " << intersectionWithoutTheOneLeftOut << "\n";
+      #endif
+      
       // cost of movements foreach element only in destiny
-      bitset<numberOfBits> movement;
       for (const int inDestiny : onlyInDestiny) {
-        movement = intersection(intersectionWithoutTheOneLeftOut, input.subsets[inDestiny].bits);
-        int currBest = movement.count();
+        bitset<numberOfBits> movement = intersection(intersectionWithoutTheOneLeftOut, input.subsets[inDestiny].bits);
         
-        if (currBest > bestMovement) {
+        int currBest = movement.count();
+        // #ifdef DEBUG
+        //   cout << "\n\nMovement: " << movement << "\n";
+        // #endif 
+        
+        if (bestMovement < currBest) {
           bestMovement = currBest;
           outOfOrigin = outOnlyInOrigin;
           inOrigin = inDestiny;
           movementsBits = movement;
+          cout << "\n\ntrocando os valores: ";
+          cout << "outoforigin: " << outOnlyInOrigin << " inOrigin: " << inOrigin << "\n";
         }
       }
+
+      #ifdef DEBUG
+        cout << "\n\nMovement in the end: " << movementsBits << "\n";
+        cout << "inOrigin: " << inOrigin << "\n";
+        cout << "outOrigin: " << outOfOrigin << "\n";
+      #endif
     }
+
+
 
     origin.bits = movementsBits;
     origin.isSubsetInSolution[inOrigin] = true;
     origin.isSubsetInSolution[outOfOrigin] = false;
+
     for (int i = 0; i < origin.subsetsInSolution.size(); i++) {
       if (origin.subsetsInSolution[i] == outOfOrigin) {
+        cout << "mudando subset da origem: " << origin.subsetsInSolution[i] << " por " << outOfOrigin << "\n";
         origin.subsetsInSolution[i] = inOrigin;
         break;
       }
@@ -103,20 +131,25 @@ Solution pathRelinking(Input input, Solution& origin, Solution destiny) {
       bestSolution = origin;
       bestObjective = bestSolution.getObjective();
     }
-    difference = symmetricDifference(origin, destiny);
+
+    #ifdef DEBUG
+      cout << "\n\nEND OF THE LOOP: ";
+      cout << "\n\nOrigin: ";
+      printVec(origin.subsetsInSolution);
+      cout << "\n\nDestiny: ";
+      printVec(destiny.subsetsInSolution);
+      cout << "\nOnly in origin: ";
+      printVec(onlyInOrigin);
+      cout << "\n\nOnly in destiny: ";
+      printVec(onlyInDestiny);
+      cout << "\nIntersectionOriginDestiny: " << intersectionOriginDestiny.to_string() << "\n";
+    #endif
+
+    difference = origin.symmetricDifference(destiny);
+    #ifdef DEBUG
+      cout << "Difference at the end of loop: "<< difference << "\n";
+    #endif
   }
 
   return bestSolution;
-}
-
-int symmetricDifference(Solution a, Solution b) {
-  int count = 0, k = 0;
-  for (int subset: a.subsetsInSolution) {
-    k++;
-    if (b.isSubsetInSolution[subset]) {
-      count++;
-    }
-  }
-
-  return (k - count);
 }

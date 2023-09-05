@@ -48,3 +48,15 @@ int Solution::getSubsetInSolution(int i) {
 int Solution::getObjective() {
   return this->bits.count();
 }
+
+int Solution::symmetricDifference(Solution sol) {
+  int count = 0, k = 0;
+  for (int subset: this->subsetsInSolution) {
+    k++;
+    if (sol.isSubsetInSolution[subset]) {
+      count++;
+    }
+  }
+
+  return (k - count);
+}

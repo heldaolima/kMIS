@@ -5,7 +5,7 @@
 
 using std::bitset;
 
-#define numberOfBits 301 
+#define numberOfBits 41 
 
 bitset<numberOfBits> intersection(bitset<numberOfBits> setA, bitset<numberOfBits> setB);
 

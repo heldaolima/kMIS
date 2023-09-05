@@ -19,6 +19,7 @@ public:
   void print();
   int getSubsetInSolution(int);
   int getObjective();
+  int symmetricDifference(Solution);
 };
 
 #endif

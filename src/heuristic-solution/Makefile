@@ -7,7 +7,7 @@ main: dependencies
 	$(CC) -o main.out main.cpp *.o
 
 dependencies:
-	$(CC) -c $(DEPENDENCIES) -DNDEBUG
+	$(CC) -c $(DEPENDENCIES) 
 
 clean:
 	rm -f *.o *.out
