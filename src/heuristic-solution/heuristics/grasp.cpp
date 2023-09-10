@@ -31,7 +31,7 @@ int getSubsetInLRC(vector<bool>, int);
 void updateEliteSolutions(vector<Solution>&, Solution);
 Solution construction(Input, double);
 
-Solution grasp(Input input, bool reactive) {
+Solution grasp(Input input, bool reactive, bool usePathRelinking) {
   constructionArrays arrays;
 
   int bestFound = 0;
@@ -49,22 +49,25 @@ Solution grasp(Input input, bool reactive) {
   for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
     idxAlpha = getIdxAlpha(arrays);
     alpha = X[idxAlpha];
-    debug("alpha: %lf", alpha);
 
     Solution currentSolution = construction(input, alpha);
-    // debug("currentSolution before LS: %d", currentSolution.getObjective());
+
     localSearch(input, currentSolution);
-    // debug("currentSolution after LS: %d", currentSolution.getObjective());
-    bool usePathRelinking = true;
+
+    int countPathRel = 0;
     
     if (usePathRelinking) {
       if (eliteSolutions.size() >= 1) {
         chosenEliteSolution = randint(eliteSolutions.size());
-        log_info("size of elite: %d", eliteSolutions.size());
-        log_info("chosenElite solution: %d", chosenEliteSolution);
         currentSolution = pathRelinking(
           input, currentSolution, eliteSolutions[chosenEliteSolution]
         );
+      }
+
+      countPathRel++;
+
+      if (countPathRel > 2) {
+        return bestSolution;
       }
 
       if (eliteSolutions.size() < MAX_ELITE) {

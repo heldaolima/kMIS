@@ -33,13 +33,17 @@ int main(int argc, char* argv[]) {
   std::cout << "Greedy + Local Search: \n" ;
   solution.print();
 
-  Solution nonReactiveGraspSolution = grasp(input, false);
+  Solution nonReactiveGraspSolution = grasp(input, false, false);
   std::cout << "GRASP (nao reativo): \n";
   nonReactiveGraspSolution.print();
 
-  Solution reactiveGraspSolution = grasp(input, true);
+  Solution reactiveGraspSolution = grasp(input, true, false);
   std::cout << "GRASP (reativo): \n";
   reactiveGraspSolution.print();
+
+  Solution graspWithPathRelinking = grasp(input, true, true);
+  std::cout << "GRASP (reativo com path relinking): \n";
+  graspWithPathRelinking.print();
   
   return 0;
 }
