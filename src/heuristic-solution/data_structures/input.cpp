@@ -54,7 +54,7 @@ Input::Input(const char *path) {
       Subset subset = subsets[j];
       for (i = 0; i < tam_R; i++) {
         if (inElement[i] && A[j][i]) {
-          subset.bits.set(i);
+          subset.setBit(i);
         }
       }
       subsets[j] = subset;
@@ -78,13 +78,33 @@ void Input::print() {
 
   for (int i = 0; i < this->quantityOfSubsets; i++) {
     std::cout << i << ": ";
-    for (int j = 0; j < this->subsets[i].bits.size(); j++) {
-      if (this->subsets[i].bits[j]) {
+    for (int j = 0; j < this->getSubset(i).size(); j++) {
+      if (this->getSubset(i)[j]) {
         std::cout << j << " ";
       }
     }
     std::cout << "\n";
   }
+}
+
+std::bitset<numberOfBits> Input::getSubset(int idx) {
+  return this->subsets[idx].getBits();
+}
+
+int Input::getQuantityOfSubsets() {
+  return this->quantityOfSubsets;
+}
+
+int Input::getQuantityOfElements() {
+  return this->quantityOfElements;
+}
+
+int Input::getK() {
+  return this->k;
+}
+
+vector<Subset> Input::getSubsets() {
+  return this->subsets;
 }
 
 void Input::sortByOrder() {
@@ -96,9 +116,9 @@ void Input::sortByObjective() {
 }
 
 bool Input::sortByObjectiveFunc(const Subset &a, const Subset &b) {
-  return a.bits.count() > b.bits.count();
+  return a.getNumberOfElements() > b.getNumberOfElements();
 }
 
 bool Input::sortByOrderFunc(const Subset &a, const Subset &b) {
-  return a.identifier < b.identifier;
+  return a.getId() < b.getId();
 }

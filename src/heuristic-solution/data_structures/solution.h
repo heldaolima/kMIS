@@ -22,8 +22,9 @@ public:
   int getSubsetInSolution(int);
   int getObjective();
   int symmetricDifference(Solution);
-  void updateIntersection(Input);
-  void updateBits(bitset<numberOfBits>);
+  void updateBits(Input);
+  void setIntersection(bitset<numberOfBits>);
+  bitset<numberOfBits> intersectionWith(bitset<numberOfBits>);
 };
 
 #endif

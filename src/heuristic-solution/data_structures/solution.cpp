@@ -71,17 +71,21 @@ int Solution::symmetricDifference(Solution sol) {
   return (k - count);
 }
 
-void Solution::updateIntersection(Input input) {
+void Solution::updateBits(Input input) {
   this->bits.set();
 
   input.sortByOrder();
 
   for (const int s: this->subsetsInSolution) {
-    this->updateBits(input.subsets[s].bits);
+    this->setIntersection(input.getSubset(s));
   }
-
 }
 
-void Solution::updateBits(bitset<numberOfBits> bits) {
-  this->bits = intersection(this->bits, bits);
+void Solution::setIntersection(bitset<numberOfBits> bits) {
+  this->bits = this->intersectionWith(bits);
 }
+
+bitset<numberOfBits> Solution::intersectionWith(bitset<numberOfBits> bits) {
+  return intersection(this->bits, bits);
+}
+

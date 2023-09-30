@@ -7,10 +7,10 @@ Solution perturb(Solution solution, Input input) {
   // @todo: pick a method for deciding this number
   int numberOfSetsToBeRemoved = 4; 
 
-  vector<int> avaliableSets(input.quantityOfSubsets - input.k);
+  vector<int> avaliableSets(input.getQuantityOfSubsets() - input.getK());
 
   int subsetIdx = 0;
-  for (int i = 0; i < input.quantityOfSubsets; i++) {
+  for (int i = 0; i < input.getQuantityOfSubsets(); i++) {
     if (!solution.isSubsetInSolution[i]) {
       avaliableSets[subsetIdx] = i;
       subsetIdx++;
@@ -28,14 +28,14 @@ Solution perturb(Solution solution, Input input) {
     perturbed.removeSubset(toBeRemoved[i]);
   }
 
-  while (perturbed.subsetsInSolution.size() < input.k) {
+  while (perturbed.subsetsInSolution.size() < input.getK()) {
     int setToAdd = randint(avaliableSets.size());
     perturbed.addSubset(avaliableSets[setToAdd]);
 
     avaliableSets.erase(avaliableSets.begin() + setToAdd);
   }
 
-  perturbed.updateIntersection(input);
+  perturbed.updateBits(input);
 
   perturbed.print();
 

@@ -6,5 +6,4 @@
 
 Solution greedySolution(Input input);
 
-
 #endif

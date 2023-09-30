@@ -81,7 +81,7 @@ Solution graspWithPathRelinking(Input input) {
   vector<Solution> eliteSolutions;
   int chosenEliteSolution = 0;
 
-  Solution bestSolution(input.quantityOfSubsets);
+  Solution bestSolution(input.getQuantityOfSubsets());
   
   for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
     idxAlpha = arrays.getIdxAlpha();
@@ -122,7 +122,7 @@ Solution reactiveGrasp(Input input) {
   int idxAlpha = 0;
   double alpha = 0.0;
 
-  Solution bestSolution(input.quantityOfSubsets);
+  Solution bestSolution(input.getQuantityOfSubsets());
 
   vector<Solution> eliteSolutions;
   int chosenEliteSolution = 0;
@@ -147,26 +147,26 @@ Solution reactiveGrasp(Input input) {
 }
 
 Solution construction(Input input, double alpha) {
-  int i = 0;
-  int incremental_cost[input.quantityOfSubsets] = 
-    { input.subsets[0].getNumberOfElements() };
+  vector<Subset> subsets = input.getSubsets();
+
+  int incremental_cost[input.getQuantityOfSubsets()];
+  incremental_cost[0] = { subsets[0].getNumberOfElements() };
   
   int c_max = incremental_cost[0], c_min = incremental_cost[0];
+  initializeCosts(incremental_cost, c_max, c_min, subsets);
 
-  Solution solution(input.quantityOfSubsets);
 
-  vector<bool> lrc(input.quantityOfSubsets, false);
+  Solution solution(input.getQuantityOfSubsets());
+  vector<bool> lrc(input.getQuantityOfSubsets(), false);
 
-  initializeCosts(incremental_cost, c_max, c_min, input.subsets);
-
-  i = 0;
-  while (i < input.k) {
+  int i = 0;
+  while (i < input.getK()) {
 
     // limite mínimo de valor para que o subconjunto entre na LRC
     int inferiorLimit = getInferiorLimit(alpha, c_min, c_max); 
 
     int tam_lrc = 0;
-    for (int j = 0; j < input.quantityOfSubsets; j++) {
+    for (int j = 0; j < input.getQuantityOfSubsets(); j++) {
       if (!solution.isSubsetInSolution[j] && incremental_cost[j] >= inferiorLimit) {
         lrc[j] = true;
         tam_lrc++;
@@ -179,9 +179,9 @@ Solution construction(Input input, double alpha) {
     int idxSubsetChosenInLRC = getSubsetInLRC(lrc, randIdx);
 
     solution.addSubset(idxSubsetChosenInLRC);
-    solution.updateBits(input.subsets[idxSubsetChosenInLRC].bits);
+    solution.setIntersection(subsets[idxSubsetChosenInLRC].getBits());
 
-    if (i + 1 == input.k) break;
+    if (i + 1 == input.getK()) break;
     
     // update costs
     updateCosts(input, incremental_cost, c_min, c_max, solution);
@@ -208,9 +208,9 @@ void initializeCosts(int incremental_cost[], int& c_min, int& c_max, vector<Subs
 
 void updateCosts(Input input, int incremental_cost[], int& c_min, int& c_max, Solution solution) {
   int auxIdx = 0;
-  for (int j = 0; j < input.quantityOfSubsets; j++) {
+  for (int j = 0; j < input.getQuantityOfSubsets(); j++) {
     if (!solution.isSubsetInSolution[j]) {
-      incremental_cost[j] = intersection(solution.bits, input.subsets[j].bits).count();
+      incremental_cost[j] = solution.intersectionWith(input.getSubset(j)).count();
 
       if (auxIdx == 0) {
         c_min = incremental_cost[j];

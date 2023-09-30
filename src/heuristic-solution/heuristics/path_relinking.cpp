@@ -12,7 +12,7 @@ using std::vector, std::cout;
 Solution pathRelinking(Input input, Solution origin, Solution destiny) {
   int bestObjective = 0;
 
-  Solution bestSolution(input.quantityOfSubsets);
+  Solution bestSolution(input.getQuantityOfSubsets());
 
   if (origin.getObjective() > destiny.getObjective()) {
     bestSolution = origin;
@@ -49,7 +49,7 @@ Solution pathRelinking(Input input, Solution origin, Solution destiny) {
         onlyInOrigin.push_back(q);
       }
       else {
-        intersectionOriginDestiny = intersection(intersectionOriginDestiny, input.subsets[q].bits);
+        intersectionOriginDestiny = intersection(intersectionOriginDestiny, input.getSubset(q));
       }
     }
 
@@ -63,14 +63,14 @@ Solution pathRelinking(Input input, Solution origin, Solution destiny) {
       for (const int inOnlyInOrigin : onlyInOrigin) {
         if (inOnlyInOrigin != outOnlyInOrigin) {
           intersectionWithoutTheOneLeftOut = intersection(
-            intersectionWithoutTheOneLeftOut, input.subsets[inOnlyInOrigin].bits
+            intersectionWithoutTheOneLeftOut, input.getSubset(inOnlyInOrigin)
           );
         }
       }
 
       // cost of movements foreach element only in destiny
       for (const int inDestiny : onlyInDestiny) {
-        bitset<numberOfBits> movement = intersection(intersectionWithoutTheOneLeftOut, input.subsets[inDestiny].bits);
+        bitset<numberOfBits> movement = intersection(intersectionWithoutTheOneLeftOut, input.getSubset(inDestiny));
         
         int currBest = movement.count();
         

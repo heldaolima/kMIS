@@ -10,26 +10,25 @@
   maior número de elementos.
 */
 Solution greedySolution(Input input) {
-  Solution solution(input.quantityOfSubsets);
-  vector<Subset> subsets = input.subsets;
+  Solution solution(input.getQuantityOfSubsets());
+  vector<Subset> subsets = input.getSubsets();
 
   std::sort(subsets.begin(), subsets.end(), input.sortByOrderFunc);
 
   Subset biggestSet = subsets[0];
-  solution.addSubset(biggestSet.identifier);
-  bitset<numberOfBits> partialSolution = biggestSet.bits;
+  solution.addSubset(biggestSet.getId());
+  bitset<numberOfBits> partialSolution = biggestSet.getBits();
 
   int currentK = 1, i = 0;
-  while (currentK < input.k) {
+  while (currentK < input.getK()) {
     for (i = currentK; i < subsets.size(); i++) {
-      subsets[i].bits = intersection(partialSolution, subsets[i].bits);
-      subsets[i].qtd = subsets[i].bits.count();
+      subsets[i].calculateAndSetIntersection(partialSolution);
     }
 
     std::sort(subsets.begin() + currentK, subsets.end(), input.sortByOrderFunc);
 
-    partialSolution = subsets[currentK].bits;
-    solution.addSubset(subsets[currentK].identifier);
+    partialSolution = subsets[currentK].getBits();
+    solution.addSubset(subsets[currentK].getId());
 
     currentK++;
   }
