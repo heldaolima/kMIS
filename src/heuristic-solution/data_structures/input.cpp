@@ -60,7 +60,8 @@ Input::Input(const char *path) {
       subsets[j] = subset;
     }
 
-    std::sort(subsets.begin(), subsets.end(), sortFunc);
+    this->sortByObjective();
+    // std::sort(subsets.begin(), subsets.end(), sortFunc);
 
     inFile.close();
   }
@@ -68,4 +69,36 @@ Input::Input(const char *path) {
     std::cout << "ERROR: Could not read file\n";
     exit(1);
   }
+}
+
+void Input::print() {
+  std::cout << "Number of subsets: " << this->quantityOfSubsets << "\n";
+  std::cout << "Number of elements: " << this->quantityOfElements << "\n";
+  std::cout << "k: " << this->k << "\n\n";
+
+  for (int i = 0; i < this->quantityOfSubsets; i++) {
+    std::cout << i << ": ";
+    for (int j = 0; j < this->subsets[i].bits.size(); j++) {
+      if (this->subsets[i].bits[j]) {
+        std::cout << j << " ";
+      }
+    }
+    std::cout << "\n";
+  }
+}
+
+void Input::sortByOrder() {
+  sort(this->subsets.begin(), this->subsets.end(), this->sortByOrderFunc);
+}
+
+void Input::sortByObjective() {
+  sort(this->subsets.begin(), this->subsets.end(), this->sortByObjectiveFunc);
+}
+
+bool Input::sortByObjectiveFunc(const Subset &a, const Subset &b) {
+  return a.bits.count() > b.bits.count();
+}
+
+bool Input::sortByOrderFunc(const Subset &a, const Subset &b) {
+  return a.identifier < b.identifier;
 }

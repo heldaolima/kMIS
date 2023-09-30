@@ -8,6 +8,14 @@
 
 #define MAX_ELITE 10
 
+#define getInferiorLimit(alpha, c_min, c_max) ((c_min) + (alpha) * ((c_max) - (c_min)))
+
+int getSubsetInLRC(vector<bool>, int);
+void updateEliteSolutions(vector<Solution>&, Solution);
+Solution construction(Input, double);
+void initializeCosts(int[], int&, int&, vector<Subset>);
+void updateCosts(Input, int[], int&, int&, Solution);
+
 struct constructionArrays {
   int numberOfTimesAnXValueWasChosen[TAM_X];
   double probX[TAM_X];
@@ -23,15 +31,88 @@ struct constructionArrays {
       score[i] = 0;
     }
   }
+
+  int getIdxAlpha() {
+    int i = 0;
+    double cumulativeProbability[TAM_X];
+    cumulativeProbability[0] = this->probX[0];
+
+    for (i = 1; i < TAM_X; i++) {
+      cumulativeProbability[i] = cumulativeProbability[i - 1] + this->probX[i];
+    }
+
+    double x = random_double();
+
+    for (i = 0; i < TAM_X; i++) {
+      if (x <= cumulativeProbability[i]) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+  void updateProbabilities(int zStar) {
+    int i = 0;
+    double Q[TAM_X], sigma = 0.0;
+
+    for (i = 0; i < TAM_X; i++) {
+      if (this->numberOfTimesAnXValueWasChosen[i] == 0) {
+        return;
+      }
+
+      this->avg[i] = this->score[i] / this->numberOfTimesAnXValueWasChosen[i];
+      Q[i] = this->avg[i] / zStar;
+
+      sigma += Q[i];
+    }
+
+    for (i = 0; i < TAM_X; i++) {
+      this->probX[i] = Q[i] / sigma;
+    }
+  }
 };
 
-int getIdxAlpha(constructionArrays&);
-void updateProbabilities(constructionArrays&, int);
-int getSubsetInLRC(vector<bool>, int);
-void updateEliteSolutions(vector<Solution>&, Solution);
-Solution construction(Input, double);
+Solution graspWithPathRelinking(Input input) {
+  constructionArrays arrays;
 
-Solution grasp(Input input, bool reactive, bool usePathRelinking) {
+  int i = 0, idxAlpha = 0;
+  double alpha = 0.0;
+
+  vector<Solution> eliteSolutions;
+  int chosenEliteSolution = 0;
+
+  Solution bestSolution(input.quantityOfSubsets);
+  
+  for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
+    idxAlpha = arrays.getIdxAlpha();
+    alpha = X[idxAlpha];
+
+    Solution currentSolution = construction(input, alpha);
+
+    localSearch(input, currentSolution);
+
+    if (eliteSolutions.size() >= 1) {
+      chosenEliteSolution = randint(eliteSolutions.size());
+      currentSolution = pathRelinking(input, currentSolution, eliteSolutions[chosenEliteSolution]);
+    }
+
+    if (eliteSolutions.size() < MAX_ELITE) {
+      eliteSolutions.push_back(currentSolution);
+    } else {
+      updateEliteSolutions(eliteSolutions, currentSolution);
+    }
+
+    if (i == 0 || currentSolution.getObjective() > bestSolution.getObjective()) {
+      bestSolution = currentSolution;
+    }  
+
+    arrays.updateProbabilities(bestSolution.getObjective());
+  }
+
+  return bestSolution;
+}
+
+Solution reactiveGrasp(Input input) {
   constructionArrays arrays;
 
   int bestFound = 0;
@@ -47,7 +128,7 @@ Solution grasp(Input input, bool reactive, bool usePathRelinking) {
   int chosenEliteSolution = 0;
 
   for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
-    idxAlpha = getIdxAlpha(arrays);
+    idxAlpha = arrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
     Solution currentSolution = construction(input, alpha);
@@ -56,84 +137,13 @@ Solution grasp(Input input, bool reactive, bool usePathRelinking) {
 
     int countPathRel = 0;
     
-    if (usePathRelinking) {
-      if (eliteSolutions.size() >= 1) {
-        chosenEliteSolution = randint(eliteSolutions.size());
-        currentSolution = pathRelinking(
-          input, currentSolution, eliteSolutions[chosenEliteSolution]
-        );
-      }
-
-      countPathRel++;
-
-      if (countPathRel > 2) {
-        return bestSolution;
-      }
-
-      if (eliteSolutions.size() < MAX_ELITE) {
-        eliteSolutions.push_back(currentSolution);
-      } else {
-        updateEliteSolutions(eliteSolutions, currentSolution);
-      }
-    }
-
-    if (i == 0 || currentSolution.getObjective() > bestSolution.getObjective()) {
-      bestSolution = currentSolution;
-      bestFound = i;
-      uselessRepetition = 0;
-    } else {
-      uselessRepetition++;
-    }
-
     arrays.numberOfTimesAnXValueWasChosen[idxAlpha]++;
     arrays.score[idxAlpha] += currentSolution.getObjective();
 
-    if (reactive) {
-      updateProbabilities(arrays, bestSolution.getObjective());
-    }
+    arrays.updateProbabilities(bestSolution.getObjective());
   }
-  std::cout << "\nBest found at the " << bestFound << "th iteration\n";
-  std::cout << "Useless repetitions: " << uselessRepetition << "\n";
+
   return bestSolution;
-}
-
-int getIdxAlpha(constructionArrays& arrays) {
-  int i = 0;
-  double cumulativeProbability[TAM_X];
-  cumulativeProbability[0] = arrays.probX[0];
-  
-  for (i = 1; i < TAM_X; i++) {
-    cumulativeProbability[i] = cumulativeProbability[i - 1] + arrays.probX[i];
-  }
-
-  double x = random_double();
-
-  for (i = 0; i < TAM_X; i++) {
-    if (x <= cumulativeProbability[i]) {
-      return i;
-    }
-  }
-}
-
-void updateProbabilities(constructionArrays& arrays, int zStar) {
-  int i = 0;
-  double Q[TAM_X], sigma = 0.0;
-
-  for (i = 0; i < TAM_X; i++) {
-    if (arrays.numberOfTimesAnXValueWasChosen[i] == 0) {
-      return;
-    }
-
-    arrays.avg[i] = arrays.score[i] / arrays.numberOfTimesAnXValueWasChosen[i];
-    Q[i] = arrays.avg[i] / zStar;
-    
-    sigma += Q[i];
-  }
-
-  for (i = 0; i < TAM_X; i++) {
-    arrays.probX[i] = Q[i] / sigma;
-  }
-
 }
 
 Solution construction(Input input, double alpha) {
@@ -147,23 +157,13 @@ Solution construction(Input input, double alpha) {
 
   vector<bool> lrc(input.quantityOfSubsets, false);
 
-  for (i = 1; i < input.quantityOfSubsets; i++) {
-    incremental_cost[i] = input.subsets[i].getNumberOfElements();
-
-    if (incremental_cost[i] > c_max) {
-      c_max = incremental_cost[i];
-    }
-
-    if (incremental_cost[i] < c_min) {
-      c_min = incremental_cost[i];
-    }
-  }
+  initializeCosts(incremental_cost, c_max, c_min, input.subsets);
 
   i = 0;
   while (i < input.k) {
 
     // limite mínimo de valor para que o subconjunto entre na LRC
-    int inferiorLimit = c_min + alpha * (c_max - c_min); 
+    int inferiorLimit = getInferiorLimit(alpha, c_min, c_max); 
 
     int tam_lrc = 0;
     for (int j = 0; j < input.quantityOfSubsets; j++) {
@@ -178,36 +178,54 @@ Solution construction(Input input, double alpha) {
     int randIdx = randint(tam_lrc);
     int idxSubsetChosenInLRC = getSubsetInLRC(lrc, randIdx);
 
-    // debug("chosen subset in LRC: %d", idxSubsetChosenInLRC);
-
     solution.addSubset(idxSubsetChosenInLRC);
-    solution.bits = intersection(solution.bits, input.subsets[idxSubsetChosenInLRC].bits);
+    solution.updateBits(input.subsets[idxSubsetChosenInLRC].bits);
 
     if (i + 1 == input.k) break;
     
     // update costs
-    int auxIdx = 0;
-    for (int j = 0; j < input.quantityOfSubsets; j++) {
-      if (!solution.isSubsetInSolution[j]) {
-        incremental_cost[j] = intersection(solution.bits, input.subsets[j].bits).count();
-      
-        if (auxIdx == 0) {
-          c_min = incremental_cost[j];
-          c_max = incremental_cost[j];
-        } else {
-          if (incremental_cost[j] < c_min) {
-            c_min = incremental_cost[j];
-          }
-          if (incremental_cost[j] > c_max) {
-            c_max = incremental_cost[j];
-          }
-        }
-        auxIdx++;
-      }
-    }
+    updateCosts(input, incremental_cost, c_min, c_max, solution);
+
     i++;
   }
   return solution;
+}
+
+void initializeCosts(int incremental_cost[], int& c_min, int& c_max, vector<Subset> subsets) {
+  int i = 0, audx;
+  for (i = 1; i < subsets.size(); i++) {
+    incremental_cost[i] = subsets[i].getNumberOfElements();
+
+    if (incremental_cost[i] > c_max) {
+      c_max = incremental_cost[i];
+    }
+
+    if (incremental_cost[i] < c_min) {
+      c_min = incremental_cost[i];
+    }
+  }
+}
+
+void updateCosts(Input input, int incremental_cost[], int& c_min, int& c_max, Solution solution) {
+  int auxIdx = 0;
+  for (int j = 0; j < input.quantityOfSubsets; j++) {
+    if (!solution.isSubsetInSolution[j]) {
+      incremental_cost[j] = intersection(solution.bits, input.subsets[j].bits).count();
+
+      if (auxIdx == 0) {
+        c_min = incremental_cost[j];
+        c_max = incremental_cost[j];
+      } else {
+        if (incremental_cost[j] < c_min) {
+          c_min = incremental_cost[j];
+        }
+        if (incremental_cost[j] > c_max) {
+          c_max = incremental_cost[j];
+        }
+      }
+      auxIdx++;
+    }
+  }
 }
 
 int getSubsetInLRC(vector<bool> lrc, int ithSet) {
@@ -228,6 +246,7 @@ void updateEliteSolutions(vector<Solution>& elite, Solution curr) {
   for (int j = 0; j < elite.size(); j++) {
     if (j == 0) {
       worstObjective = elite[j].getObjective();
+
       worstObjectiveIdx = j;
     }
 

@@ -13,7 +13,7 @@ Solution greedySolution(Input input) {
   Solution solution(input.quantityOfSubsets);
   vector<Subset> subsets = input.subsets;
 
-  std::sort(subsets.begin(), subsets.end(), sortFunc);
+  std::sort(subsets.begin(), subsets.end(), input.sortByOrderFunc);
 
   Subset biggestSet = subsets[0];
   solution.addSubset(biggestSet.identifier);
@@ -25,7 +25,8 @@ Solution greedySolution(Input input) {
       subsets[i].bits = intersection(partialSolution, subsets[i].bits);
       subsets[i].qtd = subsets[i].bits.count();
     }
-    std::sort(subsets.begin() + currentK, subsets.end(), sortFunc);
+
+    std::sort(subsets.begin() + currentK, subsets.end(), input.sortByOrderFunc);
 
     partialSolution = subsets[currentK].bits;
     solution.addSubset(subsets[currentK].identifier);

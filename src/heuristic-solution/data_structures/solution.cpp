@@ -1,5 +1,6 @@
 #include "solution.h"
 #include <iostream>
+#include "../dbg.h"
 
 using std::cout;
 
@@ -24,6 +25,15 @@ void Solution::clean(int qtdSubsets) {
 void Solution::addSubset(int subset) {
   this->subsetsInSolution.push_back(subset);
   this->isSubsetInSolution[subset] = true;
+}
+
+void Solution::removeSubset(int subset) {
+  this->isSubsetInSolution[subset] = false;
+  for (int i = 0; i < this->subsetsInSolution.size(); i++) {
+    if (this->subsetsInSolution[i] == subset) {
+      this->subsetsInSolution.erase(this->subsetsInSolution.begin() + i);
+    }
+  }
 }
 
 void Solution::print() {
@@ -59,4 +69,19 @@ int Solution::symmetricDifference(Solution sol) {
   }
 
   return (k - count);
+}
+
+void Solution::updateIntersection(Input input) {
+  this->bits.set();
+
+  input.sortByOrder();
+
+  for (const int s: this->subsetsInSolution) {
+    this->updateBits(input.subsets[s].bits);
+  }
+
+}
+
+void Solution::updateBits(bitset<numberOfBits> bits) {
+  this->bits = intersection(this->bits, bits);
 }

@@ -17,6 +17,10 @@ int Subset::getNumberOfElements() {
   return this->bits.count();
 }
 
-bool sortFunc(const Subset &a, const Subset &b) {
+bool sortByObjectiveFunc(const Subset &a, const Subset &b) {
   return a.bits.count() > b.bits.count();
+}
+
+bool sortByOrderFunc(const Subset &a, const Subset &b) {
+  return a.identifier < b.identifier;
 }
