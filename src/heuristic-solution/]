@@ -1,0 +1,37 @@
+#include "lrc.h"
+#include "../../dbg.h"
+
+Lrc::Lrc(int size) {
+  lrc.resize(size, false);
+}
+
+int Lrc::set(Solution sol, Costs costs, int inferiorLimit) {
+  log_info("tamanho do custo incremental: %zu", costs.incremental_cost.size());
+  int tam_lrc = 0;
+
+  for (int j = 0; j < costs.incremental_cost.size(); j++) {
+    if (!sol.isSubsetInSolution[j] && costs.incremental_cost[j] >= inferiorLimit) {
+      log_info("o elemento %d não está na solução e tem custo maior que o limite.", j);
+      lrc[j] = true;
+      tam_lrc++;
+    } else {
+      lrc[j] = false;
+    }
+  }
+
+  return tam_lrc;
+}
+
+int Lrc::getIth(int ith) {
+  int idx = 0;
+  for (int i = 0; i < lrc.size(); i++) {
+    if (lrc[i]) {
+      if (idx == ith)
+        return idx;
+
+      idx++;
+    }
+  }
+
+  return idx;
+}

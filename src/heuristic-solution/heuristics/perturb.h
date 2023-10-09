@@ -6,5 +6,6 @@
 #include "../random_utlis.h"
 
 Solution perturb(Solution solution, Input input);
+Solution perturbReactive(Solution solution, Input input, double alpha);
 
 #endif
