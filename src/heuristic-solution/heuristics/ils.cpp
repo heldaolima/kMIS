@@ -25,7 +25,6 @@ Solution Ils::ils() {
 
   // Solution bestSolution = Construction(alpha);
   Solution bestSolution = Construction();
-  bestSolution.print();
   LocalSearch(bestSolution);
 
   eliteSolutions.push_back(bestSolution);
@@ -33,7 +32,6 @@ Solution Ils::ils() {
   int iteration = 0;
 
   while (iteration < MAX_ITERATIONS) {
-    log_info("ITERATION %d", iteration);
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 

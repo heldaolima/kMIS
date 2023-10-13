@@ -78,12 +78,26 @@ Solution reactiveGrasp(Input input) {
 
     localSearch(input, currentSolution);
 
-    int countPathRel = 0;
+    if (eliteSolutions.size() >= 1) {
+      chosenEliteSolution = randint(eliteSolutions.size());
+      currentSolution = pathRelinking(input, currentSolution, eliteSolutions[chosenEliteSolution]);
+    }
+
+    if (eliteSolutions.size() < MAX_ELITE) {
+      eliteSolutions.push_back(currentSolution);
+    } else {
+      updateEliteSolutions(eliteSolutions, currentSolution);
+    }
+
+    if (i == 0 || currentSolution.getObjective() > bestSolution.getObjective()) {
+      bestSolution = currentSolution;
+    }
     
     arrays.numberOfTimesAnXValueWasChosen[idxAlpha]++;
     arrays.score[idxAlpha] += currentSolution.getObjective();
 
-    arrays.updateProbabilities(bestSolution.getObjective());
+    if (i % TAM_X)
+      arrays.updateProbabilities(bestSolution.getObjective());
   }
 
   return bestSolution;

@@ -2,6 +2,9 @@
 #define __input_h__
 
 #include "subset.h" 
+#include <string>
+
+using std::string;
 
 class Input
 {
@@ -11,7 +14,7 @@ class Input
     int k;
     vector<Subset> subsets;
 
-    Input(const char *);
+    Input(string);
     void print();
     void sortByOrder();
     void sortByObjective();

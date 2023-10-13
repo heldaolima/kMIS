@@ -6,7 +6,7 @@
 
 using std::fstream;
 
-Input::Input(const char *path) {
+Input::Input(string path) {
   int num_instances, set, value;
   fstream inFile(path);
   if (inFile.is_open())
