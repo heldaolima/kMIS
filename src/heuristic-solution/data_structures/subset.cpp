@@ -14,7 +14,7 @@ Subset::Subset(vector<int> array) {
 }
 
 int Subset::getNumberOfElements() {
-  return this->bits.count();
+  return (this->identifier != -1) ? this->bits.count() : -1;
 }
 
 bool sortByObjectiveFunc(const Subset &a, const Subset &b) {

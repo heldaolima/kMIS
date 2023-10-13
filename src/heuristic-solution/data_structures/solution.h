@@ -16,13 +16,14 @@ public:
   Solution(int);
   void clean(int);
   void initializeIsSubsetInSolutionVec(int);
+  void addSubsetAndUpdateIntersection(Subset);
   void addSubset(int);
   void removeSubset(int);
   void print();
   int getSubsetInSolution(int);
   int getObjective();
   int symmetricDifference(Solution);
-  void updateIntersection(Input);
+  void updateIntersection(vector<Subset>);
   void updateBits(bitset<numberOfBits>);
 };
 

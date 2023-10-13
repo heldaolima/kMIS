@@ -60,7 +60,7 @@ Input::Input(const char *path) {
       subsets[j] = subset;
     }
 
-    this->sortByObjective();
+    // this->sortByObjective();
     // std::sort(subsets.begin(), subsets.end(), sortFunc);
 
     inFile.close();

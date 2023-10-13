@@ -9,7 +9,7 @@
 #include "grasp/construction_arrays.h"
 #include "grasp/costs.h"
 
-#define MAX_ITERATIONS 5
+#define MAX_ITERATIONS 500
 #define MAX_ELITE 10
 
 void updateEliteSolutions(vector<Solution>&, Solution);
@@ -23,7 +23,8 @@ Solution Ils::ils() {
   int idxAlpha = auxArrays.getIdxAlpha();
   double alpha = X[idxAlpha];
 
-  Solution bestSolution = Construction(alpha);
+  // Solution bestSolution = Construction(alpha);
+  Solution bestSolution = Construction();
   bestSolution.print();
   LocalSearch(bestSolution);
 
@@ -33,39 +34,31 @@ Solution Ils::ils() {
 
   while (iteration < MAX_ITERATIONS) {
     log_info("ITERATION %d", iteration);
-    log_info("Number of elite solutions: %zu", eliteSolutions.size());
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
     Solution perturbedSolution = Perturbation(bestSolution, alpha);
     LocalSearch(perturbedSolution);
 
-    if (eliteSolutions.size() < MAX_ELITE) {
-      eliteSolutions.push_back(perturbedSolution);
-    }
-    else {
-      updateEliteSolutions(eliteSolutions, bestSolution);
-    }
 
     if (eliteSolutions.size() >= 1) {
-      log_info("Got into path relinking.");
       chosenEliteSolution = randint(eliteSolutions.size());
-      debug("Solutions going into pathRelinking: ");
-      perturbedSolution.print();
-      eliteSolutions[chosenEliteSolution].print();
       perturbedSolution = PathRelinking(perturbedSolution, eliteSolutions[chosenEliteSolution]);
     }
-
-    log_info("got out of path relinking");
 
     if (perturbedSolution.getObjective() > bestSolution.getObjective()) {
       bestSolution = perturbedSolution;
     }
 
+    if (eliteSolutions.size() < MAX_ELITE) 
+      eliteSolutions.push_back(bestSolution);
+    else 
+      updateEliteSolutions(eliteSolutions, bestSolution);
+
     auxArrays.computeIdxAlpha(idxAlpha, perturbedSolution.getObjective());
 
-    // if (iteration % TAM_X == 0)
-      auxArrays.updateProbabilities(perturbedSolution.getObjective());
+    if (iteration % TAM_X == 0)
+      auxArrays.updateProbabilities(bestSolution.getObjective());
 
     iteration++;
   }
@@ -75,6 +68,10 @@ Solution Ils::ils() {
 
 Solution Ils::Construction(double alpha) {
   return grasp_construction(input, alpha);
+}
+
+Solution Ils::Construction() {
+  return greedySolution(input);
 }
 
 Solution Ils::Perturbation(Solution solution, double alpha) {

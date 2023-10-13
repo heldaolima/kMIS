@@ -8,6 +8,8 @@
 
 vector<Subset> getAvaliableSets(Solution, Input);
 void removeRandomSets(Solution&, int);
+int getSizeOfAvaliableSubsets(vector<Subset> subsets);
+Subset getAvaliableSet(int idx);
 
 Solution perturb(Solution solution, Input input) {
   // @todo: pick a method for deciding this number
@@ -24,7 +26,7 @@ Solution perturb(Solution solution, Input input) {
     avaliableSets.erase(avaliableSets.begin() + setToAdd);
   }
 
-  perturbed.updateIntersection(input);
+  perturbed.updateIntersection(avaliableSets);
 
   perturbed.print();
 
@@ -32,55 +34,89 @@ Solution perturb(Solution solution, Input input) {
 }
 
 Solution perturbReactive(Solution solution, Input input, double alpha) {
-  log_info("alpha: %lf", alpha);
+  // log_info("alpha: %lf", alpha);
   const int maximumNumberOfSetsToBeRemoved = (input.k / 2) + 1;
-  const int numberOfSetsToBeRemoved = randint(maximumNumberOfSetsToBeRemoved);
+  const int numberOfSetsToBeRemoved = randintInterval(1, maximumNumberOfSetsToBeRemoved);
+  // log_info("will remove %d sets", numberOfSetsToBeRemoved);
 
   Solution perturbed = solution;
   vector<Subset> avaliableSets = getAvaliableSets(perturbed, input);
+  int sizeOfAvaliableSets = getSizeOfAvaliableSubsets(avaliableSets);
+  // log_info("sizeOfAvaliableSets: %d | avaliableSets.size(): %zu", sizeOfAvaliableSets, avaliableSets.size());
 
   removeRandomSets(perturbed, numberOfSetsToBeRemoved);
-  solution.updateIntersection(input);
-
-  log_info("Solution after having sets removed: ");
-  perturbed.print();
+  solution.updateIntersection(avaliableSets);
 
   Costs costs(avaliableSets);
   Lrc lrc(avaliableSets.size());
   
-  while (perturbed.subsetsInSolution.size() < input.k) {
-    int inferiorLimit = costs.getInferiorLimit(alpha);
-    log_info("Inferior limit: %d", inferiorLimit);
-
-    int tam_lrc = lrc.set(perturbed, costs, inferiorLimit); 
-    log_info("Tam_lrc: %d", tam_lrc);
+  int i = perturbed.subsetsInSolution.size();
+  // log_info("starting at: %d | k = %d", i, input.k);
+  while (i < input.k) {
+    // debug("i: %d", i);
+    int inferiorLimit = getInferiorLimit(alpha, costs.c_min, costs.c_max);
+    int tam_lrc = lrc.set(perturbed, costs.incremental_cost, inferiorLimit); 
 
     int random_index = randint(tam_lrc);
-    log_info("Random index from lrc: %d", random_index);
     int chosenFromLRC = lrc.getIth(random_index); 
-    log_info("Chosen from lrc: %d" , chosenFromLRC);
+    // log_info("Chosen from lrc: %d" , chosenFromLRC);
+    // log_info("it's situation on availableSets: %d, objective: %d", avaliableSets[chosenFromLRC].identifier, avaliableSets[chosenFromLRC].getNumberOfElements());
 
-    perturbed.addSubset(chosenFromLRC);
-    perturbed.updateIntersection(input);
+    perturbed.addSubsetAndUpdateIntersection(avaliableSets[chosenFromLRC]);
+    
+
+    if (i + 1 == input.k) {
+      // log_info("i+1 == input.k [i = %d]", i);
+      break;
+    }
 
     costs.update(perturbed, avaliableSets);
+
+    i++;
   }
   
-  log_info("getting out of perturb.");
+  // log_info("getting out of perturb.");
   return perturbed;
 }
 
 vector<Subset> getAvaliableSets(Solution solution, Input input) {
   input.sortByOrder();
   vector<Subset> avaliableSets;
+  Subset dummy(-1);
 
   for (int i = 0; i < input.quantityOfSubsets; i++) {
     if (!solution.isSubsetInSolution[i]) {
       avaliableSets.push_back(input.subsets[i]);
+    } else {
+      avaliableSets.push_back(dummy);
     }
   }
 
   return avaliableSets;
+}
+
+int getSizeOfAvaliableSubsets(vector<Subset> subsets) {
+  int size = 0;
+  for (const Subset s: subsets) {
+    if (s.identifier != -1)
+      size++;
+  }
+
+  return size;
+}
+
+Subset getAvaliableSet(vector<Subset> subsets, int ith) {
+  int idx = 0;
+  for (int i = 0; i < subsets.size(); i++) {
+    if (subsets[i].identifier != -1) {
+      if (idx == ith)
+        return subsets[i];
+
+      idx++;
+    }
+  }
+
+  return subsets[idx];
 }
 
 void removeRandomSets(Solution& solution, int numberOfSets) {
