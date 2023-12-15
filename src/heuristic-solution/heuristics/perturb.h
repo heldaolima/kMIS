@@ -3,7 +3,7 @@
 
 #include "../data_structures/solution.h"
 #include "../data_structures/input.h"
-#include "../random_utlis.h"
+#include "../helpers/random_utils.h"
 
 Solution perturb(Solution solution, Input input);
 Solution perturbReactive(Solution solution, Input input, double alpha);

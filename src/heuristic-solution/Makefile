@@ -1,5 +1,5 @@
 CC=g++
-DEPENDENCIES= graph.cpp globals.cpp data_structures/*.cpp heuristics/*.cpp heuristics/grasp/*.cpp
+DEPENDENCIES= globals.cpp helpers/*.cpp data_structures/*.cpp heuristics/*.cpp heuristics/grasp/*.cpp
 ILS_DEPENDENCIES=globals.cpp data_structures/*.cpp heuristics/ils.cpp heuristics/greedy.cpp heuristics/local_search.cpp heuristics/path_relinking.cpp
 
 ils: clean dependencies

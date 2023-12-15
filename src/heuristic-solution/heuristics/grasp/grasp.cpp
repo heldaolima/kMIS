@@ -1,6 +1,6 @@
 #include "grasp.h"
 #include "../../dbg.h"
-#include "../../random_utlis.h"
+#include "../../helpers/random_utils.h"
 #include "../../globals.h"
 #include "../local_search.h"
 #include "../path_relinking.h"
@@ -8,14 +8,14 @@
 #include "construction_arrays.h"
 #include <iostream>
 
-
 #define MAX_ELITE 10
 
 #define getInferiorLimit(alpha, c_min, c_max) ((c_min) + (alpha) * ((c_max) - (c_min)))
 
 void updateEliteSolutions(vector<Solution>&, Solution);
 
-Solution graspWithPathRelinking(Input input) {
+Solution Grasp_PathRelinking::run() {
+
   constructionArrays arrays;
 
   int i = 0, idxAlpha = 0;
@@ -25,7 +25,7 @@ Solution graspWithPathRelinking(Input input) {
   int chosenEliteSolution = 0;
 
   Solution bestSolution(input.quantityOfSubsets);
-  
+
   for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
     idxAlpha = arrays.getIdxAlpha();
     alpha = X[idxAlpha];
@@ -55,7 +55,8 @@ Solution graspWithPathRelinking(Input input) {
   return bestSolution;
 }
 
-Solution reactiveGrasp(Input input) {
+Solution Grasp_Reactive::run() {
+
   constructionArrays arrays;
 
   int bestFound = 0;
@@ -92,7 +93,7 @@ Solution reactiveGrasp(Input input) {
     if (i == 0 || currentSolution.getObjective() > bestSolution.getObjective()) {
       bestSolution = currentSolution;
     }
-    
+
     arrays.numberOfTimesAnXValueWasChosen[idxAlpha]++;
     arrays.score[idxAlpha] += currentSolution.getObjective();
 

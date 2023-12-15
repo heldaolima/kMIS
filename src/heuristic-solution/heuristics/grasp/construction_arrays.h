@@ -1,7 +1,7 @@
 #ifndef __construction_arrays_h__
 #define __construction_arrays_h__
 
-#include "../../random_utlis.h"
+#include "../../helpers/random_utils.h"
 
 #define TAM_X 11
 static const double X[TAM_X] = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };

@@ -3,7 +3,7 @@
 #include "local_search.h"
 #include "perturb.h"
 #include "path_relinking.h"
-#include "../random_utlis.h"
+#include "../helpers/random_utils.h"
 #include "../dbg.h"
 #include "grasp/construction.h"
 #include "grasp/construction_arrays.h"
@@ -15,7 +15,7 @@
 void updateEliteSolutions(vector<Solution>&, Solution);
 int getWorstSolutionIdx(vector<Solution>);
 
-Solution Ils::ils() {
+Solution Ils::run() {
   vector<Solution> eliteSolutions;
   int chosenEliteSolution = 0;
 
@@ -69,7 +69,7 @@ Solution Ils::Construction(double alpha) {
 }
 
 Solution Ils::Construction() {
-  return greedySolution(input);
+  return GreedyKInter(input).run();
 }
 
 Solution Ils::Perturbation(Solution solution, double alpha) {
