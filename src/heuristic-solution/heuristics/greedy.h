@@ -1,10 +1,23 @@
 #ifndef __greedy_heuristic_h__
 #define __greedy_heuristic_h__
 
-#include "../data_structures/input.h"
-#include "../data_structures/solution.h"
+#include "../heuristic.h"
+#include "../heuristic_factory.h"
 
-Solution greedySolution(Input input);
+class GreedyKInter : public Heuristic { 
+private:
+  Input input;
+public:
+  GreedyKInter(Input& input) : input(input) {}
+  virtual Solution run() override;
+};
+
+class GreedyKInterFactory : public HeuristicFactory {
+public:
+  virtual Heuristic* create(Input input) override {
+    return new GreedyKInter(input);
+  }
+};
 
 
 #endif

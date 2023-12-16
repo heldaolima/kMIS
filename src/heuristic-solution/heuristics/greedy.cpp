@@ -9,7 +9,7 @@
   seja máxima. Para tanto, inicia-se com o subconjunto que contenha o 
   maior número de elementos.
 */
-Solution greedySolution(Input input) {
+Solution GreedyKInter::run() {
   Solution solution(input.quantityOfSubsets);
   vector<Subset> subsets = input.subsets;
 
@@ -37,3 +37,4 @@ Solution greedySolution(Input input) {
   solution.bits = partialSolution;
   return solution;
 }
+

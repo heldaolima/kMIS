@@ -1,5 +1,5 @@
-#ifndef __random_h__
-#define __random_h__
+#ifndef __random_utils_h__
+#define __random_utils_h__
 
 #include <cstdlib>
 
