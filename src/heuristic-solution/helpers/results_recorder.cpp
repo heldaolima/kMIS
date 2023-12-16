@@ -1,7 +1,7 @@
 #include "results_recorder.h"
 #include <fstream>
 
-const string header = "input\tk\tavg_time\tavg_objective\tworst\tbest\n";
+const string header = "input,k,avg_time,avg_objective,worst,best\n";
 
 Experiments::Experiments(string outPath, HeuristicFactory* factory) {
   this->outPath = outPath;
@@ -12,12 +12,12 @@ Experiments::Experiments(string outPath, HeuristicFactory* factory) {
   outFile.close();
 }
 
-void Experiments::testHeuristic(string inputPath) {
+void Experiments::testHeuristic(fs::directory_entry inputFile) {
   Objectives objs;
   Times times;
   clock_t t1, t2;
   
-  Input input(inputPath);
+  Input input(inputFile.path());
   Heuristic* heuristic = factory->create(input);
 
   for (int i = 0; i < NUMBER_OF_TESTS; i++) {
@@ -34,17 +34,16 @@ void Experiments::testHeuristic(string inputPath) {
   times.average /= NUMBER_OF_TESTS;
   objs.average /= NUMBER_OF_TESTS;
 
-  writeResults(inputPath, objs, times, input.k);
+  writeResults(inputFile.path().filename(), objs, times, input.k);
 }
 
-void Experiments::writeResults(string inputPath, Objectives objs, Times times, int k) {
-  std::ofstream outFile(inputPath, std::ios_base::app);
+void Experiments::writeResults(const string inputFileName, Objectives objs, Times times, int k) {
+  std::ofstream outFile(outPath, std::ios_base::app);
 
-  outFile << inputPath << "\t";
-  outFile << k << "\t";
-  outFile << times.average << "\t" << objs.average << "\t";
-  outFile << objs.worst << "\t" << objs.best << "\n";
+  outFile << inputFileName << ",";
+  outFile << k << ",";
+  outFile << times.average << "," << objs.average << ",";
+  outFile << objs.worst << "," << objs.best << "\n";
 
   outFile.close();
-
 }

@@ -5,11 +5,13 @@
 #include <ctime>
 #include <iostream>
 #include <string>
+#include <filesystem>
 #include "../heuristic_factory.h"
 
+namespace fs = std::filesystem;
 using std::vector, std::string;
 
-#define NUMBER_OF_TESTS 10
+#define NUMBER_OF_TESTS 1
 
 typedef struct objectives {
   int current = 0, best = 0, worst = 0;
@@ -49,14 +51,14 @@ typedef struct times {
 
 class Experiments {
 private:
-  string inputPath;
   string outPath;
   HeuristicFactory* factory;
 
-  void writeResults(string inputPath, Objectives objs, Times times, int k);
+  void writeResults(const string inputFileName, Objectives objs, Times times, int k);
+
 public:
   Experiments(string outputPath, HeuristicFactory* factory) ;
-  void testHeuristic(string inputPath);
+  void testHeuristic(fs::directory_entry inputFile);
 };
 
 #endif
