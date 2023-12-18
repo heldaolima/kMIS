@@ -10,16 +10,17 @@
   maior número de elementos.
 */
 Solution GreedyKInter::run() {
+  int i = 0;
   Solution solution(input.quantityOfSubsets);
-  vector<Subset> subsets = input.subsets;
 
+  vector<Subset> subsets = input.subsets;
   std::sort(subsets.begin(), subsets.end(), input.sortByObjectiveFunc);
 
   Subset biggestSet = subsets[0];
   solution.addSubset(biggestSet.identifier);
   bitset<numberOfBits> partialSolution = biggestSet.bits;
 
-  int currentK = 1, i = 0;
+  int currentK = 1;
   while (currentK < input.k) {
     for (i = currentK; i < subsets.size(); i++) {
       subsets[i].bits = intersection(partialSolution, subsets[i].bits);

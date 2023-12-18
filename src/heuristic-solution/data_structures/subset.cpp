@@ -6,7 +6,6 @@ Subset::Subset(int identifier) {
 
 Subset::Subset(vector<int> array) {
   this->bits.reset();
-  this->qtd = array.size();
 
   for (const int number : array) {
     bits.set((size_t) number);
@@ -14,11 +13,11 @@ Subset::Subset(vector<int> array) {
 }
 
 int Subset::getNumberOfElements() {
-  return (this->identifier != -1) ? this->bits.count() : -1;
+  return (this->identifier != -1) ? this->qtd : -1;
 }
 
 bool sortByObjectiveFunc(const Subset &a, const Subset &b) {
-  return a.bits.count() > b.bits.count();
+  return a.qtd > b.qtd;
 }
 
 bool sortByOrderFunc(const Subset &a, const Subset &b) {

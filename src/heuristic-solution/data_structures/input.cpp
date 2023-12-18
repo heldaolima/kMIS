@@ -51,17 +51,17 @@ Input::Input(string path) {
     }
 
     for (j = 0; j < tam_L; j++) {
+      int qtd = 0;
       Subset subset = subsets[j];
       for (i = 0; i < tam_R; i++) {
         if (inElement[i] && A[j][i]) {
           subset.bits.set(i);
+          qtd++;
         }
       }
       subsets[j] = subset;
+      subsets[j].qtd = qtd;
     }
-
-    // this->sortByObjective();
-    // std::sort(subsets.begin(), subsets.end(), sortFunc);
 
     inFile.close();
   }
@@ -96,7 +96,7 @@ void Input::sortByObjective() {
 }
 
 bool Input::sortByObjectiveFunc(const Subset &a, const Subset &b) {
-  return a.bits.count() > b.bits.count();
+  return a.qtd > b.qtd;
 }
 
 bool Input::sortByOrderFunc(const Subset &a, const Subset &b) {

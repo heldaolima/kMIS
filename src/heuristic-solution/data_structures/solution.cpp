@@ -33,6 +33,7 @@ void Solution::addSubsetAndUpdateIntersection(Subset subset) {
   this->subsetsInSolution.push_back(subset.identifier);
   this->isSubsetInSolution[subset.identifier] = true;
   this->updateBits(subset.bits);
+  this->objective = bits.count();
 }
 
 void Solution::removeSubset(int subset) {
@@ -42,6 +43,7 @@ void Solution::removeSubset(int subset) {
       this->subsetsInSolution.erase(this->subsetsInSolution.begin() + i);
     }
   }
+  this->objective = bits.count();
 }
 
 void Solution::print() {
@@ -64,7 +66,7 @@ int Solution::getSubsetInSolution(int i) {
 }
 
 int Solution::getObjective() {
-  return this->bits.count();
+  return this->objective;
 }
 
 int Solution::symmetricDifference(Solution sol) {
@@ -88,6 +90,7 @@ void Solution::updateIntersection(vector<Subset> sets) {
     this->updateBits(sets[s].bits);
   }
 
+  this->objective = bits.count();
 }
 
 void Solution::updateBits(bitset<numberOfBits> bits) {

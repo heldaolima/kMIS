@@ -1,6 +1,7 @@
 #include "local_search.h"
 #include "../globals.h"
 #include "../dbg.h"
+#include <iostream>
 
 void localSearch(Input input, Solution &initialSolution) {
   Solution newSolution(input.quantityOfSubsets);

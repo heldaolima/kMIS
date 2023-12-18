@@ -6,6 +6,7 @@
 #include "heuristics/ils.h"
 #include "heuristics/greedy.h"
 #include "heuristics/grasp/grasp.h"
+#include "heuristics/local_search.h"
 #include "helpers/random_utils.h"
 #include "helpers/results_recorder.h"
 #include "dbg.h"
@@ -16,7 +17,7 @@ int main(int argc, char* argv[]) {
   seed();
 
   string path = "../instances/";
-  string dirs[1] = {"type1"};
+  string dirs[1] = {"test"};
   // string dirs[3] = {"type1", "type2", "type3"};
 
   GreedyKInterFactory* kInterFactory = new GreedyKInterFactory;
@@ -29,9 +30,13 @@ int main(int argc, char* argv[]) {
 
   for (const string dir: dirs) {
     for (const auto & file: fs::directory_iterator(path + dir)) {
-      greedyExperiments.testHeuristic(file);
-      ilsExperiments.testHeuristic(file);
-      graspExperiments.testHeuristic(file);
+      // Input input(file.path());
+      // Solution sol = GreedyKInter(input).run();
+      // localSearch(input, sol);
+
+      // greedyExperiments.testHeuristic(file);
+      // ilsExperiments.testHeuristic(file);
+      // graspExperiments.testHeuristic(file);
     }
   }
   

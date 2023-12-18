@@ -8,6 +8,8 @@
 using std::vector;
 
 class Solution {
+private:
+  unsigned int objective = 0;
 public:
   bitset<numberOfBits> bits;
   vector<bool> isSubsetInSolution;
