@@ -96,3 +96,8 @@ void Solution::updateIntersection(vector<Subset> sets) {
 void Solution::updateBits(bitset<numberOfBits> bits) {
   this->bits = intersection(this->bits, bits);
 }
+
+void Solution::setBits(bitset<numberOfBits> bits) {
+  this->bits = bits;
+  this->objective = bits.count();
+}

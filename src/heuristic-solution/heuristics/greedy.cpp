@@ -2,6 +2,7 @@
 #include "../dbg.h"
 #include "../globals.h"
 #include <algorithm>
+#include <iostream>
 
 /*
   A cada iteração, incluir um subconjunto ainda não incluso na solução
@@ -16,15 +17,21 @@ Solution GreedyKInter::run() {
   vector<Subset> subsets = input.subsets;
   std::sort(subsets.begin(), subsets.end(), input.sortByObjectiveFunc);
 
-  Subset biggestSet = subsets[0];
-  solution.addSubset(biggestSet.identifier);
-  bitset<numberOfBits> partialSolution = biggestSet.bits;
+  solution.addSubset(subsets[0].identifier);
+  solution.setBits(subsets[0].bits);
 
-  int currentK = 1;
+  greedyStep(1, subsets, solution);
+
+  return solution;
+}
+
+void GreedyKInter::greedyStep(int currentK, vector<Subset> subsets, Solution& solution) {
+  bitset<numberOfBits> partialSolution = solution.bits;
+
+  // std::sort(subsets.begin() + currentK, subsets.end(), input.sortByObjectiveFunc);
   while (currentK < input.k) {
-    for (i = currentK; i < subsets.size(); i++) {
-      subsets[i].bits = intersection(partialSolution, subsets[i].bits);
-      subsets[i].qtd = subsets[i].bits.count();
+    for (int i = currentK; i < subsets.size(); i++) { 
+      subsets[i].setBits(intersection(partialSolution, subsets[i].bits));
     }
 
     std::sort(subsets.begin() + currentK, subsets.end(), input.sortByObjectiveFunc);
@@ -36,6 +43,4 @@ Solution GreedyKInter::run() {
   }
 
   solution.bits = partialSolution;
-  return solution;
 }
-

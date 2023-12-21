@@ -23,3 +23,8 @@ bool sortByObjectiveFunc(const Subset &a, const Subset &b) {
 bool sortByOrderFunc(const Subset &a, const Subset &b) {
   return a.identifier < b.identifier;
 }
+
+void Subset::setBits(bitset<numberOfBits> bits) {
+  this->bits = bits;
+  this->qtd = bits.count();
+}

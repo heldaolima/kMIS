@@ -15,6 +15,7 @@ public:
   Subset(int);
   Subset(vector<int>);
   int getNumberOfElements();
+  void setBits(bitset<numberOfBits> bits);
 };
 
 bool sortFunc(const Subset &a, const Subset &b);

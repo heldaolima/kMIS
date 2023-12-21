@@ -3,6 +3,7 @@
 
 #include "../globals.h"
 #include "input.h"
+#include <bitset>
 #include <vector>
 
 using std::vector;
@@ -27,6 +28,7 @@ public:
   int symmetricDifference(Solution);
   void updateIntersection(vector<Subset>);
   void updateBits(bitset<numberOfBits>);
+  void setBits(bitset<numberOfBits>);
 };
 
 #endif
