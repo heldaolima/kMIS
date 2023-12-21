@@ -16,6 +16,7 @@ public:
   vector<bool> isSubsetInSolution;
   vector<int> subsetsInSolution;
 
+  Solution() {}
   Solution(int);
   void clean(int);
   void initializeIsSubsetInSolutionVec(int);
@@ -28,7 +29,10 @@ public:
   int symmetricDifference(Solution);
   void updateIntersection(vector<Subset>);
   void updateBits(bitset<numberOfBits>);
+  void updateBitsAndObjective(bitset<numberOfBits> bits);
+  void setBitsAndObjective(bitset<numberOfBits> bits);
   void setBits(bitset<numberOfBits>);
+  Solution copyWithoutSubset(Input* input, int subset);
 };
 
 #endif

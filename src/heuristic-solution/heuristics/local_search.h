@@ -5,6 +5,6 @@
 #include "../data_structures/solution.h"
 
 void localSearch(Input input, Solution &initialSolution);
-void greedyLocalSearch(Input input, Solution &solution);
+void greedyLocalSearchOne(Input input, Solution &solution);
 
 #endif

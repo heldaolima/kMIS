@@ -97,7 +97,26 @@ void Solution::updateBits(bitset<numberOfBits> bits) {
   this->bits = intersection(this->bits, bits);
 }
 
+void Solution::updateBitsAndObjective(bitset<numberOfBits> bits) {
+  this->updateBits(bits);
+  this->objective = this->bits.count();
+}
+
 void Solution::setBits(bitset<numberOfBits> bits) {
   this->bits = bits;
   this->objective = bits.count();
+}
+
+Solution Solution::copyWithoutSubset(Input* input, int subset) {
+  Solution solution(input->quantityOfSubsets);
+
+  for (const int remainsInSolution: this->subsetsInSolution) {
+    if (subset != remainsInSolution) {
+      solution.updateBits(input->subsets[remainsInSolution].bits);
+      solution.addSubset(remainsInSolution);
+    }
+  }
+
+  solution.objective = solution.bits.count();
+  return solution;
 }
