@@ -30,17 +30,9 @@ int main(int argc, char* argv[]) {
 
   for (const string dir: dirs) {
     for (const auto & file: fs::directory_iterator(path + dir)) {
-      Input input(file.path());
-      Solution sol = GreedyKInter(input).run();
-      sol.print();
-      // greedyLocalSearch(input, sol);
-      std::cout << "Local Search:\n";
-      localSearch(input, sol);
-      std::cout << "\nGreedy Local: \n";
-      greedyLocalSearchOne(input, sol);
 
       // greedyExperiments.testHeuristic(file);
-      // ilsExperiments.testHeuristic(file);
+      ilsExperiments.testHeuristic(file);
       // graspExperiments.testHeuristic(file);
     }
   }

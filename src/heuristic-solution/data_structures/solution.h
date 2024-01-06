@@ -33,6 +33,7 @@ public:
   void setBitsAndObjective(bitset<numberOfBits> bits);
   void setBits(bitset<numberOfBits>);
   Solution copyWithoutSubset(Input* input, int subset);
+  Solution copyWithoutSubsets(Input* input, int s1, int s2);
 };
 
 #endif

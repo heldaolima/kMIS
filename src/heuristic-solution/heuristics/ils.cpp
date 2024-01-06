@@ -77,7 +77,7 @@ Solution Ils::Perturbation(Solution solution, double alpha) {
 }
 
 void Ils::LocalSearch(Solution& solution) {
-  localSearch(input, solution);
+  greedyLocalSearchTwo(input, solution);
 }
 
 Solution Ils::PathRelinking(Solution origin, Solution destiny) {

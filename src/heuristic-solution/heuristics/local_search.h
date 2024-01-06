@@ -6,5 +6,6 @@
 
 void localSearch(Input input, Solution &initialSolution);
 void greedyLocalSearchOne(Input input, Solution &solution);
+void greedyLocalSearchTwo(Input input, Solution &solution);
 
 #endif

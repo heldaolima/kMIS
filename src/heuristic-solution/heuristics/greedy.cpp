@@ -30,7 +30,6 @@ void GreedyKInter::greedyStep(int currentK, vector<Subset> subsets, Solution& so
 
   // std::sort(subsets.begin() + currentK, subsets.end(), input.sortByObjectiveFunc);
   while (currentK < input.k) {
-    debug("currentK: %d", currentK);
     for (int i = currentK; i < subsets.size(); i++) { 
       subsets[i].setBits(intersection(partialSolution, subsets[i].bits));
       // debug("subset %d got: %d | already in solution: %d", 

@@ -21,7 +21,7 @@ public:
 
 class IlsFactory : public HeuristicFactory {
 public:
-  Heuristic * create(Input input) override {
+  Heuristic* create(Input input) override {
     return new Ils(input);
   }
 };
