@@ -80,7 +80,7 @@ void greedyLocalSearchOne(Input input, Solution &solution) {
   }
 }
 
-// swap(2,2)
+// greedy swap(2,2)
 void greedyLocalSearchTwo(Input input, Solution &solution) {
   Solution partialSolution;
 

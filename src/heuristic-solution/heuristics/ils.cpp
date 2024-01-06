@@ -1,4 +1,5 @@
 #include "ils.h"
+#include "vnd.h"
 #include "greedy.h"
 #include "local_search.h"
 #include "perturb.h"
@@ -61,6 +62,7 @@ Solution Ils::run() {
     iteration++;
   }
 
+  bestSolution.print();
   return bestSolution;
 }
 
@@ -77,7 +79,7 @@ Solution Ils::Perturbation(Solution solution, double alpha) {
 }
 
 void Ils::LocalSearch(Solution& solution) {
-  greedyLocalSearchTwo(input, solution);
+  vnd(input, solution);
 }
 
 Solution Ils::PathRelinking(Solution origin, Solution destiny) {
