@@ -112,24 +112,10 @@ void Solution::setBitsAndObjective(bitset<numberOfBits> bits) {
   this->objective = bits.count();
 }
 
-Solution Solution::copyWithoutSubset(Input* input, int subset) {
-  Solution solution(input->quantityOfSubsets);
-
-  for (const int remainsInSolution: this->subsetsInSolution) {
-    if (subset != remainsInSolution) {
-      solution.updateBits(input->subsets[remainsInSolution].bits);
-      solution.addSubset(remainsInSolution);
-    }
-  }
-
-  solution.objective = solution.bits.count();
-  return solution;
-}
-
-Solution Solution::copyWithoutSubsets(Input* input, int s1, int s2) {
+Solution Solution::copyWithoutSubsets(Input* input, RemoveSubsets remove) {
   Solution solution(input->quantityOfSubsets);
   for (const int subset: this->subsetsInSolution) {
-    if (subset != s1 && subset != s2) {
+    if (remove.isDifferent(subset)) {
       solution.updateBits(input->subsets[subset].bits);
       solution.addSubset(subset);
     }

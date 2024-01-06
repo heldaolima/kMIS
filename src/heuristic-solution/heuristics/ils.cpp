@@ -39,19 +39,19 @@ Solution Ils::run() {
     LocalSearch(perturbedSolution);
 
 
-    if (eliteSolutions.size() >= 1) {
-      chosenEliteSolution = randint(eliteSolutions.size());
-      perturbedSolution = PathRelinking(perturbedSolution, eliteSolutions[chosenEliteSolution]);
-    }
+    // if (eliteSolutions.size() >= 1) {
+    //   chosenEliteSolution = randint(eliteSolutions.size());
+    //   perturbedSolution = PathRelinking(perturbedSolution, eliteSolutions[chosenEliteSolution]);
+    // }
 
     if (perturbedSolution.getObjective() > bestSolution.getObjective()) {
       bestSolution = perturbedSolution;
     }
 
-    if (eliteSolutions.size() < MAX_ELITE) 
-      eliteSolutions.push_back(bestSolution);
-    else 
-      updateEliteSolutions(eliteSolutions, bestSolution);
+    // if (eliteSolutions.size() < MAX_ELITE) 
+    //   eliteSolutions.push_back(bestSolution);
+    // else 
+    //   updateEliteSolutions(eliteSolutions, bestSolution);
 
     auxArrays.computeIdxAlpha(idxAlpha, perturbedSolution.getObjective());
 

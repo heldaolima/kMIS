@@ -1,6 +1,7 @@
 #ifndef __local_search_h__
 #define __local_search_h__
 
+#include "../heuristic.h"
 #include "../data_structures/input.h"
 #include "../data_structures/solution.h"
 

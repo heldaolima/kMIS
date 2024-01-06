@@ -5,7 +5,20 @@
 #include <vector>
 #include "../globals.h"
 
+#define NOT_DEFINED -1
+
 using std::bitset, std::vector;
+
+typedef struct RemoveSubsets {
+  int s1 = 0;
+  int s2 = NOT_DEFINED;
+
+  bool isDifferent(int identifier) {
+    if (s2 == NOT_DEFINED) 
+      return identifier != s1;
+    return identifier != s1 && identifier != s2;
+  }
+} RemoveSubsets;
 
 class Subset {
 public:
