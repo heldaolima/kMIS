@@ -22,7 +22,7 @@ public:
   void initializeIsSubsetInSolutionVec(int);
   void addSubsetAndUpdateIntersection(Subset);
   void addSubset(int);
-  void removeSubset(int);
+  void removeSubset(int, int);
   void print();
   int getSubsetInSolution(int);
   int getObjective();

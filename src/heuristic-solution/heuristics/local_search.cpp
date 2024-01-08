@@ -55,8 +55,6 @@ void greedyStep(int currentK, Input* input, Solution* partialSolution, RemoveSub
 
     for (int i = idx; i < subsets.size(); i++) { 
       subsets[i].setBits(intersection(partialBits, subsets[i].bits));
-      // debug("subset %d got: %d | already in solution: %d", 
-      //       subsets[i].identifier, subsets[i].qtd, partialSolution.isSubsetInSolution[subsets[i].identifier] ? 1 : 0);
     }
 
     std::sort(subsets.begin() + idx, subsets.end(), input->sortByObjectiveFunc);
@@ -90,7 +88,6 @@ void greedyLocalSearchTwo(Input input, Solution &solution) {
 
     partialSolution = solution.copyWithoutSubsets(&input, { s1, s2 });
     greedyStep(input.k - 2, &input, &partialSolution, { s1, s2 });
-    partialSolution.print();
 
     if (partialSolution.getObjective() > solution.getObjective()) {
       solution = partialSolution;

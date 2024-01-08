@@ -5,7 +5,6 @@
 #include "../data_structures/input.h"
 #include "../helpers/random_utils.h"
 
-Solution perturb(Solution solution, Input input);
-Solution perturbReactive(Solution solution, Input input, double alpha);
+Solution perturbReactive(Solution solution, Input* input, double alpha);
 
 #endif

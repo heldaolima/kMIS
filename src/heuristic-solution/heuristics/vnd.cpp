@@ -3,8 +3,9 @@
 
 void vnd(Input input, Solution &solution) {
   int it = 1;
+  Solution copy;
   while (it <= 2) {
-    Solution copy = solution;
+    copy = solution;
 
     if (it == 1)
       greedyLocalSearchOne(input, copy);
@@ -18,5 +19,4 @@ void vnd(Input input, Solution &solution) {
       it = 1;
     }
   }
-
 }

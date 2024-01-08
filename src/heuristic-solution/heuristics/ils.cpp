@@ -9,6 +9,7 @@
 #include "grasp/construction.h"
 #include "grasp/construction_arrays.h"
 #include "grasp/costs.h"
+#include <iostream>
 
 #define MAX_ITERATIONS 500
 #define MAX_ELITE 10
@@ -17,7 +18,6 @@ void updateEliteSolutions(vector<Solution>&, Solution);
 int getWorstSolutionIdx(vector<Solution>);
 
 Solution Ils::run() {
-  vector<Solution> eliteSolutions;
   int chosenEliteSolution = 0;
 
   constructionArrays auxArrays;
@@ -27,11 +27,10 @@ Solution Ils::run() {
   // Solution bestSolution = Construction(alpha);
   Solution bestSolution = Construction();
   LocalSearch(bestSolution);
-
-  eliteSolutions.push_back(bestSolution);
+  std::cout << "first solution: \n";
+  bestSolution.print();
 
   int iteration = 0;
-
   while (iteration < MAX_ITERATIONS) {
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
@@ -39,13 +38,13 @@ Solution Ils::run() {
     Solution perturbedSolution = Perturbation(bestSolution, alpha);
     LocalSearch(perturbedSolution);
 
-
     // if (eliteSolutions.size() >= 1) {
     //   chosenEliteSolution = randint(eliteSolutions.size());
     //   perturbedSolution = PathRelinking(perturbedSolution, eliteSolutions[chosenEliteSolution]);
     // }
 
     if (perturbedSolution.getObjective() > bestSolution.getObjective()) {
+      // perturbedSolution.print();
       bestSolution = perturbedSolution;
     }
 
@@ -75,7 +74,7 @@ Solution Ils::Construction() {
 }
 
 Solution Ils::Perturbation(Solution solution, double alpha) {
-  return perturbReactive(solution, input, alpha);
+  return perturbReactive(solution, &input, alpha);
 }
 
 void Ils::LocalSearch(Solution& solution) {

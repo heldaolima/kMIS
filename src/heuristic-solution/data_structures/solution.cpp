@@ -36,18 +36,13 @@ void Solution::addSubsetAndUpdateIntersection(Subset subset) {
   this->objective = bits.count();
 }
 
-void Solution::removeSubset(int subset) {
-  this->isSubsetInSolution[subset] = false;
-  for (int i = 0; i < this->subsetsInSolution.size(); i++) {
-    if (this->subsetsInSolution[i] == subset) {
-      this->subsetsInSolution.erase(this->subsetsInSolution.begin() + i);
-    }
-  }
-  this->objective = bits.count();
+void Solution::removeSubset(int idx, int subset) {
+  isSubsetInSolution[subset] = false;
+  subsetsInSolution.erase(subsetsInSolution.begin() + idx);
 }
 
 void Solution::print() {
-  cout << "Subsets in solution: ";
+  cout << "Objective: " << getObjective() << " | Subsets in solution: ";
   for (const int el : this->subsetsInSolution) {
     cout << el << " ";
   }
@@ -83,8 +78,6 @@ int Solution::symmetricDifference(Solution sol) {
 
 void Solution::updateIntersection(vector<Subset> sets) {
   this->bits.set();
-
-  std::sort(sets.begin(), sets.end(), Input::sortByOrderFunc);
 
   for (const int s: this->subsetsInSolution) {
     this->updateBits(sets[s].bits);
