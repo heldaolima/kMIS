@@ -6,8 +6,6 @@
 #include "../../helpers/random_utils.h"
 #include "construction.h"
 
-#define GRASP_MAX_ITERATIONS 200
-
 class Grasp_PathRelinking : public Heuristic {
 private:
   Input input;

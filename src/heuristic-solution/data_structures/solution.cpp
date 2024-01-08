@@ -117,3 +117,10 @@ Solution Solution::copyWithoutSubsets(Input* input, RemoveSubsets remove) {
   solution.objective = solution.bits.count();
   return solution;
 }
+
+void Solution::setIterationFoud(int it) { 
+  this->iterationFound = it;
+}
+unsigned int Solution::getIterationFound() {
+  return iterationFound;
+}

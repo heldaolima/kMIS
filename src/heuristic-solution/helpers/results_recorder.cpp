@@ -1,7 +1,7 @@
 #include "results_recorder.h"
 #include <fstream>
 
-const string header = "input,k,avg_time,avg_objective,worst,best\n";
+const string header = "input,k,avg_time,avg_objective,avg_it_best,worst,best\n";
 
 Experiments::Experiments(string outPath, HeuristicFactory* factory) {
   this->outPath = outPath;
@@ -26,13 +26,14 @@ void Experiments::testHeuristic(fs::directory_entry inputFile) {
     t2 = clock();
 
     times.set(t1, t2);
-    objs.set(solution.getObjective(), i);
+    objs.set(solution.getObjective(), solution.getIterationFound(), i);
   }
 
   delete heuristic;
 
   times.average /= NUMBER_OF_TESTS;
   objs.average /= NUMBER_OF_TESTS;
+  objs.averageFound /= NUMBER_OF_TESTS;
 
   writeResults(inputFile.path().filename(), objs, times, input.k);
 }
@@ -43,6 +44,7 @@ void Experiments::writeResults(const string inputFileName, Objectives objs, Time
   outFile << inputFileName << ",";
   outFile << k << ",";
   outFile << times.average << "," << objs.average << ",";
+  outFile << objs.averageFound << ",";
   outFile << objs.worst << "," << objs.best << "\n";
 
   outFile.close();

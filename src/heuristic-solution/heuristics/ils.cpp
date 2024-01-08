@@ -11,7 +11,6 @@
 #include "grasp/costs.h"
 #include <iostream>
 
-#define MAX_ITERATIONS 500
 #define MAX_ELITE 10
 
 void updateEliteSolutions(vector<Solution>&, Solution);
@@ -27,8 +26,6 @@ Solution Ils::run() {
   // Solution bestSolution = Construction(alpha);
   Solution bestSolution = Construction();
   LocalSearch(bestSolution);
-  std::cout << "first solution: \n";
-  bestSolution.print();
 
   int iteration = 0;
   while (iteration < MAX_ITERATIONS) {
@@ -46,6 +43,7 @@ Solution Ils::run() {
     if (perturbedSolution.getObjective() > bestSolution.getObjective()) {
       // perturbedSolution.print();
       bestSolution = perturbedSolution;
+      bestSolution.setIterationFoud(iteration);
     }
 
     // if (eliteSolutions.size() < MAX_ELITE) 
@@ -61,7 +59,6 @@ Solution Ils::run() {
     iteration++;
   }
 
-  bestSolution.print();
   return bestSolution;
 }
 

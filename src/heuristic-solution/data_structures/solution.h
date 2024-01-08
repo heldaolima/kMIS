@@ -11,6 +11,7 @@ using std::vector;
 class Solution {
 private:
   unsigned int objective = 0;
+  unsigned int iterationFound = 0;
 public:
   bitset<numberOfBits> bits;
   vector<bool> isSubsetInSolution;
@@ -33,6 +34,8 @@ public:
   void setBitsAndObjective(bitset<numberOfBits> bits);
   void setBits(bitset<numberOfBits>);
   Solution copyWithoutSubsets(Input* input, RemoveSubsets remove);
+  void setIterationFoud(int it);
+  unsigned int getIterationFound();
 };
 
 #endif

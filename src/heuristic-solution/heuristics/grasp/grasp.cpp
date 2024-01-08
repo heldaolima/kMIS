@@ -15,7 +15,6 @@
 void updateEliteSolutions(vector<Solution>&, Solution);
 
 Solution Grasp_PathRelinking::run() {
-
   constructionArrays arrays;
 
   int i = 0, idxAlpha = 0;
@@ -26,7 +25,7 @@ Solution Grasp_PathRelinking::run() {
 
   Solution bestSolution(input.quantityOfSubsets);
 
-  for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
+  for (i = 0; i < MAX_ITERATIONS; i++) {
     idxAlpha = arrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
@@ -56,7 +55,6 @@ Solution Grasp_PathRelinking::run() {
 }
 
 Solution Grasp_Reactive::run() {
-
   constructionArrays arrays;
 
   int bestFound = 0;
@@ -71,7 +69,7 @@ Solution Grasp_Reactive::run() {
   vector<Solution> eliteSolutions;
   int chosenEliteSolution = 0;
 
-  for (i = 0; i < GRASP_MAX_ITERATIONS; i++) {
+  for (i = 0; i < MAX_ITERATIONS; i++) {
     idxAlpha = arrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
@@ -92,6 +90,7 @@ Solution Grasp_Reactive::run() {
 
     if (i == 0 || currentSolution.getObjective() > bestSolution.getObjective()) {
       bestSolution = currentSolution;
+      bestSolution.setIterationFoud(i);
     }
 
     arrays.numberOfTimesAnXValueWasChosen[idxAlpha]++;

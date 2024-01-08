@@ -4,6 +4,8 @@
 #include "data_structures/input.h"
 #include "data_structures/solution.h"
 
+#define MAX_ITERATIONS 300
+
 class Heuristic {
 public:
     virtual ~Heuristic() {}
