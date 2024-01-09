@@ -25,7 +25,10 @@ Solution perturbReactive(Solution solution, Input* input, double alpha) {
   
   int i = solution.subsetsInSolution.size();
   while (i < input->k) {
+    double dummy = getInferiorLimit(alpha, costs.c_min, costs.c_max);
     int inferiorLimit = getInferiorLimit(alpha, costs.c_min, costs.c_max);
+    // debug("double inferior limt: %lf", dummy);
+    // debug("inferior limit: %d", inferiorLimit);
     int tam_lrc = lrc.set(solution, costs.incremental_cost, inferiorLimit); 
 
     int random_index = randint(tam_lrc);

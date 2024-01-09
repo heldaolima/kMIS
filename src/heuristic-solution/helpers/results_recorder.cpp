@@ -18,26 +18,29 @@ void Experiments::testHeuristic(fs::directory_entry inputFile) {
   Times times;
   clock_t t1, t2;
 
-  Input* input = new Input(inputFile.path());
-  Heuristic* heuristic = factory->create(input);
+  bool solvable = true;
+  Input* input = new Input(inputFile.path(), &solvable);
+  if (solvable) {
+    Heuristic* heuristic = factory->create(input);
 
-  for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-    t1 = clock();
+    for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+      t1 = clock();
       Solution solution = heuristic->run();
-    t2 = clock();
+      t2 = clock();
 
-    times.set(t1, t2);
-    objs.set(solution.getObjective(), solution.getIterationFound(), i);
+      times.set(t1, t2);
+      objs.set(solution.getObjective(), solution.getIterationFound(), i);
+    }
+
+    times.average /= NUMBER_OF_TESTS;
+    objs.average /= NUMBER_OF_TESTS;
+    objs.averageFound /= NUMBER_OF_TESTS;
+
+    writeResults(inputFile.path().filename(), objs, times, input->k);
+
+    delete heuristic;
+    delete input;
   }
-
-  delete input;
-  delete heuristic;
-
-  times.average /= NUMBER_OF_TESTS;
-  objs.average /= NUMBER_OF_TESTS;
-  objs.averageFound /= NUMBER_OF_TESTS;
-
-  writeResults(inputFile.path().filename(), objs, times, input->k);
 }
 
 void Experiments::writeResults(const string inputFileName, Objectives objs, Times times, int k) {

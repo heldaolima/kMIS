@@ -8,7 +8,7 @@
 
 using std::fstream, std::vector;
 
-Input::Input(string path) {
+Input::Input(string path, bool* solvable) {
   int num_instances, set, value;
   fstream inFile(path);
   if (inFile.is_open()) {
@@ -26,7 +26,6 @@ Input::Input(string path) {
 
     // pre-processing
     vector<vector<bool>> A(tam_L, vector<bool>(tam_R, false));
-
     for (j = 0; j < num_instances; j++) {
       inFile >> set >> value;
       A[set - 1][value - 1] = true;
@@ -60,6 +59,7 @@ Input::Input(string path) {
     }
 
     inFile.close();
+    *solvable = hasSolution != 0;
   }
   else {
     std::cout << "ERROR: Could not read file\n";

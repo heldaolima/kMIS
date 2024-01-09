@@ -14,7 +14,7 @@ class Input
     int k;
     vector<Subset> subsets;
 
-    Input(string);
+    Input(string path, bool* solvable);
     void print();
     void sortByOrder();
     void sortByObjective();

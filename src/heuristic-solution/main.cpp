@@ -34,11 +34,11 @@ int main(int argc, char* argv[]) {
         std::cout << file.path() << "\n";
         ilsExperiments.testHeuristic(file);
         graspExperiments.testHeuristic(file);
+        // greedyExperiments.testHeuristic(file);
       }
-      // greedyExperiments.testHeuristic(file);
     }
   }
-  
+
   delete kInterFactory;
   delete ilsFactory;
   delete graspFactory;

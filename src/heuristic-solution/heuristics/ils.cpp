@@ -25,15 +25,20 @@ Solution Ils::run() {
 
   // Solution bestSolution = Construction(alpha);
   Solution bestSolution = Construction();
+  // debug("created best solution");
   LocalSearch(bestSolution);
+  // debug("searched on best solution");
 
   int iteration = 0;
   while (iteration < MAX_ITERATIONS) {
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
+    // debug("alpha: %lf", alpha);
     Solution perturbedSolution = Perturbation(bestSolution, alpha);
+    // debug("created perturbed solution");
     LocalSearch(perturbedSolution);
+    // debug("search perturbed solution");
 
     // if (eliteSolutions.size() >= 1) {
     //   chosenEliteSolution = randint(eliteSolutions.size());
@@ -41,7 +46,6 @@ Solution Ils::run() {
     // }
 
     if (perturbedSolution.getObjective() > bestSolution.getObjective()) {
-      // perturbedSolution.print();
       bestSolution = perturbedSolution;
       bestSolution.setIterationFoud(iteration);
     }
@@ -52,6 +56,7 @@ Solution Ils::run() {
     //   updateEliteSolutions(eliteSolutions, bestSolution);
 
     auxArrays.computeIdxAlpha(idxAlpha, perturbedSolution.getObjective());
+    // debug("computedIdx");
 
     if (iteration % TAM_X == 0)
       auxArrays.updateProbabilities(bestSolution.getObjective());
