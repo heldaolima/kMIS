@@ -1,16 +1,17 @@
 #include "input.h"
 #include "../globals.h"
+#include "../dbg.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <vector>
 
-using std::fstream;
+using std::fstream, std::vector;
 
 Input::Input(string path) {
   int num_instances, set, value;
   fstream inFile(path);
-  if (inFile.is_open())
-  {
+  if (inFile.is_open()) {
     int i = 0, j = 0;
     inFile >> this->quantityOfSubsets >>
         this->quantityOfElements >>
@@ -24,22 +25,19 @@ Input::Input(string path) {
       this->subsets.push_back(Subset(i));
 
     // pre-processing
-    bool A[tam_L][tam_R];
-    for (i = 0; i < tam_L; i++)
-      for (j = 0; j < tam_R; j++)
-        A[i][j] = false;
+    vector<vector<bool>> A(tam_L, vector<bool>(tam_R, false));
 
     for (j = 0; j < num_instances; j++) {
       inFile >> set >> value;
       A[set - 1][value - 1] = true;
     }
 
-    int hasSolution = 0;
-    bool inElement[tam_R];
+    int hasSolution = 0, neighborhood = 0;
+    vector<bool> inElement(tam_R);
     for (i = 0; i < tam_R; i++) {
-      int neighborhood = 0;
+      neighborhood = 0;
       for (j = 0; j < tam_L; j++) {
-        if (A[i][j])
+        if (A[j][i])
           neighborhood++;
       }
       if (neighborhood < k) {
@@ -52,14 +50,12 @@ Input::Input(string path) {
 
     for (j = 0; j < tam_L; j++) {
       int qtd = 0;
-      Subset subset = subsets[j];
       for (i = 0; i < tam_R; i++) {
         if (inElement[i] && A[j][i]) {
-          subset.bits.set(i);
+          subsets[j].bits.set(i);
           qtd++;
         }
       }
-      subsets[j] = subset;
       subsets[j].qtd = qtd;
     }
 

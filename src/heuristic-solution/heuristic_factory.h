@@ -6,7 +6,7 @@
 
 class HeuristicFactory {
 public:
-    virtual Heuristic* create(Input input) = 0;
+    virtual Heuristic* create(Input* input) = 0;
 };
 
 #endif

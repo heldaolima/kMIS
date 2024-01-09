@@ -71,7 +71,7 @@ Solution Ils::Construction() {
 }
 
 Solution Ils::Perturbation(Solution solution, double alpha) {
-  return perturbReactive(solution, &input, alpha);
+  return perturbReactive(solution, input, alpha);
 }
 
 void Ils::LocalSearch(Solution& solution) {

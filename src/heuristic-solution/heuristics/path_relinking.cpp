@@ -5,14 +5,14 @@
 
 #define DEBUG
 
-using std::vector, std::cout;
+using std::vector; 
 
 #define printVec(V) for(auto n: V) std::cout << n << " ";
 
-Solution pathRelinking(Input input, Solution origin, Solution destiny) {
+Solution pathRelinking(Input* input, Solution origin, Solution destiny) {
   int bestObjective = 0;
 
-  Solution bestSolution(input.quantityOfSubsets);
+  Solution bestSolution(input->quantityOfSubsets);
 
   if (origin.getObjective() > destiny.getObjective()) {
     bestSolution = origin;
@@ -49,7 +49,7 @@ Solution pathRelinking(Input input, Solution origin, Solution destiny) {
         onlyInOrigin.push_back(q);
       }
       else {
-        intersectionOriginDestiny = intersection(intersectionOriginDestiny, input.subsets[q].bits);
+        intersectionOriginDestiny = intersection(intersectionOriginDestiny, input->subsets[q].bits);
       }
     }
 
@@ -63,14 +63,14 @@ Solution pathRelinking(Input input, Solution origin, Solution destiny) {
       for (const int inOnlyInOrigin : onlyInOrigin) {
         if (inOnlyInOrigin != outOnlyInOrigin) {
           intersectionWithoutTheOneLeftOut = intersection(
-            intersectionWithoutTheOneLeftOut, input.subsets[inOnlyInOrigin].bits
+            intersectionWithoutTheOneLeftOut, input->subsets[inOnlyInOrigin].bits
           );
         }
       }
 
       // cost of movements foreach element only in destiny
       for (const int inDestiny : onlyInDestiny) {
-        bitset<numberOfBits> movement = intersection(intersectionWithoutTheOneLeftOut, input.subsets[inDestiny].bits);
+        bitset<numberOfBits> movement = intersection(intersectionWithoutTheOneLeftOut, input->subsets[inDestiny].bits);
         
         int currBest = movement.count();
         

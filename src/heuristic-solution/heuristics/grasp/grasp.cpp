@@ -23,7 +23,7 @@ Solution Grasp_PathRelinking::run() {
   vector<Solution> eliteSolutions;
   int chosenEliteSolution = 0;
 
-  Solution bestSolution(input.quantityOfSubsets);
+  Solution bestSolution(input->quantityOfSubsets);
 
   for (i = 0; i < MAX_ITERATIONS; i++) {
     idxAlpha = arrays.getIdxAlpha();
@@ -64,7 +64,7 @@ Solution Grasp_Reactive::run() {
   int idxAlpha = 0;
   double alpha = 0.0;
 
-  Solution bestSolution(input.quantityOfSubsets);
+  Solution bestSolution(input->quantityOfSubsets);
 
   vector<Solution> eliteSolutions;
   int chosenEliteSolution = 0;

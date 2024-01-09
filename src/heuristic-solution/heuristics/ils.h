@@ -6,7 +6,7 @@
 
 class Ils : public Heuristic {
 private:
-  Input input;
+  Input* input;
   Solution Construction(double);
   Solution Construction();
   Solution Perturbation(Solution, double);
@@ -15,13 +15,13 @@ private:
   void updateEliteSolutions(vector<Solution>&, Solution);
   int getWorstSolutionIdx(vector<Solution>);
 public:
-  Ils(Input& input) : input(input) {};
+  Ils(Input* input) : input(input) {};
   virtual Solution run() override;
 };
 
 class IlsFactory : public HeuristicFactory {
 public:
-  Heuristic* create(Input input) override {
+  Heuristic* create(Input* input) override {
     return new Ils(input);
   }
 };

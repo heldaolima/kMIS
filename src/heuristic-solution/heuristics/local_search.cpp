@@ -5,13 +5,13 @@
 #include <algorithm>
 
 // simple swap(1, 1)
-void localSearch(Input input, Solution &initialSolution) {
+void localSearch(Input* input, Solution &initialSolution) {
   Solution partialSolution;
 
   for (const int removeFromSolution: initialSolution.subsetsInSolution) {
-    partialSolution = initialSolution.copyWithoutSubsets(&input, { removeFromSolution }); // O(n)
+    partialSolution = initialSolution.copyWithoutSubsets(input, { removeFromSolution }); // O(n)
 
-    for (const Subset fromOutsideTheSolution: input.subsets) {
+    for (const Subset fromOutsideTheSolution: input->subsets) {
       Solution complete = partialSolution;
       if (fromOutsideTheSolution.identifier != removeFromSolution &&
         !partialSolution.isSubsetInSolution[fromOutsideTheSolution.identifier]) {
@@ -64,12 +64,12 @@ void greedyStep(int currentK, Input* input, Solution* partialSolution, RemoveSub
 }
 
 // greedy swap(1, 1)
-void greedyLocalSearchOne(Input input, Solution &solution) {
+void greedyLocalSearchOne(Input* input, Solution &solution) {
   Solution partialSolution; 
 
   for (const int removeFromSolution : solution.subsetsInSolution) {
-    partialSolution = solution.copyWithoutSubsets(&input, { removeFromSolution });
-    greedyStep(input.k - 1, &input, &partialSolution, { removeFromSolution });
+    partialSolution = solution.copyWithoutSubsets(input, { removeFromSolution });
+    greedyStep(input->k - 1, input, &partialSolution, { removeFromSolution });
     
     if (partialSolution.getObjective() > solution.getObjective()) {
       solution = partialSolution;
@@ -79,15 +79,15 @@ void greedyLocalSearchOne(Input input, Solution &solution) {
 }
 
 // greedy swap(2,2)
-void greedyLocalSearchTwo(Input input, Solution &solution) {
+void greedyLocalSearchTwo(Input* input, Solution &solution) {
   Solution partialSolution;
 
-  for (int i = 0; i < input.k - 1; i++) {
+  for (int i = 0; i < input->k - 1; i++) {
     int s1 = solution.subsetsInSolution[i];
     int s2 = solution.subsetsInSolution[i+1];
 
-    partialSolution = solution.copyWithoutSubsets(&input, { s1, s2 });
-    greedyStep(input.k - 2, &input, &partialSolution, { s1, s2 });
+    partialSolution = solution.copyWithoutSubsets(input, { s1, s2 });
+    greedyStep(input->k - 2, input, &partialSolution, { s1, s2 });
 
     if (partialSolution.getObjective() > solution.getObjective()) {
       solution = partialSolution;

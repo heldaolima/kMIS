@@ -4,6 +4,6 @@
 #include "../data_structures/input.h"
 #include "../data_structures/solution.h"
 
-void vnd(Input input, Solution& solution);
+void vnd(Input* input, Solution& solution);
 
 #endif

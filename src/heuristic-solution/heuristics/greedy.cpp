@@ -12,10 +12,10 @@
 */
 Solution GreedyKInter::run() {
   int i = 0;
-  Solution solution(input.quantityOfSubsets);
+  Solution solution(input->quantityOfSubsets);
 
-  vector<Subset> subsets = input.subsets;
-  std::sort(subsets.begin(), subsets.end(), input.sortByObjectiveFunc);
+  vector<Subset> subsets = input->subsets;
+  std::sort(subsets.begin(), subsets.end(), input->sortByObjectiveFunc);
 
   solution.addSubset(subsets[0].identifier);
   solution.setBits(subsets[0].bits);
@@ -29,7 +29,7 @@ void GreedyKInter::greedyStep(int currentK, vector<Subset> subsets, Solution& so
   bitset<numberOfBits> partialSolution = solution.bits;
 
   // std::sort(subsets.begin() + currentK, subsets.end(), input.sortByObjectiveFunc);
-  while (currentK < input.k) {
+  while (currentK < input->k) {
     for (int i = currentK; i < subsets.size(); i++) { 
       subsets[i].setBits(intersection(partialSolution, subsets[i].bits));
       // debug("subset %d got: %d | already in solution: %d", 
@@ -37,7 +37,7 @@ void GreedyKInter::greedyStep(int currentK, vector<Subset> subsets, Solution& so
     }
 
 
-    std::sort(subsets.begin() + currentK, subsets.end(), input.sortByObjectiveFunc);
+    std::sort(subsets.begin() + currentK, subsets.end(), input->sortByObjectiveFunc);
 
     partialSolution = subsets[currentK].bits;
     solution.addSubset(subsets[currentK].identifier);

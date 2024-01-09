@@ -1,7 +1,7 @@
 #include "vnd.h"
 #include "local_search.h"
 
-void vnd(Input input, Solution &solution) {
+void vnd(Input* input, Solution &solution) {
   int it = 1;
   Solution copy;
   while (it <= 2) {
