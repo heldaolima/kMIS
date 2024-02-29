@@ -9,7 +9,7 @@ private:
   Input* input;
   Solution Construction(double);
   Solution Construction();
-  Solution Perturbation(Solution, double);
+  Solution Perturbation(Solution*, double);
   void LocalSearch(Solution&);
   Solution PathRelinking(Solution, Solution);
   void updateEliteSolutions(vector<Solution>&, Solution);

@@ -12,7 +12,6 @@ private:
   Input* input;
 public:
   GreedyKInter(Input* input) : input(input) {}
-  void greedyStep(int currentK, vector<Subset> subsets, Solution& solution);
   virtual Solution run() override;
 };
 

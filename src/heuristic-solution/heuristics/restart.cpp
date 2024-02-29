@@ -1,31 +1,38 @@
-#include "greedy.h"
+#include "restart.h"
+#include "../helpers/random_utils.h"
 #include "../dbg.h"
-#include "../globals.h"
 #include <algorithm>
 
-/*
-  A cada iteração, incluir um subconjunto ainda não incluso na solução
-  tal que a interseção de seus elementos com os da solução parcial
-  seja máxima. Para tanto, inicia-se com o subconjunto que contenha o 
-  maior número de elementos.
-*/
-Solution GreedyKInter::run() {
+void RestartSolution::setSubsetAsUsed(int subset) {
+  wasUsedToStartSolution[subset] = true;
+}
+
+Solution RestartSolution::run() {
   int i = 0;
   Solution solution(input->quantityOfSubsets);
-
   vector<Subset> subsets = input->subsets;
-  std::sort(subsets.begin(), subsets.end(), input->sortByObjectiveFunc);
 
-  solution.addSubset(subsets[0].identifier);
-  solution.setBits(subsets[0].bits);
+  unsigned int start = randint(input->quantityOfSubsets);
+  while (wasUsedToStartSolution[start]) {
+    start = randint(input->quantityOfSubsets);
+  }
+
+  // debug("will start with %d, id:%d", start, subsets[start].identifier);
+  
+  setSubsetAsUsed(start);
+
+  solution.addSubsetAndUpdateIntersection(subsets[start]);
   bitset<numberOfBits> partialSolution = solution.bits;
+
+  subsets[start].qtd = input->quantityOfElements + 1; // gambs
+  std::sort(subsets.begin(), subsets.end(), input->sortByObjectiveFunc);
 
   int currentK = 1;
   while (currentK < input->k) {
     for (i = currentK; i < input->quantityOfSubsets; i++) {
       subsets[i].setBits(intersection(partialSolution, subsets[i].bits));
     }
-  
+
     std::sort(subsets.begin() + currentK, subsets.end(), input->sortByObjectiveFunc);
 
     partialSolution = subsets[currentK].bits;

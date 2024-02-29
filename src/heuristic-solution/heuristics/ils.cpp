@@ -1,24 +1,18 @@
 #include "ils.h"
 #include "vnd.h"
 #include "greedy.h"
-#include "local_search.h"
 #include "perturb.h"
 #include "path_relinking.h"
-#include "../helpers/random_utils.h"
 #include "../dbg.h"
 #include "grasp/construction.h"
 #include "grasp/construction_arrays.h"
 #include "grasp/costs.h"
 #include <iostream>
 
-#define MAX_ELITE 10
-
 void updateEliteSolutions(vector<Solution>&, Solution);
 int getWorstSolutionIdx(vector<Solution>);
 
 Solution Ils::run() {
-  int chosenEliteSolution = 0;
-
   constructionArrays auxArrays;
   int idxAlpha = auxArrays.getIdxAlpha();
   double alpha = X[idxAlpha];
@@ -27,36 +21,25 @@ Solution Ils::run() {
   Solution bestSolution = Construction();
   // debug("created best solution");
   LocalSearch(bestSolution);
-  // debug("searched on best solution");
+  // debug("searched best solution");
 
   int iteration = 0;
   while (iteration < MAX_ITERATIONS) {
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
-    // debug("alpha: %lf", alpha);
-    Solution perturbedSolution = Perturbation(bestSolution, alpha);
-    // debug("created perturbed solution");
+    // debug("iteration: %d", iteration);
+    Solution perturbedSolution = Perturbation(&bestSolution, alpha);
+    // debug("created pertubed solution");
     LocalSearch(perturbedSolution);
-    // debug("search perturbed solution");
-
-    // if (eliteSolutions.size() >= 1) {
-    //   chosenEliteSolution = randint(eliteSolutions.size());
-    //   perturbedSolution = PathRelinking(perturbedSolution, eliteSolutions[chosenEliteSolution]);
-    // }
+    // debug("searched perturbed solution");
 
     if (perturbedSolution.getObjective() > bestSolution.getObjective()) {
       bestSolution = perturbedSolution;
       bestSolution.setIterationFoud(iteration);
     }
 
-    // if (eliteSolutions.size() < MAX_ELITE) 
-    //   eliteSolutions.push_back(bestSolution);
-    // else 
-    //   updateEliteSolutions(eliteSolutions, bestSolution);
-
     auxArrays.computeIdxAlpha(idxAlpha, perturbedSolution.getObjective());
-    // debug("computedIdx");
 
     if (iteration % TAM_X == 0)
       auxArrays.updateProbabilities(bestSolution.getObjective());
@@ -75,8 +58,8 @@ Solution Ils::Construction() {
   return GreedyKInter(input).run();
 }
 
-Solution Ils::Perturbation(Solution solution, double alpha) {
-  return perturbReactive(solution, input, alpha);
+Solution Ils::Perturbation(Solution* solution, double alpha) {
+  return perturbReactive(*solution, input, alpha);
 }
 
 void Ils::LocalSearch(Solution& solution) {

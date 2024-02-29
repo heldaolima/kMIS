@@ -3,6 +3,7 @@
 
 #include "../../data_structures/solution.h"
 #include "../../data_structures/subset.h"
+#include "../../dbg.h"
 #include <vector>
 
 using std::vector;
@@ -39,14 +40,14 @@ typedef struct costs {
   //   return (int) c_min + alpha * (c_max - c_min);
   // }
 
-  void update(Solution solution, vector<Subset> sets) {
+  void update(Solution* solution, vector<Subset> sets) {
     int auxIdx = 0;
 
     for (const Subset subset: sets) {
       if (subset.identifier != -1) {
         int j = subset.identifier;
-        if (!solution.isSubsetInSolution[j]) {
-          incremental_cost[j].objective = intersection(solution.bits, subset.bits).count();
+        if (!solution->isSubsetInSolution[j]) {
+          incremental_cost[j].objective = intersection(solution->bits, subset.bits).count();
 
           if (auxIdx == 0) {
             c_min = incremental_cost[j].objective;

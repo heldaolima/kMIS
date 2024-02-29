@@ -24,7 +24,7 @@ Solution grasp_construction(Input* input, double alpha) {
 
     if (i + 1 == input->k) break;
 
-    costs.update(solution, input->subsets);
+    costs.update(&solution, input->subsets);
 
     i++;
   }

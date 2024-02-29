@@ -1,19 +1,25 @@
 #include "perturb.h"
-#include "grasp/construction_arrays.h"
 #include "grasp/costs.h"
 #include "grasp/lrc.h"
 #include "../dbg.h"
-#include <iostream>
-#include <algorithm>
+#include <cmath>
+
+#define FLOOR 2
 
 vector<Subset> getAvaliableSets(Solution*, Input*, int*);
 void removeRandomSets(Solution&, int);
 int getSizeOfAvaliableSubsets(vector<Subset> subsets);
 
 Solution perturbReactive(Solution solution, Input* input, double alpha) {
-  const int maximumNumberOfSetsToBeRemoved = (input->k / 2) + 1;
-  const int numberOfSetsToBeRemoved = randintInterval(1, maximumNumberOfSetsToBeRemoved);
-
+  // debug("k=%d numberOfSubsets=%d", input->k, input->quantityOfSubsets);
+  int ceil = std::ceil(std::sqrt(input->k));
+  if (input->k + ceil >= input->quantityOfSubsets)
+    ceil = std::ceil(std::log(input->k));
+  int numberOfSetsToBeRemoved = randintInterval(FLOOR, ceil); 
+  if (numberOfSetsToBeRemoved == ceil + 1)
+    --numberOfSetsToBeRemoved;
+  // debug("ceil=%d numberOfSetsToBeRemoved=%d", ceil, numberOfSetsToBeRemoved);
+  
   int sizeOfAvaliableSets = 0;
   vector<Subset> avaliableSets = getAvaliableSets(&solution, input, &sizeOfAvaliableSets);
 
@@ -23,28 +29,34 @@ Solution perturbReactive(Solution solution, Input* input, double alpha) {
   Costs costs(avaliableSets);
   Lrc lrc(avaliableSets.size());
   
+  bitset<numberOfBits> intersec = solution.bits;
+
+  int inferiorLimit, tam_lrc, random_index, chosenFromLRC;
   int i = solution.subsetsInSolution.size();
   while (i < input->k) {
-    double dummy = getInferiorLimit(alpha, costs.c_min, costs.c_max);
-    int inferiorLimit = getInferiorLimit(alpha, costs.c_min, costs.c_max);
-    // debug("double inferior limt: %lf", dummy);
-    // debug("inferior limit: %d", inferiorLimit);
-    int tam_lrc = lrc.set(solution, costs.incremental_cost, inferiorLimit); 
+    inferiorLimit = getInferiorLimit(alpha, costs.c_min, costs.c_max);
+    tam_lrc = lrc.set(solution, costs.incremental_cost, inferiorLimit); 
 
-    int random_index = randint(tam_lrc);
-    int chosenFromLRC = lrc.getIth(random_index); 
+    // int random_index = randint(tam_lrc); // divisao por zero
+    random_index = randBetween(0, tam_lrc-1);
+    chosenFromLRC = lrc.getIth(random_index); 
+    // debug("chosenFromLRC=%d", chosenFromLRC);
 
-    solution.addSubsetAndUpdateIntersection(avaliableSets[chosenFromLRC]);
+    intersec = intersection(intersec, avaliableSets[chosenFromLRC].bits);
+    solution.addSubset(avaliableSets[chosenFromLRC].identifier);
+    // solution.addSubset(avaliableSets[chosenFromLRC].identifier);
 
     if (i + 1 == input->k) {
       break;
     }
 
-    costs.update(solution, avaliableSets);
+    costs.update(&solution, avaliableSets);
 
     i++;
   }
   
+  solution.setBitsAndObjective(intersec);
+  // solution.print();
   return solution;
 }
 
