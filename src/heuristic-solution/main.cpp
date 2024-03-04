@@ -10,23 +10,24 @@
 #include "heuristics/restart.h"
 
 // #define TEST
-// #define TEST_SINGLE
+#define TEST_SINGLE
 
 const string path = "../instances/";
 
 void testSingle() {
-  string file = path + "test/classe_1_40_40.txt";
-  std::cout << file << "\n";
+  string file = path + "type1/classe_1_280_280.txt";
   bool resolve = false;
   Input* input = new Input(file, &resolve);
-  RestartSolution restart(input);
-  std::cout << "restart:\n";
-  restart.setSubsetAsUsed(4);
-  restart.run();
 
-  std::cout << "\ngreedy: \n";
-  GreedyKInter kinter(input);
-  kinter.run();
+  Ils ils(input);
+  Solution sol = ils.run();
+
+  std::cout << "Sai!!!\n";
+  sol.print();
+
+  // std::cout << "\ngreedy: \n";
+  // GreedyKInter kinter(input);
+  // kinter.run();
   delete input;
   // ilsExperiments.testHeuristic(fs::directory_entry(file));
 }
@@ -59,8 +60,6 @@ int main(int argc, char* argv[]) {
       if (file.exists()) {
         std::cout << file.path() << "\n";
         ilsExperiments.testHeuristic(file);
-        graspExperiments.testHeuristic(file);
-        // greedyExperiments.testHeuristic(file);
       }
     }
   }

@@ -4,7 +4,7 @@
 #include "data_structures/input.h"
 #include "data_structures/solution.h"
 
-#define MAX_ITERATIONS 300
+#define MAX_ITERATIONS 500
 
 class Heuristic {
 public:

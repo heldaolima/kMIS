@@ -7,6 +7,10 @@ void RestartSolution::setSubsetAsUsed(int subset) {
   wasUsedToStartSolution[subset] = true;
 }
 
+bool RestartSolution::checkUsed(int s) {
+  return wasUsedToStartSolution[s];
+}
+
 Solution RestartSolution::run() {
   int i = 0;
   Solution solution(input->quantityOfSubsets);
@@ -42,6 +46,5 @@ Solution RestartSolution::run() {
   }
 
   solution.updateBitsAndObjective(partialSolution);
-  solution.print();
   return solution;
 }

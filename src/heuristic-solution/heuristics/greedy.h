@@ -3,6 +3,7 @@
 
 #include "../heuristic.h"
 #include "../heuristic_factory.h"
+#include "restart.h"
 #include <vector>
 
 using std::vector;
@@ -10,8 +11,10 @@ using std::vector;
 class GreedyKInter : public Heuristic { 
 private:
   Input* input;
+  RestartSolution* restart;
 public:
   GreedyKInter(Input* input) : input(input) {}
+  void setRestart(RestartSolution* restart);
   virtual Solution run() override;
 };
 

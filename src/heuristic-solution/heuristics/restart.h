@@ -11,6 +11,7 @@ private:
 public:
   Solution run();
   void setSubsetAsUsed(int subset);
+  bool checkUsed(int s);
   RestartSolution(Input* input) : input(input) {
     wasUsedToStartSolution = vector<bool>(input->quantityOfSubsets, false);
   };

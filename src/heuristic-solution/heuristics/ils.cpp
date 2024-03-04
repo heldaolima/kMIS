@@ -7,47 +7,90 @@
 #include "grasp/construction.h"
 #include "grasp/construction_arrays.h"
 #include "grasp/costs.h"
+#include "restart.h"
 #include <iostream>
+
+#define NON_IMPROVEMENTS_THRESHOLD 100
 
 void updateEliteSolutions(vector<Solution>&, Solution);
 int getWorstSolutionIdx(vector<Solution>);
+
 
 Solution Ils::run() {
   constructionArrays auxArrays;
   int idxAlpha = auxArrays.getIdxAlpha();
   double alpha = X[idxAlpha];
 
-  // Solution bestSolution = Construction(alpha);
-  Solution bestSolution = Construction();
-  // debug("created best solution");
-  LocalSearch(bestSolution);
-  // debug("searched best solution");
+  RestartSolution restart(input);
 
-  int iteration = 0;
+  Solution best = Construction(&restart);
+  LocalSearch(best);
+  Solution globalBest = best;
+
+  int iteration = 0; 
+  int iterationsWithoutImprovement = 0;
+  int numberOfImprovements = 0;
+
+  Solution currentSolution;
   while (iteration < MAX_ITERATIONS) {
+    std::cout << "iteration: " << iteration << "\n";
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
+
     // debug("iteration: %d", iteration);
-    Solution perturbedSolution = Perturbation(&bestSolution, alpha);
     // debug("created pertubed solution");
-    LocalSearch(perturbedSolution);
+    currentSolution = Perturbation(&best, alpha);
+    LocalSearch(currentSolution);
     // debug("searched perturbed solution");
 
-    if (perturbedSolution.getObjective() > bestSolution.getObjective()) {
-      bestSolution = perturbedSolution;
-      bestSolution.setIterationFoud(iteration);
+    if (currentSolution.getObjective() > best.getObjective()) {
+      std::cout << "\nimprovement: ";
+      currentSolution.print();
+      best = currentSolution;
+      best.setIterationFoud(iteration);
+
+      if (best.getObjective() > globalBest.getObjective()) {
+        std::cout << "\n\nupdating global best\n";
+        globalBest = best;
+      }
+
+      iterationsWithoutImprovement = 0;
+      numberOfImprovements++;
+    } else {
+      iterationsWithoutImprovement++;
     }
 
-    auxArrays.computeIdxAlpha(idxAlpha, perturbedSolution.getObjective());
+    if (iterationsWithoutImprovement > NON_IMPROVEMENTS_THRESHOLD) {
+      best = restart.run();
+      std::cout << "\n\nrestarted best: ";
+      best.print();
+
+      LocalSearch(best);
+      std::cout << "\nlocal-searched it: \n";
+      best.print();
+      if (best.getObjective() > globalBest.getObjective()) {
+        globalBest = best;
+      }
+      iterationsWithoutImprovement = 0;
+    }
+
+    auxArrays.computeIdxAlpha(idxAlpha, currentSolution.getObjective());
 
     if (iteration % TAM_X == 0)
-      auxArrays.updateProbabilities(bestSolution.getObjective());
+      auxArrays.updateProbabilities(best.getObjective());
 
     iteration++;
   }
 
-  return bestSolution;
+  debug("number of improvements: %d", numberOfImprovements);
+  return globalBest;
+}
+
+Solution Ils::Construction(RestartSolution* restart) {
+  GreedyKInter kInter(input);
+  kInter.setRestart(restart);
+  return kInter.run();
 }
 
 Solution Ils::Construction(double alpha) {

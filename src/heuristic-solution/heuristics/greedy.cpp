@@ -3,6 +3,9 @@
 #include "../globals.h"
 #include <algorithm>
 
+void GreedyKInter::setRestart(RestartSolution* restart) {
+  this->restart = restart;
+}
 /*
   A cada iteração, incluir um subconjunto ainda não incluso na solução
   tal que a interseção de seus elementos com os da solução parcial
@@ -19,6 +22,10 @@ Solution GreedyKInter::run() {
   solution.addSubset(subsets[0].identifier);
   solution.setBits(subsets[0].bits);
   bitset<numberOfBits> partialSolution = solution.bits;
+
+  if (this->restart) {
+    restart->setSubsetAsUsed(subsets[0].identifier);
+  }
 
   int currentK = 1;
   while (currentK < input->k) {
