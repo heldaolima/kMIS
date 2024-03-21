@@ -49,10 +49,10 @@ void ParameterTester::testRestart(fs::directory_entry *inputFile) {
       times.average /= NUMBER_OF_TESTS;
       objs.average /= NUMBER_OF_TESTS;
       objs.averageFound /= NUMBER_OF_TESTS;
-
+      
       ss << inputFile->path().filename().string() << "_" << test;
       writer.writeResults(ss.str(), objs, times, input->k);
-      ss.clear();
+      ss.str("");
     }
 
     delete heuristic;
