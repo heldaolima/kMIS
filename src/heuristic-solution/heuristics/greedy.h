@@ -18,12 +18,4 @@ public:
   virtual Solution run() override;
 };
 
-class GreedyKInterFactory : public HeuristicFactory {
-public:
-  virtual Heuristic* create(Input* input) override {
-    return new GreedyKInter(input);
-  }
-};
-
-
 #endif

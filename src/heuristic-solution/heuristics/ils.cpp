@@ -9,12 +9,14 @@
 #include "grasp/costs.h"
 #include "restart.h"
 #include <iostream>
+#include "tabu.h"
+#include "../partialExperiments.h"
 
-#define NON_IMPROVEMENTS_THRESHOLD 100
+#define testing
+#define NON_IMPROVEMENTS_THRESHOLD 15
 
 void updateEliteSolutions(vector<Solution>&, Solution);
 int getWorstSolutionIdx(vector<Solution>);
-
 
 Solution Ils::run() {
   constructionArrays auxArrays;
@@ -24,53 +26,50 @@ Solution Ils::run() {
   RestartSolution restart(input);
 
   Solution best = Construction(&restart);
-  LocalSearch(best);
+  LocalSearch(best, 0);
   Solution globalBest = best;
 
-  int iteration = 0; 
+  int iteration = 1; 
   int iterationsWithoutImprovement = 0;
-  int numberOfImprovements = 0;
 
   Solution currentSolution;
-  while (iteration < MAX_ITERATIONS) {
-    std::cout << "iteration: " << iteration << "\n";
+  while (iteration <= 500) {
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
-
-    // debug("iteration: %d", iteration);
-    // debug("created pertubed solution");
     currentSolution = Perturbation(&best, alpha);
-    LocalSearch(currentSolution);
-    // debug("searched perturbed solution");
+    LocalSearch(currentSolution, iteration);
 
     if (currentSolution.getObjective() > best.getObjective()) {
-      std::cout << "\nimprovement: ";
-      currentSolution.print();
+      // currentSolution.print();
       best = currentSolution;
       best.setIterationFoud(iteration);
 
       if (best.getObjective() > globalBest.getObjective()) {
-        std::cout << "\n\nupdating global best\n";
         globalBest = best;
+        globalBest.setIterationFoud(iteration);
       }
 
       iterationsWithoutImprovement = 0;
-      numberOfImprovements++;
     } else {
       iterationsWithoutImprovement++;
     }
 
+    #ifdef testing
+    if (iterationsWithoutImprovement > nonImprovementsThreshold) {
+    #else 
     if (iterationsWithoutImprovement > NON_IMPROVEMENTS_THRESHOLD) {
+    #endif
       best = restart.run();
-      std::cout << "\n\nrestarted best: ";
-      best.print();
+      // std::cout << "\n\nrestarted best: ";
+      // best.print();
 
-      LocalSearch(best);
-      std::cout << "\nlocal-searched it: \n";
-      best.print();
+      LocalSearch(best, iteration);
+      // std::cout << "\nlocal-searched it: \n";
+      // best.print();
       if (best.getObjective() > globalBest.getObjective()) {
         globalBest = best;
+        globalBest.setIterationFoud(iteration);
       }
       iterationsWithoutImprovement = 0;
     }
@@ -83,7 +82,6 @@ Solution Ils::run() {
     iteration++;
   }
 
-  debug("number of improvements: %d", numberOfImprovements);
   return globalBest;
 }
 
@@ -105,8 +103,8 @@ Solution Ils::Perturbation(Solution* solution, double alpha) {
   return perturbReactive(*solution, input, alpha);
 }
 
-void Ils::LocalSearch(Solution& solution) {
-  vnd(input, solution);
+void Ils::LocalSearch(Solution& solution, int iteration) {
+  vnd(input, solution, iteration);
 }
 
 Solution Ils::PathRelinking(Solution origin, Solution destiny) {

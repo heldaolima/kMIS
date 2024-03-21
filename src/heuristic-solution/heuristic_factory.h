@@ -4,9 +4,15 @@
 #include "heuristic.h"
 #include "data_structures/input.h"
 
+enum HeuristicsEnum {
+    ILS,
+    GRASP_PATH_RELINKING,
+    GRASP_REACTIVE,
+};
+
 class HeuristicFactory {
 public:
-    virtual Heuristic* create(Input* input) = 0;
+    static Heuristic* create(Input* input, HeuristicsEnum type);
 };
 
 #endif

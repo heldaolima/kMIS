@@ -1,16 +1,17 @@
 #include "vnd.h"
 #include "local_search.h"
 
-void vnd(Input* input, Solution &solution) {
+void vnd(Input* input, Solution &solution, int iteration) {
   int it = 1;
   Solution copy;
+  LocalSearch ls = LocalSearch(input, iteration);
   while (it <= 2) {
     copy = solution;
 
     if (it == 1)
-      greedyLocalSearchOne(input, copy);
+      ls.greedyLocalSearchOne(copy);
     else if (it == 2)
-      greedyLocalSearchTwo(input, copy);
+      ls.greedyLocalSearchTwo(copy);
 
     if (copy.getObjective() <= solution.getObjective()) {
       it++;

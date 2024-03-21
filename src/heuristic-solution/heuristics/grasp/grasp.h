@@ -14,13 +14,6 @@ public:
   Solution run() override;
 };
 
-class Grasp_PathRelinkingFactory : public HeuristicFactory {
-public:
-  Heuristic * create(Input* input) override {
-    return new Grasp_PathRelinking(input);
-  }
-};
-
 class Grasp_Reactive : public Heuristic {
 private:
   Input* input;
@@ -29,11 +22,5 @@ public:
   Solution run() override;
 };
 
-class Grasp_ReactiveFactory : public HeuristicFactory {
-public:
-  Heuristic * create(Input* input) override {
-    return new Grasp_Reactive(input);
-  }
-};
 
 #endif

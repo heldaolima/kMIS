@@ -1,11 +1,11 @@
 #include "local_search.h"
 #include "../globals.h"
 #include "../dbg.h"
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 // simple swap(1, 1)
-void localSearch(Input* input, Solution &initialSolution) {
+void LocalSearch::localSearch(Solution &initialSolution) {
   Solution partialSolution;
 
   for (const int removeFromSolution: initialSolution.subsetsInSolution) {
@@ -21,6 +21,7 @@ void localSearch(Input* input, Solution &initialSolution) {
           // std::cout << "\n\n";
           if (complete.getObjective() > initialSolution.getObjective()) { // first improvement
             initialSolution = complete;
+            // tabu.setTabu(fromOutsideTheSolution.identifier, iteration);
             return;
           }
       }
@@ -28,16 +29,21 @@ void localSearch(Input* input, Solution &initialSolution) {
   }
 }
 
-void greedyStep(int currentK, Input* input, Solution* partialSolution, RemoveSubsets remove) {
+vector<int> LocalSearch::greedyStep(int currentK, Solution* partialSolution, RemoveSubsets remove) {
   vector<Subset> subsets;
+  vector<int> addedSets;
 
   int idx = 0;
   for (const Subset subset : input->subsets) {
-    if (remove.isDifferent(subset.identifier) && !partialSolution->isSubsetInSolution[subset.identifier]) {
+    if (
+      // !tabu.isTabu(subset.identifier, iteration) &&
+      remove != subset.identifier && 
+      !partialSolution->isSubsetInSolution[subset.identifier]
+    ) {
       subsets.push_back(subset);
       subsets[idx].setBits(intersection(partialSolution->bits, subset.bits));
       idx++;
-    }
+    }   
   }
 
   std::sort(subsets.begin(), subsets.end(), input->sortByObjectiveFunc);
@@ -47,6 +53,7 @@ void greedyStep(int currentK, Input* input, Solution* partialSolution, RemoveSub
   while (currentK < input->k) {
     partialBits = subsets[idx].bits;
     partialSolution->addSubset(subsets[idx].identifier);
+    addedSets.push_back(subsets[idx].identifier);
 
     idx++; currentK++;
     if (currentK == input->k) {
@@ -61,36 +68,46 @@ void greedyStep(int currentK, Input* input, Solution* partialSolution, RemoveSub
   }
 
   partialSolution->setBitsAndObjective(partialBits);
+
+  return addedSets;
 }
 
 // greedy swap(1, 1)
-void greedyLocalSearchOne(Input* input, Solution &solution) {
+void LocalSearch::greedyLocalSearchOne(Solution &solution) {
   Solution partialSolution; 
+  vector<int> addedSets;
 
   for (const int removeFromSolution : solution.subsetsInSolution) {
     partialSolution = solution.copyWithoutSubsets(input, { removeFromSolution });
-    greedyStep(input->k - 1, input, &partialSolution, { removeFromSolution });
+    addedSets = greedyStep(input->k - 1, &partialSolution, { removeFromSolution });
     
     if (partialSolution.getObjective() > solution.getObjective()) {
       solution = partialSolution;
+      for (int s: addedSets) {}
+        // tabu.setTabu(s, iteration);
+
       return;
     }
   }
 }
 
 // greedy swap(2,2)
-void greedyLocalSearchTwo(Input* input, Solution &solution) {
+void LocalSearch::greedyLocalSearchTwo(Solution &solution) {
   Solution partialSolution;
+  vector<int> addedSets;
 
   for (int i = 0; i < input->k - 1; i++) {
     int s1 = solution.subsetsInSolution[i];
     int s2 = solution.subsetsInSolution[i+1];
 
     partialSolution = solution.copyWithoutSubsets(input, { s1, s2 });
-    greedyStep(input->k - 2, input, &partialSolution, { s1, s2 });
+    addedSets = greedyStep(input->k - 2, &partialSolution, { s1, s2 });
 
     if (partialSolution.getObjective() > solution.getObjective()) {
       solution = partialSolution;
+      for (int s: addedSets) {}
+        // tabu.setTabu(s, iteration);
+
       return;
     }
   }

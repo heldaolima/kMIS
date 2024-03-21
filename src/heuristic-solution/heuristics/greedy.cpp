@@ -42,6 +42,6 @@ Solution GreedyKInter::run() {
   }
 
   solution.updateBitsAndObjective(partialSolution);
-  solution.print();
+  // solution.print();
   return solution;
 }

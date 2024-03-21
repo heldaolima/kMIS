@@ -5,8 +5,19 @@
 #include "../data_structures/input.h"
 #include "../data_structures/solution.h"
 
-void localSearch(Input* input, Solution &initialSolution);
-void greedyLocalSearchOne(Input* input, Solution &solution);
-void greedyLocalSearchTwo(Input* input, Solution &solution);
+class LocalSearch {
+private:
+  Input* input;
+  int iteration;
+
+  vector<int> greedyStep(int currentK, Solution* partialSolution, RemoveSubsets remove);
+public:
+  LocalSearch(Input* input, int iteration) : input(input) {
+    this->iteration = iteration;
+  }
+  void localSearch(Solution &initialSolution);
+  void greedyLocalSearchOne(Solution &solution);
+  void greedyLocalSearchTwo(Solution &solution);
+};
 
 #endif

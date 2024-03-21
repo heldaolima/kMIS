@@ -108,7 +108,7 @@ void Solution::setBitsAndObjective(bitset<numberOfBits> bits) {
 Solution Solution::copyWithoutSubsets(Input* input, RemoveSubsets remove) {
   Solution solution(input->quantityOfSubsets);
   for (const int subset: this->subsetsInSolution) {
-    if (remove.isDifferent(subset)) {
+    if (remove != subset) {
       solution.updateBits(input->subsets[subset].bits);
       solution.addSubset(subset);
     }

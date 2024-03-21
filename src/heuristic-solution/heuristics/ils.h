@@ -12,21 +12,13 @@ private:
   Solution Construction();
   Solution Construction(RestartSolution* restart);
   Solution Perturbation(Solution*, double);
-  void LocalSearch(Solution&);
+  void LocalSearch(Solution&, int iteration);
   Solution PathRelinking(Solution, Solution);
   void updateEliteSolutions(vector<Solution>&, Solution);
   int getWorstSolutionIdx(vector<Solution>);
-  // void accept(Solution* best, Solution* currentSolution, Solution* globalBest);
 public:
   Ils(Input* input) : input(input) {};
   virtual Solution run() override;
-};
-
-class IlsFactory : public HeuristicFactory {
-public:
-  Heuristic* create(Input* input) override {
-    return new Ils(input);
-  }
 };
 
 #endif

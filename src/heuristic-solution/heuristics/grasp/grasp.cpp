@@ -31,7 +31,8 @@ Solution Grasp_PathRelinking::run() {
 
     Solution currentSolution = grasp_construction(input, alpha);
 
-    localSearch(input, currentSolution);
+    LocalSearch ls = LocalSearch(input, i);
+    ls.localSearch(currentSolution);
 
     if (eliteSolutions.size() >= 1) {
       chosenEliteSolution = randint(eliteSolutions.size());
@@ -75,7 +76,8 @@ Solution Grasp_Reactive::run() {
 
     Solution currentSolution = grasp_construction(input, alpha);
 
-    localSearch(input, currentSolution);
+    LocalSearch ls = LocalSearch(input, i);
+    ls.localSearch(currentSolution);
 
     if (eliteSolutions.size() >= 1) {
       chosenEliteSolution = randint(eliteSolutions.size());

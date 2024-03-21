@@ -13,7 +13,7 @@ typedef struct RemoveSubsets {
   int s1 = 0;
   int s2 = NOT_DEFINED;
 
-  bool isDifferent(int identifier) {
+  bool operator!=(int identifier) {
     if (s2 == NOT_DEFINED) 
       return identifier != s1;
     return identifier != s1 && identifier != s2;
