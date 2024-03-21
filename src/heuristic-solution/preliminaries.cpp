@@ -15,7 +15,7 @@ namespace fs = std::filesystem;
 int main(int argc, char* argv[]) {
   seed();
 
-  ParameterTester tester("", RESTART_THRESHOLD);
+  ParameterTester tester("threshold.txt", RESTART_THRESHOLD);
   for (const auto & file: fs::directory_iterator(path)) {
     if (file.exists()) {
       std::cout << file.path().filename() << "\n";

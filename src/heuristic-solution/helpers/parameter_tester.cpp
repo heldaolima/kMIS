@@ -10,13 +10,15 @@
 const string header = "input,k,avg_time,avg_objective,avg_it_best,worst,best\n";
 
 ParameterTester::ParameterTester(string outputPath, ParametersEnum param) {
-  // this->writer = new ResultsWriter(outputPath, header);
+  this->writer = new ResultsWriter(outputPath, header);
   this->param = param;
 }
 
 void ParameterTester::testFile(fs::directory_entry inputFile) {
   switch (param) {
-    case RESTART_THRESHOLD: testRestart(&inputFile);
+    case RESTART_THRESHOLD: {
+      testRestart(&inputFile);
+    }
   }
 }
 
@@ -28,7 +30,7 @@ void ParameterTester::testRestart(fs::directory_entry *inputFile) {
   bool solvable = true;
   Input* input = new Input(inputFile->path(), &solvable);
   vector<int> tests = { 10, 25, 50, 75, 100, 125, 150 };
-  ResultsWriter writer("threshold.txt", header);
+  // ResultsWriter writer("threshold.txt", header);
   std::stringstream ss;
   if (solvable) {
     Heuristic* heuristic = HeuristicFactory::create(input, ILS);
@@ -51,7 +53,7 @@ void ParameterTester::testRestart(fs::directory_entry *inputFile) {
       objs.averageFound /= NUMBER_OF_TESTS;
       
       ss << inputFile->path().filename().string() << "_" << test;
-      writer.writeResults(ss.str(), objs, times, input->k);
+      writer->writeResults(ss.str(), objs, times, input->k);
       ss.str("");
     }
 
