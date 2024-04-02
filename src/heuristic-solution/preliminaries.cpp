@@ -11,18 +11,20 @@ int tabuTenure = 0;
 bool useTabu = false;
 bool useLocalSearchRand = false;
 
-const string path = "../instances/preliminaries/";
+const string path = "../instances/worsts/";
 
 namespace fs = std::filesystem;
 
 int main(int argc, char* argv[]) {
   seed();
 
-  ParameterTester tester("random22.txt", RANDOM_LS_TWO);
+  ParameterTester rand("random22.csv", RANDOM_LS_TWO);
+  ParameterTester norm("normal22.csv", NORMAL_LS_TWO);
   for (const auto & file: fs::directory_iterator(path)) {
     if (file.exists()) {
       std::cout << file.path().filename() << "\n";
-      tester.testFile(file);
+      rand.testFile(file);
+      norm.testFile(file);
     }
   }
 

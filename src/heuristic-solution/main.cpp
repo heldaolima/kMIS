@@ -10,18 +10,22 @@
 #include "heuristics/grasp/grasp.h"
 #include "helpers/random_utils.h"
 #include "heuristics/tabu.h"
+#include "partialExperiments.h"
 
 // #define TEST
-// #define TEST_SINGLE
+#define TEST_SINGLE
 // #define PRELIMINARIES
 
 int nonImprovementsThreshold = 0;
-int testTenure = 0;
+int tabuTenure = 0;
+bool useTabu = false;
+bool useLocalSearchRand = true;
+
 
 const string path = "../instances/";
 
-void testSingle() {
-  string file = path + "type2/classe_1_100_80.txt";
+void testSingle(string test) {
+  string file = path + test;
   bool resolve = false;
   Input* input = new Input(file, &resolve);
 
@@ -32,6 +36,7 @@ void testSingle() {
   // tabu.print();
   Ils ils(input);
   Solution sol = ils.run();
+  sol.print();
 
   // sol.print();
 
@@ -59,7 +64,7 @@ int main(int argc, char* argv[]) {
   HeuristicTester graspExperiments("results_grasp.txt", GRASP_REACTIVE);
 
   #ifdef TEST_SINGLE 
-    testSingle();
+    testSingle(argv[1]);
   #else
 
   for (const string dir: dirs) {

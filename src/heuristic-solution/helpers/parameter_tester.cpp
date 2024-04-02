@@ -18,7 +18,8 @@ void ParameterTester::testFile(fs::directory_entry inputFile) {
   switch (param) {
     case RESTART_THRESHOLD: testRestart(&inputFile); break;
     case TABU_TENURE: testTenure(&inputFile); break;
-    case RANDOM_LS_TWO: testRandomLSTwo(&inputFile); break;
+    case RANDOM_LS_TWO: lsTwo(&inputFile, true); break;
+    case NORMAL_LS_TWO: lsTwo(&inputFile, false); break;
     case RANDOM_LS_TWO_TABU: testRandomLSTwoTabu(&inputFile); break;
     default: break;
   }
@@ -103,7 +104,7 @@ void ParameterTester::testTenure(fs::directory_entry *inputFile) {
   }
 }
 
-void ParameterTester::testRandomLSTwo(fs::directory_entry* inputFile) {
+void ParameterTester::lsTwo(fs::directory_entry* inputFile, bool random) {
   Objectives objs;
   Times times;
   clock_t t1, t2;
@@ -111,8 +112,12 @@ void ParameterTester::testRandomLSTwo(fs::directory_entry* inputFile) {
   bool solvable = true;
   Input* input = new Input(inputFile->path(), &solvable);
 
-  debug("testing random local search swap(2,2)");
-  useLocalSearchRand = true;
+  if (random)
+    debug("testing random local search swap(2,2)");
+  else
+    debug("testing normal local search swap(2, 2)");
+
+  useLocalSearchRand = random;
 
   if (solvable) {
     Heuristic* heuristic = HeuristicFactory::create(input, ILS);
@@ -138,6 +143,44 @@ void ParameterTester::testRandomLSTwo(fs::directory_entry* inputFile) {
   }
 }
 
+void ParameterTester::lsTwoTabu(fs::directory_entry* inputFile, bool random) {
+  Objectives objs;
+  Times times;
+  clock_t t1, t2;
+
+  bool solvable = true;
+  Input* input = new Input(inputFile->path(), &solvable);
+
+  if (random)
+    debug("testing tabu random local search swap(2,2)");
+  else
+    debug("testing tabu normal local search swap(2, 2)");
+
+  useLocalSearchRand = random;
+
+  if (solvable) {
+    Heuristic* heuristic = HeuristicFactory::create(input, ILS);
+
+    for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+      tabu = Tabu(input->quantityOfSubsets);
+      t1 = clock();
+        Solution solution = heuristic->run();
+      t2 = clock();
+
+      times.set(t1, t2);
+      objs.set(solution.getObjective(), solution.getIterationFound(), i);
+    }
+
+    times.average /= NUMBER_OF_TESTS;
+    objs.average /= NUMBER_OF_TESTS;
+    objs.averageFound /= NUMBER_OF_TESTS;
+
+    writer->writeResults(inputFile->path().filename().string(), objs, times, input->k);
+
+    delete heuristic;
+    delete input;
+  }
+}
 void ParameterTester::testRandomLSTwoTabu(fs::directory_entry* inputFile) {
   Objectives objs;
   Times times;

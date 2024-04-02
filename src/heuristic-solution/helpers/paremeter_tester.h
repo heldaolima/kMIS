@@ -19,7 +19,8 @@ private:
 
   void testRestart(fs::directory_entry* inputFile);
   void testTenure(fs::directory_entry* inputFile);
-  void testRandomLSTwo(fs::directory_entry* inputFile);
+  void lsTwo(fs::directory_entry* inputFile, bool random);
+  void lsTwoTabu(fs::directory_entry* inputFile, bool random);
   void testRandomLSTwoTabu(fs::directory_entry* inputFile);
 public:
   ParameterTester(string outputPath, ParametersEnum param);
