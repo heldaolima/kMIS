@@ -1,24 +1,31 @@
 #include "tabu.h"
 #include <iostream> 
-#include "local_search.h"
+#include "../partialExperiments.h"
 
 Tabu tabu;
 
 Tabu::Tabu(int numberOfSubsets) {
   tabu_list = vector<int>(numberOfSubsets, 0);
+#ifdef TEST
+  tenure = tabuTenure;
+#else
   tenure = TENURE;
+#endif
 }
 
 void Tabu::setTabu(int item, int iteration) {
-  // std::cout << "setting tabu: item " << item << "\n";
-  if (iteration > 0)
+  if (iteration > 0 && useTabu) {
     tabu_list[item] = iteration + tenure;
+  }
 }
 
 bool Tabu::isTabu(int item, int iteration) {
+  // if (tabu_list[item] > iteration) {
+  //   std::cout << item << " is tabu at it" << iteration << ", will not add\n";
+  // }
   // std::cout << "item: " << item << " tabu=" << tabu_list[item] << " iteration: " << iteration << "\n";
   // std::cout << "is tabu: " << (tabu_list[item] > iteration) << "\n";
-  return tabu_list[item] > iteration;
+    return useTabu ? tabu_list[item] > iteration : false;
 }
 
 void Tabu::print() {

@@ -9,7 +9,6 @@
 #include "heuristics/greedy.h"
 #include "heuristics/grasp/grasp.h"
 #include "helpers/random_utils.h"
-#include "helpers/results_recorder.h"
 #include "heuristics/tabu.h"
 
 // #define TEST
@@ -17,6 +16,7 @@
 // #define PRELIMINARIES
 
 int nonImprovementsThreshold = 0;
+int testTenure = 0;
 
 const string path = "../instances/";
 

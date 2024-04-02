@@ -3,6 +3,9 @@
 #include "../dbg.h"
 #include <algorithm>
 #include <iostream>
+#include "tabu.h"
+#include "../helpers/random_utils.h"
+#include "../partialExperiments.h"
 
 // simple swap(1, 1)
 void LocalSearch::localSearch(Solution &initialSolution) {
@@ -78,13 +81,19 @@ void LocalSearch::greedyLocalSearchOne(Solution &solution) {
   vector<int> addedSets;
 
   for (const int removeFromSolution : solution.subsetsInSolution) {
+    if (tabu.isTabu(removeFromSolution, iteration)) {
+      continue;
+    }
     partialSolution = solution.copyWithoutSubsets(input, { removeFromSolution });
     addedSets = greedyStep(input->k - 1, &partialSolution, { removeFromSolution });
     
     if (partialSolution.getObjective() > solution.getObjective()) {
       solution = partialSolution;
-      for (int s: addedSets) {}
-        // tabu.setTabu(s, iteration);
+      if (useTabu) {
+        for (int s: addedSets) {
+          tabu.setTabu(s, iteration);
+        }
+      }
 
       return;
     }
@@ -96,17 +105,68 @@ void LocalSearch::greedyLocalSearchTwo(Solution &solution) {
   Solution partialSolution;
   vector<int> addedSets;
 
-  for (int i = 0; i < input->k - 1; i++) {
-    int s1 = solution.subsetsInSolution[i];
-    int s2 = solution.subsetsInSolution[i+1];
+  int s1, s2, i, j;
+  RemoveSubsets remove;
+  for (i = 0; i < input->k-1; i++) {
+    s1 = solution.subsetsInSolution[i];
+    if (tabu.isTabu(s1, iteration))
+      continue;
 
-    partialSolution = solution.copyWithoutSubsets(input, { s1, s2 });
-    addedSets = greedyStep(input->k - 2, &partialSolution, { s1, s2 });
+    s2 = solution.subsetsInSolution[i+1];
+    if (tabu.isTabu(s2, iteration))
+      continue;
+
+    remove = { s1, s2 };
+
+    partialSolution = solution.copyWithoutSubsets(input, remove); // O(N)
+    addedSets = greedyStep(input->k - 2, &partialSolution, remove);
 
     if (partialSolution.getObjective() > solution.getObjective()) {
       solution = partialSolution;
-      for (int s: addedSets) {}
-        // tabu.setTabu(s, iteration);
+      if (useTabu) {
+        for (int s: addedSets) {
+          tabu.setTabu(s, iteration);
+        }
+      }
+
+      return;
+    }
+  }
+}
+
+void LocalSearch::randomLocalSearchTwo(Solution &solution) {
+  Solution partialSolution;
+  vector<int> addedSets;
+
+  int s1, s2, i, j;
+  RemoveSubsets remove;
+  // bool usedSets[input->quantityOfSubsets];
+  // for (i = 0; i < input->quantityOfSubsets; i++)
+  //   usedSets[i] = false;
+
+  for (i = 0; i < input->k-1; i++) {
+    s1 = randint(input->quantityOfSubsets);
+    // std::cout << "rand s1 is " << s1 << "\n";
+    if (tabu.isTabu(s1, iteration))
+      continue;
+
+    s2 = randint(input->quantityOfSubsets);
+    // std::cout << "rand s2 is " << s2 << "\n";
+    if (s1 == s2 || tabu.isTabu(s2, iteration))
+      continue;
+
+    remove = { s1, s2 };
+
+    partialSolution = solution.copyWithoutSubsets(input, remove); // O(N)
+    addedSets = greedyStep(input->k - 2, &partialSolution, remove);
+
+    if (partialSolution.getObjective() > solution.getObjective()) {
+      solution = partialSolution;
+      if (useTabu) {
+        for (int s: addedSets) {
+          tabu.setTabu(s, iteration);
+        }
+      }
 
       return;
     }

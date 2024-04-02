@@ -8,12 +8,9 @@
 #include "grasp/construction_arrays.h"
 #include "grasp/costs.h"
 #include "restart.h"
-#include <iostream>
 #include "tabu.h"
-#include "../partialExperiments.h"
 
-#define testing
-#define NON_IMPROVEMENTS_THRESHOLD 15
+#define NON_IMPROVEMENTS_THRESHOLD 75
 
 void updateEliteSolutions(vector<Solution>&, Solution);
 int getWorstSolutionIdx(vector<Solution>);
@@ -55,11 +52,7 @@ Solution Ils::run() {
       iterationsWithoutImprovement++;
     }
 
-    #ifdef testing
-    if (iterationsWithoutImprovement > nonImprovementsThreshold) {
-    #else 
     if (iterationsWithoutImprovement > NON_IMPROVEMENTS_THRESHOLD) {
-    #endif
       best = restart.run();
       // std::cout << "\n\nrestarted best: ";
       // best.print();
