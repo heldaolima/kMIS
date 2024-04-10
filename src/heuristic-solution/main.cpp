@@ -8,7 +8,7 @@
 #include "partialExperiments.h"
 
 // #define TEST
-#define TEST_SINGLE
+// #define TEST_SINGLE
 // #define PRELIMINARIES
 
 int nonImprovementsThreshold = 75;
@@ -19,26 +19,6 @@ bool useLocalSearchRand = true;
 const string path = "../instances/";
 
 void testSingle(string test) {
-  string file = path + test;
-  bool resolve = false;
-  Input* input = new Input(file, &resolve);
-
-  tabu = Tabu(input->quantityOfSubsets);
-  // tabu.setTabu(0, 10);
-  // tabu.setTabu(3, 10);
-  // tabu.setTabu(8, 10);
-  // tabu.print();
-  Ils ils(input);
-  Solution sol = ils.run();
-  sol.print();
-
-  // sol.print();
-
-  // std::cout << "\ngreedy: \n";
-  // GreedyKInter kinter(input);
-  // kinter.run();
-  delete input;
-  // ilsExperiments.testHeuristic(fs::directory_entry(file));
 }
 
 namespace fs = std::filesystem;
@@ -54,7 +34,7 @@ int main(int argc, char* argv[]) {
   // string dirs[1] = {"type1"};
 
   // HeuristicTester greedyExperiments("results_kinter.txt", kInterFactory);
-  HeuristicTester ilsExperiments("results_ils.txt", ILS);
+  HeuristicTester ilsExperiments("results_ils.csv", ILS);
 
   #ifdef TEST_SINGLE 
     testSingle(argv[1]);
@@ -63,6 +43,7 @@ int main(int argc, char* argv[]) {
   for (const string dir: dirs) {
     for (const auto & file: fs::directory_iterator(path + dir)) {
       if (file.exists()) {
+        std::cout << file.path().filename() << "\n";
         ilsExperiments.testFile(file);
       }
     }

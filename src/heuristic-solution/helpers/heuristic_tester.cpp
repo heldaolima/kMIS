@@ -1,4 +1,5 @@
 #include "heuristic_tester.h"
+#include "../heuristics/tabu.h"
 
 const string header = "input,k,avg_time,avg_objective,avg_it_best,worst,best\n";
 
@@ -13,8 +14,10 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
   clock_t t1, t2;
 
   bool solvable = true;
+
   Input* input = new Input(inputFile.path(), &solvable);
   if (solvable) {
+    tabu = Tabu(input->quantityOfSubsets);
     Heuristic* heuristic = HeuristicFactory::create(input, type);
 
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
