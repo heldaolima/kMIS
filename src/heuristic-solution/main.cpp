@@ -1,13 +1,8 @@
-#include <iostream>
 #include <filesystem>
-#include <random>
-#include <algorithm>
 
 #include "data_structures/input.h"
 #include "helpers/heuristic_tester.h"
 #include "heuristics/ils.h"
-#include "heuristics/greedy.h"
-#include "heuristics/grasp/grasp.h"
 #include "helpers/random_utils.h"
 #include "heuristics/tabu.h"
 #include "partialExperiments.h"
@@ -16,11 +11,10 @@
 #define TEST_SINGLE
 // #define PRELIMINARIES
 
-int nonImprovementsThreshold = 0;
-int tabuTenure = 0;
-bool useTabu = false;
+int nonImprovementsThreshold = 75;
+int tabuTenure = 5;
+bool useTabu = true;
 bool useLocalSearchRand = true;
-
 
 const string path = "../instances/";
 
@@ -61,7 +55,6 @@ int main(int argc, char* argv[]) {
 
   // HeuristicTester greedyExperiments("results_kinter.txt", kInterFactory);
   HeuristicTester ilsExperiments("results_ils.txt", ILS);
-  HeuristicTester graspExperiments("results_grasp.txt", GRASP_REACTIVE);
 
   #ifdef TEST_SINGLE 
     testSingle(argv[1]);
@@ -70,7 +63,6 @@ int main(int argc, char* argv[]) {
   for (const string dir: dirs) {
     for (const auto & file: fs::directory_iterator(path + dir)) {
       if (file.exists()) {
-        // std::cout << file.path() << "\n";
         ilsExperiments.testFile(file);
       }
     }

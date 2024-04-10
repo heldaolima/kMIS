@@ -12,12 +12,12 @@ int getSizeOfAvaliableSubsets(vector<Subset> subsets);
 
 Solution perturbReactive(Solution solution, Input* input, double alpha) {
   // debug("k=%d numberOfSubsets=%d", input->k, input->quantityOfSubsets);
-  int ceil = std::ceil(std::sqrt(input->k));
-  if (input->k + ceil >= input->quantityOfSubsets)
-    ceil = std::ceil(std::log(input->k));
-  int numberOfSetsToBeRemoved = randintInterval(FLOOR, ceil); 
-  if (numberOfSetsToBeRemoved == ceil + 1)
-    --numberOfSetsToBeRemoved;
+  int numberOfSetsToBeRemoved = std::ceil(std::sqrt(input->k));
+  if (input->k + numberOfSetsToBeRemoved >= input->quantityOfSubsets)
+    numberOfSetsToBeRemoved = std::ceil(std::log(input->k));
+  // int numberOfSetsToBeRemoved = randintInterval(FLOOR, ceil); 
+  // if (numberOfSetsToBeRemoved == ceil + 1)
+  //   --numberOfSetsToBeRemoved;
   // debug("ceil=%d numberOfSetsToBeRemoved=%d", ceil, numberOfSetsToBeRemoved);
   
   int sizeOfAvaliableSets = 0;

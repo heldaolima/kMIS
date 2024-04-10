@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <vector>
 
-#define TENURE 10
+#define TENURE 5
 
 using std::vector;
 

@@ -144,7 +144,7 @@ void LocalSearch::randomLocalSearchTwo(Solution &solution) {
   // for (i = 0; i < input->quantityOfSubsets; i++)
   //   usedSets[i] = false;
 
-  for (i = 0; i < input->k-1; i++) {
+  for (i = 0; i < input->k * 2; i++) {
     s1 = randint(input->quantityOfSubsets);
     // std::cout << "rand s1 is " << s1 << "\n";
     if (tabu.isTabu(s1, iteration))

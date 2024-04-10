@@ -30,7 +30,7 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
     objs.average /= NUMBER_OF_TESTS;
     objs.averageFound /= NUMBER_OF_TESTS;
 
-    writer->writeResults(inputFile.path().filename(), objs, times, input->k);
+    writer->writeResults(inputFile.path().filename(), &objs, &times, input->k);
 
     delete heuristic;
     delete input;

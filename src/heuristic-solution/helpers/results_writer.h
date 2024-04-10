@@ -12,7 +12,7 @@ private:
   string outFilePath;
 public:
   ResultsWriter(string outFilePath, string header);
-  void writeResults(const string inputFileName, Objectives objs, Times times, int k);
+  void writeResults(const string inputFileName, Objectives* objs, Times* times, int k);
 };
 
 #endif

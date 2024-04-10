@@ -18,13 +18,15 @@ namespace fs = std::filesystem;
 int main(int argc, char* argv[]) {
   seed();
 
-  ParameterTester rand("random22.csv", RANDOM_LS_TWO);
-  ParameterTester norm("normal22.csv", NORMAL_LS_TWO);
+  // ParameterTester rand("random22.csv", RANDOM_LS_TWO);
+  // ParameterTester norm("normal22.csv", NORMAL_LS_TWO);
+  ParameterTester t1("random22x2Tabu.csv", RANDOM_LS_TWO_TABU);
+  ParameterTester t2("random22x2.csv", RANDOM_LS_TWO);
   for (const auto & file: fs::directory_iterator(path)) {
     if (file.exists()) {
       std::cout << file.path().filename() << "\n";
-      rand.testFile(file);
-      norm.testFile(file);
+      t1.testFile(file);
+      t2.testFile(file);
     }
   }
 

@@ -8,6 +8,7 @@ enum ParametersEnum {
   RESTART_THRESHOLD,
   TABU_TENURE,
   NORMAL_LS_TWO,
+  NORMAL_LS_TWO_TABU,
   RANDOM_LS_TWO,
   RANDOM_LS_TWO_TABU,
 };
@@ -19,7 +20,7 @@ private:
 
   void testRestart(fs::directory_entry* inputFile);
   void testTenure(fs::directory_entry* inputFile);
-  void lsTwo(fs::directory_entry* inputFile, bool random);
+  void lsTwo(fs::directory_entry* inputFile, bool random, bool tabu);
   void lsTwoTabu(fs::directory_entry* inputFile, bool random);
   void testRandomLSTwoTabu(fs::directory_entry* inputFile);
 public:
