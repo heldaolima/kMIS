@@ -1,24 +1,47 @@
 #include <filesystem>
 
 #include "data_structures/input.h"
+#include "dbg.h"
 #include "helpers/heuristic_tester.h"
+#include "heuristics/greedy.h"
 #include "heuristics/ils.h"
 #include "helpers/random_utils.h"
+#include "heuristics/perturb.h"
+#include "heuristics/restart.h"
 #include "heuristics/tabu.h"
 #include "partialExperiments.h"
 
 // #define TEST
-// #define TEST_SINGLE
+#define TEST_SINGLE
 // #define PRELIMINARIES
 
 int nonImprovementsThreshold = 75;
 int tabuTenure = 5;
 bool useTabu = true;
-bool useLocalSearchRand = true;
+bool useLocalSearchRand = false;
 
 const string path = "../instances/";
 
 void testSingle(string test) {
+  string file = path + test;
+  bool resolve = false;
+  Input* input = new Input(file, &resolve);
+  RestartSolution r = RestartSolution(input);
+
+  GreedyKInter kinter(input);
+  kinter.setRestart(&r);
+  Solution s = kinter.run();
+
+  perturbReactive(s, input, 0.4);
+
+
+
+  // tabu = Tabu(input->quantityOfSubsets);
+  //
+  // Ils ils(input);
+  // ils.run();
+
+  delete input;
 }
 
 namespace fs = std::filesystem;

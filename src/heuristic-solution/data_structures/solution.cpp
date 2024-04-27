@@ -121,6 +121,21 @@ Solution Solution::copyWithoutSubsets(Input* input, RemoveSubsets remove) {
 void Solution::setIterationFoud(int it) { 
   this->iterationFound = it;
 }
+
 unsigned int Solution::getIterationFound() {
   return iterationFound;
+}
+
+void Solution::swap(int out, int in, bitset<numberOfBits>* bits) {
+  setBitsAndObjective(*bits);
+
+  isSubsetInSolution[out] = false;
+  isSubsetInSolution[in] = true;
+
+  for (int i = 0; i < subsetsInSolution.size(); i++) {
+    if (subsetsInSolution[i] == out) {
+      subsetsInSolution[i] = in;
+      break;
+    }
+  }
 }

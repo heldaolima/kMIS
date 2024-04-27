@@ -36,6 +36,7 @@ public:
   Solution copyWithoutSubsets(Input* input, RemoveSubsets remove);
   void setIterationFoud(int it);
   unsigned int getIterationFound();
+  void swap(int out, int in, bitset<numberOfBits>* bits);
 };
 
 #endif

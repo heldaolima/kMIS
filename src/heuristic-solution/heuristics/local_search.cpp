@@ -3,9 +3,11 @@
 #include "../dbg.h"
 #include <algorithm>
 #include <iostream>
+#include <stdexcept>
 #include "tabu.h"
 #include "../helpers/random_utils.h"
 #include "../partialExperiments.h"
+#include "../data_structures/solutionMinusOne.h"
 
 // simple swap(1, 1)
 void LocalSearch::localSearch(Solution &initialSolution) {
@@ -76,32 +78,67 @@ vector<int> LocalSearch::greedyStep(int currentK, Solution* partialSolution, Rem
 }
 
 // greedy swap(1, 1)
-void LocalSearch::greedyLocalSearchOne(Solution &solution) {
+void LocalSearch::swap1(Solution &solution) {
   Solution partialSolution; 
   vector<int> addedSets;
 
-  for (const int removeFromSolution : solution.subsetsInSolution) {
-    if (tabu.isTabu(removeFromSolution, iteration)) {
+  bitset<numberOfBits> bits;
+  bits.set();
+  int i = 0, pulei = 0;
+
+  debug("\n\nswap1 doido");
+  for (const int remove: solution.subsetsInSolution) {
+    // if (solutionMinusOne[remove].sameAsSolution) {
+    //   pulei++;
+    //   continue;
+    // }
+
+    debug("will try to remove %d", remove);
+    if (solutionMinusOne[remove].sameAsSolution ||
+      // pulei++;
+      tabu.isTabu(remove, iteration)) {
+      debug("nao vou ver, estado no mapa: [%i]", solutionMinusOne[remove].sameAsSolution);
       continue;
-    }
-    partialSolution = solution.copyWithoutSubsets(input, { removeFromSolution });
-    addedSets = greedyStep(input->k - 1, &partialSolution, { removeFromSolution });
-    
-    if (partialSolution.getObjective() > solution.getObjective()) {
-      solution = partialSolution;
-      if (useTabu) {
-        for (int s: addedSets) {
-          tabu.setTabu(s, iteration);
+    } 
+
+    for (i = 0; i < input->quantityOfSubsets; i++) {
+      printf("i=%d\n", i);
+      if (
+        input->subsets[i].identifier != remove &&
+        !solution.isSubsetInSolution[i]
+      ) {
+        debug("vou tentar inserir: %d", input->subsets[i].identifier);
+        bits = intersection(solutionMinusOne[remove].bits,
+                            input->subsets[i].bits);
+
+        {
+          debug("did intersection: ");
+          for (int j = 0; j < numberOfBits; j++){
+            if (bits[j]) std::cout << j <<" ";
+          }
+          std::cout << "\n\n";
+        }
+
+        if (bits.count() > solution.getObjective()) {
+          tabu.setTabu(input->subsets[i].identifier, iteration);
+          solution.swap(remove, input->subsets[i].identifier, &bits);
+          debug("\ndid the swap: ");
+          solution.print();
+          removeKey(remove);
+          computeSolutionMinusOne(input, &solution);
+          debug("Pulei %d de %d e ainda melhorei", pulei, input->k);
+          return;
         }
       }
-
-      return;
     }
   }
+
+  debug("Pulei %d de %d", pulei, input->k);
 }
 
 // greedy swap(2,2)
 void LocalSearch::greedyLocalSearchTwo(Solution &solution) {
+  debug("\n\nwill use ls22");
   Solution partialSolution;
   vector<int> addedSets;
 
@@ -122,12 +159,15 @@ void LocalSearch::greedyLocalSearchTwo(Solution &solution) {
     addedSets = greedyStep(input->k - 2, &partialSolution, remove);
 
     if (partialSolution.getObjective() > solution.getObjective()) {
+      debug("on ls222 will remove %d %d", s1, s2);
+      removeKey(s1);
+      removeKey(s2);
       solution = partialSolution;
-      if (useTabu) {
-        for (int s: addedSets) {
+      for (int s: addedSets) {
+        if (useTabu)
           tabu.setTabu(s, iteration);
-        }
       }
+      computeSolutionMinusOne(input, &solution);
 
       return;
     }

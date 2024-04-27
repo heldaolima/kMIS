@@ -9,6 +9,8 @@
 #include "grasp/costs.h"
 #include "restart.h"
 #include "tabu.h"
+#include "../data_structures/solutionMinusOne.h"
+#include "local_search.h"
 
 #define NON_IMPROVEMENTS_THRESHOLD 75
 
@@ -24,17 +26,20 @@ Solution Ils::run() {
 
   Solution best = Construction(&restart);
   LocalSearch(best, 0);
+  debug("did construction and ls");
   Solution globalBest = best;
 
   int iteration = 1; 
   int iterationsWithoutImprovement = 0;
 
+  // debug("ils");
   Solution currentSolution;
-  while (iteration <= 500) {
+  while (iteration <= 1) {
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
     currentSolution = Perturbation(&best, alpha);
+
     LocalSearch(currentSolution, iteration);
 
     if (currentSolution.getObjective() > best.getObjective()) {
@@ -54,6 +59,7 @@ Solution Ils::run() {
 
     if (iterationsWithoutImprovement > NON_IMPROVEMENTS_THRESHOLD) {
       best = restart.run();
+
       // std::cout << "\n\nrestarted best: ";
       // best.print();
 
@@ -81,6 +87,7 @@ Solution Ils::run() {
 Solution Ils::Construction(RestartSolution* restart) {
   GreedyKInter kInter(input);
   kInter.setRestart(restart);
+  // debug("will run kinter");
   return kInter.run();
 }
 

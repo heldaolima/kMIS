@@ -10,7 +10,10 @@ int Lrc::set(Solution solution, vector<setForCosts> incremental_cost, int inferi
 
   for (int j = 0; j < incremental_cost.size(); j++) {
     if (incremental_cost[j].identifier != -1) {
-      if (!solution.isSubsetInSolution[incremental_cost[j].identifier] && incremental_cost[j].objective >= inferiorLimit) {
+      if (
+        !solution.isSubsetInSolution[incremental_cost[j].identifier] && 
+        incremental_cost[j].objective >= inferiorLimit
+      ) {
         this->lrc[j] = true;
         tam_lrc++;
       } else {

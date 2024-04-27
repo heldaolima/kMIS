@@ -16,6 +16,7 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
   bool solvable = true;
 
   Input* input = new Input(inputFile.path(), &solvable);
+  std::cout << ("created input") << "\n";
   if (solvable) {
     tabu = Tabu(input->quantityOfSubsets);
     Heuristic* heuristic = HeuristicFactory::create(input, type);
@@ -24,6 +25,7 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
       t1 = clock();
         Solution solution = heuristic->run();
       t2 = clock();
+      std::cout << "run\n";
 
       times.set(t1, t2);
       objs.set(solution.getObjective(), solution.getIterationFound(), i);

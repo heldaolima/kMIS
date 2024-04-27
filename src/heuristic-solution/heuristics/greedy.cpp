@@ -2,10 +2,14 @@
 #include "../dbg.h"
 #include "../globals.h"
 #include <algorithm>
+#include "../data_structures/solutionMinusOne.h"
+#include <execution>
+#include <iostream>
 
 void GreedyKInter::setRestart(RestartSolution* restart) {
   this->restart = restart;
 }
+
 /*
   A cada iteração, incluir um subconjunto ainda não incluso na solução
   tal que a interseção de seus elementos com os da solução parcial
@@ -13,7 +17,7 @@ void GreedyKInter::setRestart(RestartSolution* restart) {
   maior número de elementos.
 */
 Solution GreedyKInter::run() {
-  int i = 0;
+  int i = 0, penultimo = 0;
   Solution solution(input->quantityOfSubsets);
 
   vector<Subset> subsets = input->subsets;
@@ -42,6 +46,8 @@ Solution GreedyKInter::run() {
   }
 
   solution.updateBitsAndObjective(partialSolution);
-  // solution.print();
+
+  computeSolutionMinusOne(input, &solution);
+
   return solution;
 }

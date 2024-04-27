@@ -16,7 +16,7 @@ public:
     this->iteration = iteration;
   }
   void localSearch(Solution &initialSolution);
-  void greedyLocalSearchOne(Solution &solution);
+  void swap1(Solution &solution);
   void greedyLocalSearchTwo(Solution &solution);
   void randomLocalSearchTwo(Solution &solution);
 };
