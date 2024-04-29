@@ -1,6 +1,7 @@
 #include <filesystem>
 
 #include "data_structures/input.h"
+#include "data_structures/solutionMinusOne.h"
 #include "dbg.h"
 #include "helpers/heuristic_tester.h"
 #include "heuristics/greedy.h"
@@ -26,6 +27,8 @@ void testSingle(string test) {
   string file = path + test;
   bool resolve = false;
   Input* input = new Input(file, &resolve);
+
+  minusOne = SolutionMinusOne(input);
   RestartSolution r = RestartSolution(input);
 
   GreedyKInter kinter(input);

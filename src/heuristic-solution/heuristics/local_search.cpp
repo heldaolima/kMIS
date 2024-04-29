@@ -39,7 +39,7 @@ vector<int> LocalSearch::greedyStep(int currentK, Solution* partialSolution, Rem
   vector<int> addedSets;
 
   int idx = 0;
-  for (const Subset subset : input->subsets) {
+  for (Subset subset : input->subsets) {
     if (
       // !tabu.isTabu(subset.identifier, iteration) &&
       remove != subset.identifier && 
@@ -94,10 +94,11 @@ void LocalSearch::swap1(Solution &solution) {
     // }
 
     debug("will try to remove %d", remove);
-    if (solutionMinusOne[remove].sameAsSolution ||
+    if (
+      // solutionMinusOne[remove].sameAsSolution ||
       // pulei++;
       tabu.isTabu(remove, iteration)) {
-      debug("nao vou ver, estado no mapa: [%i]", solutionMinusOne[remove].sameAsSolution);
+      // debug("nao vou ver, estado no mapa: [%i]", solutionMinusOne[remove].sameAsSolution);
       continue;
     } 
 
@@ -108,8 +109,8 @@ void LocalSearch::swap1(Solution &solution) {
         !solution.isSubsetInSolution[i]
       ) {
         debug("vou tentar inserir: %d", input->subsets[i].identifier);
-        bits = intersection(solutionMinusOne[remove].bits,
-                            input->subsets[i].bits);
+        // bits = intersection(solutionMinusOne[remove].bits,
+        //                     input->subsets[i].bits);
 
         {
           debug("did intersection: ");
@@ -124,8 +125,8 @@ void LocalSearch::swap1(Solution &solution) {
           solution.swap(remove, input->subsets[i].identifier, &bits);
           debug("\ndid the swap: ");
           solution.print();
-          removeKey(remove);
-          computeSolutionMinusOne(input, &solution);
+          // removeKey(remove);
+          // computeSolutionMinusOne(input, &solution);
           debug("Pulei %d de %d e ainda melhorei", pulei, input->k);
           return;
         }
@@ -160,14 +161,14 @@ void LocalSearch::greedyLocalSearchTwo(Solution &solution) {
 
     if (partialSolution.getObjective() > solution.getObjective()) {
       debug("on ls222 will remove %d %d", s1, s2);
-      removeKey(s1);
-      removeKey(s2);
+      // removeKey(s1);
+      // removeKey(s2);
       solution = partialSolution;
       for (int s: addedSets) {
         if (useTabu)
           tabu.setTabu(s, iteration);
       }
-      computeSolutionMinusOne(input, &solution);
+      // computeSolutionMinusOne(input, &solution);
 
       return;
     }

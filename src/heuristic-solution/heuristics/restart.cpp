@@ -48,7 +48,7 @@ Solution RestartSolution::run() {
 
   solution.updateBitsAndObjective(partialSolution);
 
-  computeSolutionMinusOne(input, &solution);
+  // computeSolutionMinusOne(input, &solution);
 
   return solution;
 }

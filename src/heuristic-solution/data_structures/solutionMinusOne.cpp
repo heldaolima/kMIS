@@ -1,15 +1,14 @@
 #include "solutionMinusOne.h"
 #include <iostream>
-#include <utility>
+#include "../globals.h"
 #include "../dbg.h"
+#include "solution.h"
 
-map<int, partial> solutionMinusOne;
-map<std::pair<int, int>, partial> solutionMinusTwo;
+SolutionMinusOne minusOne; 
 
-void computeSolutionMinusOne(Input* input, Solution* solution) {
+void SolutionMinusOne::compute(Solution* solution) {
   std::cout << "\n";
   solution->print();
-  auto copy = solutionMinusOne;
 
   bitset<numberOfBits> partialBits;
   partialBits.set();
@@ -20,37 +19,56 @@ void computeSolutionMinusOne(Input* input, Solution* solution) {
 
   prefix[0] = partialBits;
   for (i = 1; i < input->k; i++) {
-    prefix[i] = intersection(input->subsets[solution->subsetsInSolution[i-1]].bits, 
+    prefix[i] = intersection(input->subsets[solution->subsetsInSolution[i-1]].bits,
                              prefix[i-1]);
   }
 
+  int count = 0;
   for (i = input->k - 1; i >= 0; i--) {
     partialBits = intersection(suffixResult, prefix[i]);
-    suffixResult = intersection(suffixResult,
-                                input->subsets[solution->subsetsInSolution[i]].bits);
-    solutionMinusOne[solution->subsetsInSolution[i]] = {
+    count = partialBits.count();
+
+    // printf("[%d] Count: %zu", solution->subsetsInSolution[i],
+    //        partialBits.count());
+    suffixResult = intersection(input->subsets[solution->subsetsInSolution[i]].bits,
+                               suffixResult);
+
+    list[solution->subsetsInSolution[i]] = {
+      true,
       partialBits,
       partialBits == solution->bits,
+      count == 0 || count < solution->getObjective() 
     };
   }
 
-
-  map<int, partial>::iterator it;
-  std::cout << "Solution minus one: \n";
-  for (it = solutionMinusOne.begin(); it != solutionMinusOne.end(); it++) {
-    printf("[%d] { ss: %i, os: %i }: ", 
-           it->first, it->second.sameAsSolution, it->second.isOutsideTheSolution);
-    for (i = 0; i < numberOfBits; i++) {
-      if (it->second.bits[i]) {
-        std::cout << i << " ";
+  for (i = 0; i < input->quantityOfSubsets; i++) {
+    if (list[i].set) {
+      printf("[%d] { eq = %i, le = %i } Bits: ", i, list[i].sameAsSolution, list[i].less);
+      for (int b = 0; b < numberOfBits; b++) {
+        if (list[i].bits[b]) {
+          std::cout << b << " ";
+        }
       }
+      std::cout << "\n";
     }
-    std::cout << "\n";
   }
 }
 
-void removeKey(int key) {
-  debug("will erase key: %d", key);
-  int x = solutionMinusOne.erase(key);
-  debug("erased: %d", x);
+void SolutionMinusOne::remove(int idx) {
+  list[idx].set = false;
+}
+
+void SolutionMinusOne::print() {
+  int i = 0;
+  for (i = 0; i < input->quantityOfSubsets; i++) {
+    if (list[i].set) {
+      printf("[%d] { eq = %i, le = %i } Bits: ", i, list[i].sameAsSolution, list[i].less);
+      for (int b = 0; b < numberOfBits; b++) {
+        if (list[i].bits[b]) {
+          std::cout << b << " ";
+        }
+      }
+      std::cout << "\n";
+    }
+  }
 }
