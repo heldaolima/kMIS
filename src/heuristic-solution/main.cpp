@@ -29,20 +29,20 @@ void testSingle(string test) {
   Input* input = new Input(file, &resolve);
 
   minusOne = SolutionMinusOne(input);
-  RestartSolution r = RestartSolution(input);
-
-  GreedyKInter kinter(input);
-  kinter.setRestart(&r);
-  Solution s = kinter.run();
-
-  perturbReactive(s, input, 0.4);
-
-
-
-  // tabu = Tabu(input->quantityOfSubsets);
+  // RestartSolution r = RestartSolution(input);
   //
-  // Ils ils(input);
-  // ils.run();
+  // GreedyKInter kinter(input);
+  // kinter.setRestart(&r);
+  // Solution s = kinter.run();
+  //
+  // perturbReactive(s, input, 0.4);
+
+
+
+  tabu = Tabu(input->quantityOfSubsets);
+  //
+  Ils ils(input);
+  ils.run();
 
   delete input;
 }

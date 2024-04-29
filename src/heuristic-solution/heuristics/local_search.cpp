@@ -88,20 +88,19 @@ void LocalSearch::swap1(Solution &solution) {
 
   debug("\n\nswap1 doido");
   for (const int remove: solution.subsetsInSolution) {
-    // if (solutionMinusOne[remove].sameAsSolution) {
-    //   pulei++;
-    //   continue;
-    // }
+    if (!minusOne.interesting(remove)) {
+      // solutionMinusOne[remove].sameAsSolution) {
+      pulei++;
+      continue;
+    }
 
-    debug("will try to remove %d", remove);
     if (
-      // solutionMinusOne[remove].sameAsSolution ||
-      // pulei++;
+      !minusOne.interesting(remove) ||
       tabu.isTabu(remove, iteration)) {
-      // debug("nao vou ver, estado no mapa: [%i]", solutionMinusOne[remove].sameAsSolution);
       continue;
     } 
 
+    debug("will try to remove %d", remove);
     for (i = 0; i < input->quantityOfSubsets; i++) {
       printf("i=%d\n", i);
       if (
@@ -109,15 +108,12 @@ void LocalSearch::swap1(Solution &solution) {
         !solution.isSubsetInSolution[i]
       ) {
         debug("vou tentar inserir: %d", input->subsets[i].identifier);
-        // bits = intersection(solutionMinusOne[remove].bits,
-        //                     input->subsets[i].bits);
+        bits = intersection(minusOne.list[remove].bits,
+                            input->subsets[i].bits);
 
         {
           debug("did intersection: ");
-          for (int j = 0; j < numberOfBits; j++){
-            if (bits[j]) std::cout << j <<" ";
-          }
-          std::cout << "\n\n";
+          printBits(bits);
         }
 
         if (bits.count() > solution.getObjective()) {
@@ -125,6 +121,9 @@ void LocalSearch::swap1(Solution &solution) {
           solution.swap(remove, input->subsets[i].identifier, &bits);
           debug("\ndid the swap: ");
           solution.print();
+          minusOne.remove(remove);
+
+          minusOne.compute(&solution);
           // removeKey(remove);
           // computeSolutionMinusOne(input, &solution);
           debug("Pulei %d de %d e ainda melhorei", pulei, input->k);
@@ -161,6 +160,8 @@ void LocalSearch::greedyLocalSearchTwo(Solution &solution) {
 
     if (partialSolution.getObjective() > solution.getObjective()) {
       debug("on ls222 will remove %d %d", s1, s2);
+      minusOne.remove(s1);
+      minusOne.remove(s2);
       // removeKey(s1);
       // removeKey(s2);
       solution = partialSolution;
@@ -168,7 +169,8 @@ void LocalSearch::greedyLocalSearchTwo(Solution &solution) {
         if (useTabu)
           tabu.setTabu(s, iteration);
       }
-      // computeSolutionMinusOne(input, &solution);
+
+      minusOne.compute(&solution);
 
       return;
     }

@@ -59,7 +59,7 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
     minusOne.remove(avaliableSets[i]);
   }
 
-  minusOne.print();
+  // minusOne.print();
 
   // vector<Subset> avaliableSets = getAvaliableSets(&solution, input,
   // &sizeOfAvaliableSets);
@@ -76,8 +76,8 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
 
   for (int s : perturbed.subsetsInSolution) {
     intersec = intersection(intersec, input->subsets[s].bits);
-    printf("intersec after adding %d: ", s);
-    printBits(intersec);
+    // printf("intersec after adding %d: ", s);
+    // printBits(intersec);
   }
 
   //
@@ -97,53 +97,22 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
 
     isAvaliable[input->subsets[chosenFromLRC].identifier] = false;
     // debug("wil add %d", avaliableSets[chosenFromLRC].identifier);
-    //
     intersec = intersection(intersec, input->subsets[chosenFromLRC].bits);
-    printf("intersec after adding %d: ", input->subsets[chosenFromLRC].identifier);
-    printBits(intersec);
+    // printBits(intersec);
 
     perturbed.addSubset(input->subsets[chosenFromLRC].identifier);
-    //
+
     if (i + 1 == input->k) {
       break;
     }
-    //
+
     costs.update(&isAvaliable, &input->subsets, &perturbed);
     i++;
   }
-  //
+
   perturbed.setBitsAndObjective(intersec);
-  perturbed.print();
-  //
+  // perturbed.print();
+
   minusOne.compute(&perturbed);
-  //
   return perturbed;
-}
-
-vector<Subset> getAvaliableSets(Solution *solution, Input *input,
-                                int *numberOfSets) {
-  vector<Subset> avaliableSets;
-  Subset dummy(-1);
-  int qtd = 0;
-
-  for (int i = 0; i < input->quantityOfSubsets; i++) {
-    if (!solution->isSubsetInSolution[i]) {
-      avaliableSets.push_back(input->subsets[i]);
-      qtd++;
-    } else {
-      avaliableSets.push_back(dummy);
-    }
-  }
-
-  *numberOfSets = qtd;
-  return avaliableSets;
-}
-
-void removeRandomSets(Solution &solution, int numberOfSets) {
-  for (int i = 0; i < numberOfSets; i++) {
-    int idxRemove = randint(solution.subsetsInSolution.size());
-    solution.removeSubset(idxRemove, solution.subsetsInSolution[idxRemove]);
-    debug("will remove: %d", solution.subsetsInSolution[idxRemove]);
-    // removeKey(solution.subsetsInSolution[idxRemove]);
-  }
 }

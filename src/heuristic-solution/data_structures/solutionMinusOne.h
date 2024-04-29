@@ -19,9 +19,10 @@ typedef struct partial {
 
 class SolutionMinusOne {
 private:
-  vector<partial> list;
    Input* input;
 public:
+  vector<partial> list;
+
   SolutionMinusOne() {}
   SolutionMinusOne(Input *input): input(input) {
     list = vector<partial>(input->quantityOfSubsets);
@@ -30,6 +31,7 @@ public:
   void compute(Solution* solution);
   void remove(int idx);
   void print();
+  bool interesting(int idx);
 };
 
 extern SolutionMinusOne minusOne; 

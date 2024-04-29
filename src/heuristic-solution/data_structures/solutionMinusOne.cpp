@@ -41,21 +41,15 @@ void SolutionMinusOne::compute(Solution* solution) {
     };
   }
 
-  for (i = 0; i < input->quantityOfSubsets; i++) {
-    if (list[i].set) {
-      printf("[%d] { eq = %i, le = %i } Bits: ", i, list[i].sameAsSolution, list[i].less);
-      for (int b = 0; b < numberOfBits; b++) {
-        if (list[i].bits[b]) {
-          std::cout << b << " ";
-        }
-      }
-      std::cout << "\n";
-    }
-  }
+  this->print();
 }
 
 void SolutionMinusOne::remove(int idx) {
   list[idx].set = false;
+}
+
+bool SolutionMinusOne::interesting(int idx) {
+    return list[idx].set && !list[idx].sameAsSolution && !list[idx].less;
 }
 
 void SolutionMinusOne::print() {
