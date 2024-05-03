@@ -2,7 +2,7 @@
 #include "../dbg.h"
 #include "../globals.h"
 #include <algorithm>
-#include "../data_structures/solutionMinusOne.h"
+#include "../data_structures/partialSolution.h"
 #include <execution>
 #include <iostream>
 
@@ -47,7 +47,7 @@ Solution GreedyKInter::run() {
 
   solution.updateBitsAndObjective(partialSolution);
 
-  minusOne.compute(&solution);
+  partialSolutions.compute(&solution);
 
   return solution;
 }

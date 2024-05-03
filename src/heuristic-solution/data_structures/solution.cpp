@@ -126,16 +126,42 @@ unsigned int Solution::getIterationFound() {
   return iterationFound;
 }
 
-void Solution::swap(int out, int in, bitset<numberOfBits>* bits) {
-  setBitsAndObjective(*bits);
+void Solution::swapSets(int idxOut, int in) {
+  // printf("Before swap:\n");
+  // print();
+
+  int out = subsetsInSolution[idxOut];
+  // debug("idxOut=%d out=%d, in=%d ", idxOut, out, in);
+
 
   isSubsetInSolution[out] = false;
   isSubsetInSolution[in] = true;
+  subsetsInSolution[idxOut] = in;
+
+  // printf("after swap: ");
+  // print();
+}
+
+void Solution::swap(int idxOut, int in) {
+  swapSets(idxOut, in);
+}
+
+void Solution::swap(int idxOut, int in, bitset<numberOfBits> *bits, int newObjective) {
+  this->bits = *bits;
+  objective = newObjective;
+
+  swapSets(idxOut, in);
 
   for (int i = 0; i < subsetsInSolution.size(); i++) {
-    if (subsetsInSolution[i] == out) {
-      subsetsInSolution[i] = in;
-      break;
+    for (int j = 0; j < subsetsInSolution.size(); j++) {
+      if (i != j && subsetsInSolution[i] == subsetsInSolution[j]) {
+        debug("equal= %d", subsetsInSolution[i]);
+        print();
+        exit(1);
+      }
     }
   }
+
+  // printf("solution after: ");
+  // print();
 }

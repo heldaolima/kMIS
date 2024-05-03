@@ -1,24 +1,25 @@
 #include <filesystem>
 
 #include "data_structures/input.h"
-#include "data_structures/solutionMinusOne.h"
+#include "data_structures/partialSolution.h"
 #include "dbg.h"
 #include "helpers/heuristic_tester.h"
 #include "heuristics/greedy.h"
 #include "heuristics/ils.h"
 #include "helpers/random_utils.h"
+#include "heuristics/local_search.h"
 #include "heuristics/perturb.h"
 #include "heuristics/restart.h"
 #include "heuristics/tabu.h"
 #include "partialExperiments.h"
 
 // #define TEST
-#define TEST_SINGLE
+// #define TEST_SINGLE
 // #define PRELIMINARIES
 
 int nonImprovementsThreshold = 75;
 int tabuTenure = 5;
-bool useTabu = true;
+bool useTabu = false;
 bool useLocalSearchRand = false;
 
 const string path = "../instances/";
@@ -28,21 +29,24 @@ void testSingle(string test) {
   bool resolve = false;
   Input* input = new Input(file, &resolve);
 
-  minusOne = SolutionMinusOne(input);
-  // RestartSolution r = RestartSolution(input);
+  partialSolutions = PartialSolution(input);
+  RestartSolution r = RestartSolution(input);
+  // LocalSearch ls = LocalSearch(input, 0);
   //
   // GreedyKInter kinter(input);
   // kinter.setRestart(&r);
   // Solution s = kinter.run();
+  // ls.swap2(s);
+
   //
   // perturbReactive(s, input, 0.4);
 
 
 
   tabu = Tabu(input->quantityOfSubsets);
-  //
   Ils ils(input);
-  ils.run();
+  Solution s = ils.run();
+  s.print();
 
   delete input;
 }
@@ -60,7 +64,7 @@ int main(int argc, char* argv[]) {
   // string dirs[1] = {"type1"};
 
   // HeuristicTester greedyExperiments("results_kinter.txt", kInterFactory);
-  HeuristicTester ilsExperiments("results_ils.csv", ILS);
+  HeuristicTester ilsExperiments("results_ils_with_restart.csv", ILS);
 
   #ifdef TEST_SINGLE 
     testSingle(argv[1]);

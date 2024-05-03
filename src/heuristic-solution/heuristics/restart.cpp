@@ -1,6 +1,6 @@
 #include "restart.h"
 #include "../helpers/random_utils.h"
-#include "../data_structures/solutionMinusOne.h"
+#include "../data_structures/partialSolution.h"
 #include "../dbg.h"
 #include <algorithm>
 
@@ -47,6 +47,8 @@ Solution RestartSolution::run() {
   }
 
   solution.updateBitsAndObjective(partialSolution);
+
+  partialSolutions.compute(&solution);
 
   // computeSolutionMinusOne(input, &solution);
 

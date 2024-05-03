@@ -1,73 +1,44 @@
 #include "perturb.h"
-#include "../data_structures/solutionMinusOne.h"
+#include "../data_structures/partialSolution.h"
 #include "../dbg.h"
 #include "grasp/costs.h"
 #include "grasp/lrc.h"
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
-#include <unordered_set>
-
-#define FLOOR 2
-
-vector<Subset> getAvaliableSets(Solution *, Input *, int *);
-void removeRandomSets(Solution &, int);
-int getSizeOfAvaliableSubsets(vector<Subset> subsets);
 
 Solution perturbReactive(Solution solution, Input *input, double alpha) {
+  // debug("solution: ");
+  // solution.print();
   int i = 0;
   Solution perturbed = Solution(input->quantityOfSubsets);
 
-  debug("solution in perturb: ");
-  solution.print();
-
   int numberOfSetsToBeRemoved = std::ceil(std::sqrt(input->k));
-  if (input->k + numberOfSetsToBeRemoved >= input->quantityOfSubsets) {
+  if (input->k + numberOfSetsToBeRemoved > input->quantityOfSubsets) {
     numberOfSetsToBeRemoved = std::ceil(std::log(input->k));
   }
 
-  debug("will remove %d elements", numberOfSetsToBeRemoved);
-
   int numberOfAvaliableSets = input->k;
   vector<int> avaliableSets = solution.subsetsInSolution;
-  // newSubsetsInSolution;
 
   vector<bool> isAvaliable(input->quantityOfSubsets, true);
 
   for (int s : avaliableSets) {
     isAvaliable[s] = false;
   }
+  // printVec(isAvaliable);
 
+  int chosenIdx;
   for (i = 0; i < input->k - numberOfSetsToBeRemoved; i++) {
-    int chosenIdx = randint(numberOfAvaliableSets);
-    // newSubsetsInSolution.push_back(avaliableSets[chosenIdx]);
-
+    chosenIdx = randint(numberOfAvaliableSets);
     perturbed.addSubset(avaliableSets[chosenIdx]);
 
-    std::cout << "added " << avaliableSets[chosenIdx] << "\n";
     std::swap(avaliableSets[chosenIdx],
               avaliableSets[numberOfAvaliableSets - 1]);
+
     numberOfAvaliableSets--;
   }
 
-
-  printVec(perturbed.subsetsInSolution);
-  std::cout << "avaliable sets: ";
-  printVec(avaliableSets);
-
-  for (i = 0; i < numberOfAvaliableSets; i++) {
-    minusOne.remove(avaliableSets[i]);
-  }
-
-  // minusOne.print();
-
-  // vector<Subset> avaliableSets = getAvaliableSets(&solution, input,
-  // &sizeOfAvaliableSets);
-
-  // removeRandomSets(solution, numberOfSetsToBeRemoved);
-  // solution.updateIntersection(avaliableSets);
-
-  // aqui: avaliableSets = todos os subconjuntos - os que foram usados
   Costs costs(&isAvaliable, &input->subsets);
   Lrc lrc(input->quantityOfSubsets);
 
@@ -76,29 +47,24 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
 
   for (int s : perturbed.subsetsInSolution) {
     intersec = intersection(intersec, input->subsets[s].bits);
-    // printf("intersec after adding %d: ", s);
-    // printBits(intersec);
   }
 
-  //
   int inferiorLimit, tam_lrc, random_index, chosenFromLRC;
   i = perturbed.subsetsInSolution.size();
   while (i < input->k) {
     inferiorLimit = getInferiorLimit(alpha, costs.c_min, costs.c_max);
-    tam_lrc = lrc.set(perturbed, costs.incremental_cost, inferiorLimit);
+    // debug("inferior limit: %d", inferiorLimit);
+    tam_lrc = lrc.set(&perturbed, &costs.incremental_cost, inferiorLimit);
     // debug("tam_lrc: %d", tam_lrc);
-    //
-    random_index = randint(tam_lrc - 1);
-    // randBetween(0, tam_lrc-1);
-    // std::cout << "randomIndex: " << random_index << "\n";
-    chosenFromLRC = lrc.getIth(random_index);
-    // debug("chosen from lrc was %d", input->subsets[chosenFromLRC].identifier);
-    // debug("from costs: %d", costs.incremental_cost[chosenFromLRC].identifier);
 
+    random_index = randBetween(0, tam_lrc-1);
+    // debug("random_index: %d", random_index);
+    chosenFromLRC = lrc.getIth(random_index);
+
+    // debug("chosen=%d", input->subsets[chosenFromLRC].identifier);
+    // std::cout << "is avaliable " << isAvaliable[chosenFromLRC] << "\n";
     isAvaliable[input->subsets[chosenFromLRC].identifier] = false;
-    // debug("wil add %d", avaliableSets[chosenFromLRC].identifier);
     intersec = intersection(intersec, input->subsets[chosenFromLRC].bits);
-    // printBits(intersec);
 
     perturbed.addSubset(input->subsets[chosenFromLRC].identifier);
 
@@ -111,8 +77,19 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
   }
 
   perturbed.setBitsAndObjective(intersec);
-  // perturbed.print();
 
-  minusOne.compute(&perturbed);
+  // perturbed.print();
+  // debug("on perturb, check if perturbed is repeated");
+  for (int i = 0; i < input->k; i++) {
+    for (int j = 0; j < input->k; j++) {
+      if (i != j && perturbed.subsetsInSolution[i] == perturbed.subsetsInSolution[j]) {
+        printf("repeated: %d\n", perturbed.subsetsInSolution[j]);
+        exit(1);
+      }
+    }
+  
+  }
+
+  partialSolutions.compute(&perturbed);
   return perturbed;
 }

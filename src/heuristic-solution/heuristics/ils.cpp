@@ -9,7 +9,7 @@
 #include "grasp/costs.h"
 #include "restart.h"
 #include "tabu.h"
-#include "../data_structures/solutionMinusOne.h"
+#include "../data_structures/partialSolution.h"
 #include "local_search.h"
 
 #define NON_IMPROVEMENTS_THRESHOLD 75
@@ -26,21 +26,19 @@ Solution Ils::run() {
 
   Solution best = Construction(&restart);
   LocalSearch(best, 0);
-  debug("did construction and ls");
   Solution globalBest = best;
 
   int iteration = 1; 
   int iterationsWithoutImprovement = 0;
 
-  // debug("ils");
   Solution currentSolution;
-  while (iteration <= 1) {
+  while (iteration <= 500) {
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
     currentSolution = Perturbation(&best, alpha);
-
     LocalSearch(currentSolution, iteration);
+
 
     if (currentSolution.getObjective() > best.getObjective()) {
       // currentSolution.print();
@@ -79,6 +77,7 @@ Solution Ils::run() {
       auxArrays.updateProbabilities(best.getObjective());
 
     iteration++;
+    // currentSolution.print();
   }
 
   return globalBest;
@@ -87,7 +86,6 @@ Solution Ils::run() {
 Solution Ils::Construction(RestartSolution* restart) {
   GreedyKInter kInter(input);
   kInter.setRestart(restart);
-  // debug("will run kinter");
   return kInter.run();
 }
 

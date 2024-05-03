@@ -23,6 +23,7 @@ bool Tabu::isTabu(int item, int iteration) {
   // if (tabu_list[item] > iteration) {
   //   std::cout << item << " is tabu at it" << iteration << ", will not add\n";
   // }
+  // std::cout << "useTabu: " << useTabu << "\n";
   // std::cout << "item: " << item << " tabu=" << tabu_list[item] << " iteration: " << iteration << "\n";
   // std::cout << "is tabu: " << (tabu_list[item] > iteration) << "\n";
     return useTabu ? tabu_list[item] > iteration : false;

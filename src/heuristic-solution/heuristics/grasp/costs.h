@@ -22,61 +22,88 @@ typedef struct costs {
   costs(vector<bool> *isAvaliable, vector<Subset> *subsets) {
     bool first = true;
     for (int i = 0; i < subsets->size(); i++) {
-      if (isAvaliable->at(subsets->at(i).identifier)) {
+      if (!isAvaliable->at(i)) {
+        incremental_cost.push_back({ -1, 0 });
+      } else {
+
         incremental_cost.push_back({
-          subsets->at(i).identifier, 
-          subsets->at(i).getNumberOfElements() 
+          subsets->at(i).identifier,
+          subsets->at(i).getNumberOfElements(),
         });
 
         if (first) {
-          c_max = incremental_cost[0].objective;
-          c_min = incremental_cost[0].objective;
-
-          first = false;
-          continue;
-        }
-
-        if (
-          incremental_cost[i].identifier != -1 && 
-          incremental_cost[i].objective > c_max
-        )
           c_max = incremental_cost[i].objective;
-
-        if (incremental_cost[i].identifier != -1 && 
-          incremental_cost[i].objective < c_min
-        )
           c_min = incremental_cost[i].objective;
-      } else {
-        incremental_cost.push_back({ -1, 0 });
+          first = false;
+        } else {
+          if (
+            incremental_cost[i].identifier != -1 && 
+            incremental_cost[i].objective > c_max
+          )
+            c_max = incremental_cost[i].objective;
+
+          if (
+            incremental_cost[i].identifier != -1 && 
+            incremental_cost[i].objective < c_min
+          )
+            c_min = incremental_cost[i].objective;
+        }
       }
+
+      // if (isAvaliable->at(subsets->at(i).identifier)) {
+      //
+      //   incremental_cost.push_back({
+      //     subsets->at(i).identifier, 
+      //     subsets->at(i).getNumberOfElements() 
+      //   });
+      //
+      //   if (first) {
+      //     c_max = incremental_cost[i].objective;
+      //     c_min = incremental_cost[i].objective;
+      //
+      //     first = false;
+      //     continue;
+      //   }
+      //
+      //   if (
+      //     incremental_cost[i].identifier != -1 && 
+      //     incremental_cost[i].objective > c_max
+      //   )
+      //     c_max = incremental_cost[i].objective;
+      //
+      //   if (incremental_cost[i].identifier != -1 && 
+      //     incremental_cost[i].objective < c_min
+      //   )
+      //     c_min = incremental_cost[i].objective;
+      // } else {
+      //   incremental_cost.push_back({ -1, 0 });
+      // }
     } 
   }
-
-  // int getInferiorLimit(double alpha) {
-  //   return (int) c_min + alpha * (c_max - c_min);
-  // }
 
   void update(vector<bool>* isAvaliable, vector<Subset>* sets, Solution* solution) {
     int auxIdx = 0;
 
     for (int i = 0; i < sets->size(); i++) {
-      int j = sets->at(i).identifier;
-      if (isAvaliable->at(j)) {
-        incremental_cost[j].objective = intersection(solution->bits, sets->at(i).bits).count();
+      if (isAvaliable->at(i)) {
+        int j = sets->at(i).identifier;
+        if (!solution->isSubsetInSolution[j]) {
+          incremental_cost[j].objective = intersection(solution->bits, sets->at(i).bits).count();
 
-        if (auxIdx == 0) {
-          c_min = incremental_cost[j].objective;
-          c_max = incremental_cost[j].objective;
-        }
-        else {
-          if (incremental_cost[j].objective < c_min)
+          if (auxIdx == 0) {
             c_min = incremental_cost[j].objective;
-
-          if (incremental_cost[j].objective > c_max)
             c_max = incremental_cost[j].objective;
-        }
-        auxIdx++;
+          } else {
+            if (incremental_cost[j].objective < c_min) {
+              c_min = incremental_cost[j].objective;
+            }
 
+            if (incremental_cost[j].objective > c_max) {
+              c_max = incremental_cost[j].objective;
+            }
+          }
+          auxIdx++;
+        }
       }
     }
 

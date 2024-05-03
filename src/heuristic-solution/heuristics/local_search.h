@@ -17,6 +17,7 @@ public:
   }
   void localSearch(Solution &initialSolution);
   void swap1(Solution &solution);
+  void swap2(Solution &solution);
   void greedyLocalSearchTwo(Solution &solution);
   void randomLocalSearchTwo(Solution &solution);
 };

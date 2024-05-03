@@ -12,6 +12,7 @@ class Solution {
 private:
   unsigned int objective = 0;
   unsigned int iterationFound = 0;
+  void swapSets(int idxOut, int in);
 public:
   bitset<numberOfBits> bits;
   vector<bool> isSubsetInSolution;
@@ -36,7 +37,8 @@ public:
   Solution copyWithoutSubsets(Input* input, RemoveSubsets remove);
   void setIterationFoud(int it);
   unsigned int getIterationFound();
-  void swap(int out, int in, bitset<numberOfBits>* bits);
+  void swap(int idxOut, int in);
+  void swap(int idxOut, int in, bitset<numberOfBits> *bits, int newObjective);
 };
 
 #endif
