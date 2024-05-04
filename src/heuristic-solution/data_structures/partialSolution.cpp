@@ -1,15 +1,11 @@
 #include "partialSolution.h"
-#include <iostream>
 #include "../globals.h"
-#include "../dbg.h"
 #include "solution.h"
+#include <algorithm>
 
 PartialSolution partialSolutions; 
 
 void PartialSolution::compute(Solution* solution) {
-  // std::cout << "\n";
-  // solution->print();
-
   computeOne(solution);
   computeTwo(solution);
 }
@@ -29,11 +25,8 @@ void PartialSolution::computeOne(Solution* solution) {
                              prefix[i-1]);
   }
 
-  int count = 0;
   for (i = input->k - 1; i >= 0; i--) {
     partialBits = intersection(suffixResult, prefix[i]);
-    count = partialBits.count();
-
     suffixResult = intersection(input->subsets[solution->subsetsInSolution[i]].bits,
                                 suffixResult);
 
@@ -43,8 +36,6 @@ void PartialSolution::computeOne(Solution* solution) {
       partialBits.count() > solution->getObjective(), 
     };
   }
-
-  // printOne();
 }
 
 void PartialSolution::computeTwo(Solution* solution) {
@@ -55,31 +46,29 @@ void PartialSolution::computeTwo(Solution* solution) {
 
   int i = 0, j = 0;
   bitset<numberOfBits> prefix[newK], suffix[newK];
+  bitset<numberOfBits> suffixResult;
 
   int auxIdx;
   int minusOneSubset[newK];
 
   for (i = 0; i < input->k; i++) { 
-    auxIdx = 0;
+    auxIdx = 0; suffixResult.set();
+
     for (j = 0; j < input->k; j++) {
       if (j != i) {
-        minusOneSubset[auxIdx] = solution->subsetsInSolution[j];
-        auxIdx++;
+        minusOneSubset[auxIdx++] = solution->subsetsInSolution[j];
       }
     }
 
-    prefix[0] = partialBits;
+    prefix[0].set();
     for (j = 1; j < newK; j++) {
       prefix[j] = input->subsets[minusOneSubset[j-1]].bits & prefix[j-1];
     }
 
-    suffix[newK - 1] = partialBits;
-    for (j = newK - 2; j >= 0; j--) {
-      suffix[j] = input->subsets[minusOneSubset[j+1]].bits & suffix[j+1];
-    }
+    for (j = newK - 1; j >= 0; j--) {
+      partialBits = prefix[j] & suffixResult;
+      suffixResult = suffixResult & input->subsets[minusOneSubset[j]].bits;
 
-    for (j = 0; j < newK; j++) {
-      partialBits = prefix[j] & suffix[j];
       listTwo[solution->subsetsInSolution[i]][minusOneSubset[j]] = {
         true,
         partialBits,
@@ -87,8 +76,6 @@ void PartialSolution::computeTwo(Solution* solution) {
       };
     }
   }
-
-  // printTwo();
 }
 
 void PartialSolution::remove(int idx) {
@@ -109,7 +96,7 @@ bool PartialSolution::interesting(int i, int j) {
   // std::cout << listTwo[i][j].set << "\n";
   // std::cout << "more: ";
   // std::cout << listTwo[i][j].hasMoreElements << "\n";
-
+ 
   return listTwo[i][j].set && listTwo[i][j].hasMoreElements;
 }
 

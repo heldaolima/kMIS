@@ -88,12 +88,12 @@ void LocalSearch::swap1(Solution &solution) {
   // std::cout << "\nswap1\n";
   for (idxRemove = 0; idxRemove < input->k; idxRemove++) {
     remove = solution.subsetsInSolution[idxRemove];
-    // debug("remove=%d", remove);
-    // if (tabu.isTabu(remove, iteration)) continue;
-    if (!partialSolutions.interesting(remove)) continue;
+    if (!partialSolutions.interesting(remove) || tabu.isTabu(remove, iteration)) continue;
 
     // std::cout << "will try to remove " << remove << "\n";
     for (i = 0; i < input->quantityOfSubsets; i++) {
+      if (tabu.isTabu(input->subsets[i].identifier, iteration)) continue;
+
       if (
         input->subsets[i].identifier != remove &&
         !solution.isSubsetInSolution[i]
@@ -106,12 +106,7 @@ void LocalSearch::swap1(Solution &solution) {
         if (newObjective > solution.getObjective()) {
           tabu.setTabu(input->subsets[i].identifier, iteration);
 
-
           solution.swap(idxRemove, input->subsets[i].identifier, &bits, newObjective);
-
-          // std::cout << "took out " << remove << " , inserted" << input->subsets[i].identifier << "\n";
-          // std::cout << "improved, solution: ";
-          // solution.print();
 
           partialSolutions.remove(remove);
           partialSolutions.compute(&solution);
@@ -129,39 +124,43 @@ void LocalSearch::swap2(Solution& solution) {
   bitset<numberOfBits> bits, copy;
   bits.set();
 
-  // std::cout << "\nswap2\n";
-  // solution.print();
-
   for (idxFirstRemove = 0; idxFirstRemove < input->k; idxFirstRemove++) {
     firstRemove = solution.subsetsInSolution[idxFirstRemove];
+    if (tabu.isTabu(firstRemove, iteration)) continue;
 
     for (idxSecondRemove = 0; idxSecondRemove < input->k; idxSecondRemove++) {
       if (idxFirstRemove == idxSecondRemove) continue;
 
       secondRemove = solution.subsetsInSolution[idxSecondRemove];
+
+      if (tabu.isTabu(secondRemove, iteration)) continue;
       if (!partialSolutions.interesting(firstRemove, secondRemove)) 
         continue;
 
       for (int i = 0; i < input->quantityOfSubsets; i++) {
         int idxBefore = ((i-1) + input->quantityOfSubsets) % input->quantityOfSubsets;
         int idxAfter = ((i+1) + input->quantityOfSubsets) % input->quantityOfSubsets;
-        // printf("i=%d, before=%d, after=%d\n", i, idxBefore, idxAfter);
+
+        if (
+          tabu.isTabu(input->subsets[idxBefore].identifier, iteration) || 
+          tabu.isTabu(input->subsets[idxAfter].identifier, iteration)
+        ) continue;
 
         if (!solution.isSubsetInSolution[i] &&
           !solution.isSubsetInSolution[idxBefore] &&
           !solution.isSubsetInSolution[idxAfter]
         ) {
 
-          // printf("firstRemove=%d, secondRemove=%d\n", firstRemove, secondRemove);
-          // bits = partialSolutions.listTwo[firstRemove][secondRemove].bits & input->subsets[i].bits;
           bits = partialSolutions.listTwo[firstRemove][secondRemove].bits & input->subsets[idxBefore].bits;
           bits &= input->subsets[idxAfter].bits;
 
           newObjective = bits.count();
-          // printf("in: %d & %d | new objective: %d\n", idxBefore, idxAfter, newObjective);
           if (newObjective > solution.getObjective()) {
             solution.swap(idxFirstRemove, idxBefore);
             solution.swap(idxSecondRemove, idxAfter, &bits, newObjective);
+
+            tabu.setTabu(input->subsets[idxBefore].identifier, iteration);
+            tabu.setTabu(input->subsets[idxAfter].identifier, iteration);
 
             partialSolutions.compute(&solution);
             return;
