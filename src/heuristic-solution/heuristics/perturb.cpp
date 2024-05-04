@@ -78,18 +78,7 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
 
   perturbed.setBitsAndObjective(intersec);
 
-  // perturbed.print();
-  // debug("on perturb, check if perturbed is repeated");
-  for (int i = 0; i < input->k; i++) {
-    for (int j = 0; j < input->k; j++) {
-      if (i != j && perturbed.subsetsInSolution[i] == perturbed.subsetsInSolution[j]) {
-        printf("repeated: %d\n", perturbed.subsetsInSolution[j]);
-        exit(1);
-      }
-    }
-  
-  }
+  partialSolutions.computeOne(&perturbed);
 
-  partialSolutions.compute(&perturbed);
   return perturbed;
 }

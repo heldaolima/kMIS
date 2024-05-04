@@ -1,14 +1,9 @@
 #include "partialSolution.h"
 #include "../globals.h"
 #include "solution.h"
-#include <algorithm>
+#include "../dbg.h"
 
 PartialSolution partialSolutions; 
-
-void PartialSolution::compute(Solution* solution) {
-  computeOne(solution);
-  computeTwo(solution);
-}
 
 void PartialSolution::computeOne(Solution* solution) {
   int i = 0;
@@ -36,6 +31,7 @@ void PartialSolution::computeOne(Solution* solution) {
       partialBits.count() > solution->getObjective(), 
     };
   }
+  // printOne();
 }
 
 void PartialSolution::computeTwo(Solution* solution) {
@@ -45,8 +41,7 @@ void PartialSolution::computeTwo(Solution* solution) {
   partialBits.set();
 
   int i = 0, j = 0;
-  bitset<numberOfBits> prefix[newK], suffix[newK];
-  bitset<numberOfBits> suffixResult;
+  bitset<numberOfBits> prefix[newK], suffixResult;
 
   int auxIdx;
   int minusOneSubset[newK];
@@ -76,6 +71,7 @@ void PartialSolution::computeTwo(Solution* solution) {
       };
     }
   }
+  // printTwo();
 }
 
 void PartialSolution::remove(int idx) {
@@ -91,12 +87,6 @@ bool PartialSolution::interesting(int idx) {
 }
 
 bool PartialSolution::interesting(int i, int j) {
-  // std::cout << "will check if " << i << " and " << j << " are interesting in the matrix\n";
-  // std::cout << "set: ";
-  // std::cout << listTwo[i][j].set << "\n";
-  // std::cout << "more: ";
-  // std::cout << listTwo[i][j].hasMoreElements << "\n";
- 
   return listTwo[i][j].set && listTwo[i][j].hasMoreElements;
 }
 

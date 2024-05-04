@@ -18,8 +18,6 @@ typedef struct partial {
 class PartialSolution {
 private:
   Input* input;
-  void computeOne(Solution* solution);
-  void computeTwo(Solution* solution);
 public:
   vector<partial> listOne;
   vector<vector<partial>> listTwo;
@@ -31,7 +29,8 @@ public:
                      vector<partial>(input->quantityOfSubsets));
   };
 
-  void compute(Solution* solution);
+  void computeOne(Solution* solution);
+  void computeTwo(Solution* solution);
   void remove(int idx);
   void remove(int i, int j);
   void printOne();

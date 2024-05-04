@@ -6,14 +6,17 @@
 class RestartSolution {
 private:
   Input* input;
-  vector<bool> wasUsedToStartSolution;
+  vector<int> avaliableSets;
+  int numberOfAvailableSets;
 
 public:
   Solution run();
   void setSubsetAsUsed(int subset);
-  bool checkUsed(int s);
   RestartSolution(Input* input) : input(input) {
-    wasUsedToStartSolution = vector<bool>(input->quantityOfSubsets, false);
+    for (int i = 0; i < input->quantityOfSubsets; i++) {
+      avaliableSets.push_back(i);
+    }
+    numberOfAvailableSets = input->quantityOfSubsets;
   };
 };
 

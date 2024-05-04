@@ -14,12 +14,12 @@
 #include "partialExperiments.h"
 
 // #define TEST
-#define TEST_SINGLE
+// #define TEST_SINGLE
 // #define PRELIMINARIES
 
 int nonImprovementsThreshold = 75;
 int tabuTenure = 5;
-bool useTabu = true;
+bool useTabu = false;
 bool useLocalSearchRand = false;
 
 const string path = "../instances/";
@@ -33,17 +33,17 @@ void testSingle(string test) {
   RestartSolution r = RestartSolution(input);
   // LocalSearch ls = LocalSearch(input, 0);
   //
-  GreedyKInter kinter(input);
-  kinter.setRestart(&r);
-  Solution s = kinter.run();
+  // GreedyKInter kinter(input);
+  // kinter.setRestart(&r);
+  // Solution s = kinter.run();
 
   //
   // perturbReactive(s, input, 0.4);
 
-  // tabu = Tabu(input->quantityOfSubsets);
-  // Ils ils(input);
-  // Solution s = ils.run();
-  // s.print();
+  tabu = Tabu(input->quantityOfSubsets);
+  Ils ils(input);
+  Solution s = ils.run();
+  s.print();
   //
   delete input;
 }
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
   // string dirs[1] = {"type1"};
 
   // HeuristicTester greedyExperiments("results_kinter.txt", kInterFactory);
-  HeuristicTester ilsExperiments("results_ils_restart_tabu_500.csv", ILS);
+  HeuristicTester ilsExperiments("results_ils_500_notabu.csv", ILS);
 
   #ifdef TEST_SINGLE 
     testSingle(argv[1]);

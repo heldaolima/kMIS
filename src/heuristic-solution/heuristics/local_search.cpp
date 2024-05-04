@@ -78,7 +78,7 @@ vector<int> LocalSearch::greedyStep(int currentK, Solution* partialSolution, Rem
 }
 
 // greedy swap(1, 1)
-void LocalSearch::swap1(Solution &solution) {
+bool LocalSearch::swap1(Solution &solution) {
   // printf("on swap1, solution: ");
   // solution.print();
   bitset<numberOfBits> bits;
@@ -108,16 +108,18 @@ void LocalSearch::swap1(Solution &solution) {
 
           solution.swap(idxRemove, input->subsets[i].identifier, &bits, newObjective);
 
-          partialSolutions.remove(remove);
-          partialSolutions.compute(&solution);
-          return;
+          // partialSolutions.remove(remove);
+          // partialSolutions.compute(&solution);
+          return true;
         }
       }
     }
   }
+
+  return false;
 }
 
-void LocalSearch::swap2(Solution& solution) {
+bool LocalSearch::swap2(Solution& solution) {
   int newObjective = 0, idxFirstRemove = 0, idxSecondRemove = 0,
     firstRemove = 0, secondRemove = 0;
 
@@ -128,7 +130,7 @@ void LocalSearch::swap2(Solution& solution) {
     firstRemove = solution.subsetsInSolution[idxFirstRemove];
     if (tabu.isTabu(firstRemove, iteration)) continue;
 
-    for (idxSecondRemove = 0; idxSecondRemove < input->k; idxSecondRemove++) {
+    for (idxSecondRemove = idxFirstRemove; idxSecondRemove < input->k; idxSecondRemove++) {
       if (idxFirstRemove == idxSecondRemove) continue;
 
       secondRemove = solution.subsetsInSolution[idxSecondRemove];
@@ -162,18 +164,19 @@ void LocalSearch::swap2(Solution& solution) {
             tabu.setTabu(input->subsets[idxBefore].identifier, iteration);
             tabu.setTabu(input->subsets[idxAfter].identifier, iteration);
 
-            partialSolutions.compute(&solution);
-            return;
+            // partialSolutions.compute(&solution);
+            return true;
           }
         }
       }
     }
   }
+
+  return false;
 }
 
 // greedy swap(2,2)
 void LocalSearch::greedyLocalSearchTwo(Solution &solution) {
-  debug("\n\nwill use ls22");
   Solution partialSolution;
   vector<int> addedSets;
 

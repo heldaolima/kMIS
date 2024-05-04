@@ -47,7 +47,7 @@ Solution GreedyKInter::run() {
 
   solution.updateBitsAndObjective(partialSolution);
 
-  partialSolutions.compute(&solution);
+  partialSolutions.computeOne(&solution);
 
   return solution;
 }

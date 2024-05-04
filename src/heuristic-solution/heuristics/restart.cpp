@@ -5,11 +5,11 @@
 #include <algorithm>
 
 void RestartSolution::setSubsetAsUsed(int subset) {
-  wasUsedToStartSolution[subset] = true;
-}
-
-bool RestartSolution::checkUsed(int s) {
-  return wasUsedToStartSolution[s];
+  std::swap(avaliableSets[subset], avaliableSets[numberOfAvailableSets-1]);
+  numberOfAvailableSets--;
+  if (numberOfAvailableSets <= 1) {
+    numberOfAvailableSets = input->quantityOfSubsets;
+  }
 }
 
 Solution RestartSolution::run() {
@@ -17,13 +17,7 @@ Solution RestartSolution::run() {
   Solution solution(input->quantityOfSubsets);
   vector<Subset> subsets = input->subsets;
 
-  unsigned int start = randint(input->quantityOfSubsets);
-  while (wasUsedToStartSolution[start]) {
-    start = randint(input->quantityOfSubsets);
-  }
-
-  // debug("will start with %d, id:%d", start, subsets[start].identifier);
-  
+  unsigned int start = randint(numberOfAvailableSets);
   setSubsetAsUsed(start);
 
   solution.addSubsetAndUpdateIntersection(subsets[start]);
@@ -48,9 +42,7 @@ Solution RestartSolution::run() {
 
   solution.updateBitsAndObjective(partialSolution);
 
-  partialSolutions.compute(&solution);
-
-  // computeSolutionMinusOne(input, &solution);
+  partialSolutions.computeOne(&solution);
 
   return solution;
 }

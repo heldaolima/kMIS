@@ -18,13 +18,13 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
 
   Input* input = new Input(inputFile.path(), &solvable);
   if (solvable) {
-    tabu = Tabu(input->quantityOfSubsets);
-    partialSolutions = PartialSolution(input);
-
     Heuristic* heuristic = HeuristicFactory::create(input, type);
 
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-      std::cout << "run" << i <<"\n";
+      tabu = Tabu(input->quantityOfSubsets);
+      partialSolutions = PartialSolution(input);
+
+      std::cout << "run " << i+1 <<"\n";
       t1 = clock();
         Solution solution = heuristic->run();
       t2 = clock();

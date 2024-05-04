@@ -12,7 +12,8 @@
 #include "../data_structures/partialSolution.h"
 #include "local_search.h"
 
-#define NON_IMPROVEMENTS_THRESHOLD 75
+#define NON_IMPROVEMENTS_THRESHOLD 1 
+#define ITERATIONS 500
 
 void updateEliteSolutions(vector<Solution>&, Solution);
 int getWorstSolutionIdx(vector<Solution>);
@@ -32,7 +33,7 @@ Solution Ils::run() {
   int iterationsWithoutImprovement = 0;
 
   Solution currentSolution;
-  while (iteration <= 500) {
+  while (iteration <= ITERATIONS) {
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
