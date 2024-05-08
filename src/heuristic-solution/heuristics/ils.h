@@ -4,6 +4,7 @@
 #include "../heuristic.h"
 #include "../heuristic_factory.h"
 #include "restart.h"
+#include "extended_kinter.h"
 
 class Ils : public Heuristic {
 private:
@@ -17,8 +18,10 @@ private:
   void updateEliteSolutions(vector<Solution>&, Solution);
   int getWorstSolutionIdx(vector<Solution>);
 public:
-  Ils(Input* input) : input(input) {};
+  Ils(Input* input) : input(input) { };
+
   virtual Solution run() override;
+  virtual Solution run(Solution best) override;
 };
 
 #endif

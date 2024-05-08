@@ -19,7 +19,7 @@ void vnd(Input* input, Solution &solution, int iteration) {
         partialSolutions.computeTwo(&copy);
       }
     } else if (it == 2) {
-      improvedTwo = ls.swap2Complete(copy);
+      improvedTwo = ls.swap2(copy);
       if (improvedTwo) {
         partialSolutions.computeOne(&copy);
       }

@@ -1,6 +1,9 @@
 #include "heuristic_tester.h"
 #include "../heuristics/tabu.h"
 #include "../data_structures/partialSolution.h"
+#include "../heuristics/extended_kinter.h"
+#include "../heuristics/vnd.h"
+
 
 const string header = "input,k,avg_time,avg_objective,avg_it_best,worst,best\n";
 
@@ -20,13 +23,21 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
   if (solvable) {
     Heuristic* heuristic = HeuristicFactory::create(input, type);
 
+    partialSolutions = PartialSolution(input);
+    Solution initial = ExtendedKInter(input).run();
+    vnd(input, initial, 0);
+
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+      Solution solution;
       tabu = Tabu(input->quantityOfSubsets);
       partialSolutions = PartialSolution(input);
 
       std::cout << "run " << i+1 <<"\n";
       t1 = clock();
-        Solution solution = heuristic->run();
+      if (type == ILS) {
+        solution = heuristic->run(initial);
+      } else 
+        solution = heuristic->run();
       t2 = clock();
 
       times.set(t1, t2);

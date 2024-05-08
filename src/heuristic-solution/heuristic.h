@@ -10,6 +10,7 @@ class Heuristic {
 public:
     virtual ~Heuristic() {}
     virtual Solution run() = 0;
+    virtual Solution run(Solution best) = 0;
 };
 
 #endif // !heuristic_h

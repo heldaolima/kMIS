@@ -16,6 +16,9 @@ public:
   GreedyKInter(Input* input) : input(input) {}
   void setRestart(RestartSolution* restart);
   virtual Solution run() override;
+  virtual Solution run(Solution best) override {
+    return run();
+  }
 };
 
 #endif

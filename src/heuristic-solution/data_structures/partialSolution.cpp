@@ -31,7 +31,6 @@ void PartialSolution::computeOne(Solution* solution) {
       partialBits.count() > solution->getObjective(), 
     };
   }
-  // printOne();
 }
 
 void PartialSolution::computeTwo(Solution* solution) {

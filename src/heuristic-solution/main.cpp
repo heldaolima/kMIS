@@ -15,12 +15,12 @@
 #include "partialExperiments.h"
 #include "heuristics/extended_kinter.h"
 
-#define TEST_SINGLE
+// #define TEST_SINGLE
 // #define PRELIMINARIES
 
 int nonImprovementsThreshold = 75;
 int tabuTenure = 5;
-bool useTabu = true;
+bool useTabu = false;
 bool useLocalSearchRand = false;
 
 const string path = "../instances/";
@@ -31,20 +31,22 @@ void testSingle(string test) {
   Input *input = new Input(file, &resolve);
 
   partialSolutions = PartialSolution(input);
-  RestartSolution r = RestartSolution(input);
+  Tabu tabu(input->quantityOfSubsets);
+  Ils ils(input);
+  Solution s_ils = ils.run();
   // LocalSearch ls = LocalSearch(input, 0);
   //
-  GreedyKInter greedy(input);
-  greedy.setRestart(&r);
-
-  ExtendedKInter ext(input);
-  Solution s = ext.run();
-  std::cout << "\nMy extended: \n";
-  s.print();
-
-  Solution x = greedy.run();
-  std::cout << "\nkInter: \n";
-  x.print();
+  // GreedyKInter greedy(input);
+  // greedy.setRestart(&r);
+  //
+  // ExtendedKInter ext(input);
+  // Solution s = ext.run();
+  // std::cout << "\nMy extended: \n";
+  // s.print();
+  //
+  // Solution x = greedy.run();
+  // std::cout << "\nkInter: \n";
+  // x.print();
 
   delete input;
 }
@@ -60,7 +62,7 @@ int main(int argc, char *argv[]) {
   string dirs[3] = {"type1", "type2", "type3"};
 #endif
 
-  HeuristicTester ilsExperiments("results_ils_complete22.csv", ILS);
+  HeuristicTester ilsExperiments("results_extended.csv", ILS);
 
 #ifdef TEST_SINGLE
   testSingle(argv[1]);

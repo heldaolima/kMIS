@@ -151,19 +151,6 @@ void Solution::swap(int idxOut, int in, bitset<numberOfBits> *bits, int newObjec
   objective = newObjective;
 
   swapSets(idxOut, in);
-
-  for (int i = 0; i < subsetsInSolution.size(); i++) {
-    for (int j = 0; j < subsetsInSolution.size(); j++) {
-      if (i != j && subsetsInSolution[i] == subsetsInSolution[j]) {
-        debug("equal= %d", subsetsInSolution[i]);
-        print();
-        exit(1);
-      }
-    }
-  }
-
-  // printf("solution after: ");
-  // print();
 }
 
 void Solution::setObjective(unsigned int obj) {

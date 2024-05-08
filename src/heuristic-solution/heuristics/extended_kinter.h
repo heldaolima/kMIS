@@ -7,8 +7,12 @@ class ExtendedKInter: Heuristic {
 private:
   Input* input;
 public:
+  ExtendedKInter() {};
   ExtendedKInter(Input* input): input(input) {};
-  Solution run() override;
+  virtual Solution run() override;
+  virtual Solution run(Solution best) override {
+    return run();
+  }
 };
 
 #endif

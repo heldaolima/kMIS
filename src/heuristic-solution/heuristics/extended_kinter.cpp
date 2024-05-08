@@ -1,5 +1,7 @@
 #include "extended_kinter.h"
 #include <algorithm>
+#include "../data_structures/partialSolution.h"
+#include "../globals.h"
 #include "../dbg.h"
 
 Solution ExtendedKInter::run() {
@@ -11,7 +13,7 @@ Solution ExtendedKInter::run() {
 
   Solution solution(input->quantityOfSubsets);
 
-  debug("\noriginalSet[0]: %d", originalSets[currentSet].identifier);
+  // debug("\noriginalSet[0]: %d", originalSets[currentSet].identifier);
   while (
     bestIntersection < originalSets[currentSet].getNumberOfElements() && 
     currentSet < input->quantityOfSubsets
@@ -59,6 +61,8 @@ Solution ExtendedKInter::run() {
   for (int s: solution.subsetsInSolution) {
     solution.isSubsetInSolution[s] = true;
   }
+
+  partialSolutions.computeOne(&solution);
 
   return solution;
 }

@@ -12,6 +12,9 @@ private:
 public:
   Grasp_PathRelinking(Input* input) : input(input) {}
   Solution run() override;
+  virtual Solution run(Solution best) override {
+    return run();
+  }
 };
 
 class Grasp_Reactive : public Heuristic {
@@ -19,7 +22,10 @@ private:
   Input* input;
 public:
   Grasp_Reactive(Input* input) : input(input) {}
-  Solution run() override;
+  virtual Solution run() override;
+  virtual Solution run(Solution best) override {
+    return run();
+  }
 };
 
 
