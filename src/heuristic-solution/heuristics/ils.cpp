@@ -1,6 +1,6 @@
 #include "ils.h"
 #include "vnd.h"
-#include "greedy.h"
+#include "kinter.h"
 #include "perturb.h"
 #include "path_relinking.h"
 #include "../dbg.h"
@@ -12,7 +12,7 @@
 #include "../data_structures/partialSolution.h"
 #include "local_search.h"
 
-#define NON_IMPROVEMENTS_THRESHOLD 1 
+#define NON_IMPROVEMENTS_THRESHOLD 75
 #define ITERATIONS 500
 
 void updateEliteSolutions(vector<Solution>&, Solution);

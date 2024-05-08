@@ -1,5 +1,5 @@
-#ifndef __greedy_heuristic_h__
-#define __greedy_heuristic_h__
+#ifndef __k_inter_h__
+#define __k_inter_h__
 
 #include "../heuristic.h"
 #include "../heuristic_factory.h"
@@ -11,7 +11,7 @@ using std::vector;
 class GreedyKInter : public Heuristic { 
 private:
   Input* input;
-  RestartSolution* restart;
+  RestartSolution* restart = nullptr;
 public:
   GreedyKInter(Input* input) : input(input) {}
   void setRestart(RestartSolution* restart);

@@ -165,3 +165,7 @@ void Solution::swap(int idxOut, int in, bitset<numberOfBits> *bits, int newObjec
   // printf("solution after: ");
   // print();
 }
+
+void Solution::setObjective(unsigned int obj) {
+  objective = obj;
+}

@@ -15,11 +15,9 @@ public:
   LocalSearch(Input* input, int iteration) : input(input) {
     this->iteration = iteration;
   }
-  void localSearch(Solution &initialSolution);
   bool swap1(Solution &solution);
   bool swap2(Solution &solution);
-  void greedyLocalSearchTwo(Solution &solution);
-  void randomLocalSearchTwo(Solution &solution);
+  bool swap2Complete(Solution &solution);
 };
 
 #endif

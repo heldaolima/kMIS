@@ -39,6 +39,7 @@ public:
   unsigned int getIterationFound();
   void swap(int idxOut, int in);
   void swap(int idxOut, int in, bitset<numberOfBits> *bits, int newObjective);
+  void setObjective(unsigned int obj);
 };
 
 #endif
