@@ -11,6 +11,7 @@
 #include "tabu.h"
 #include "vnd.h"
 #include "kinter.h"
+#include "../helpers/results_writer.h"
 
 #define NON_IMPROVEMENTS_THRESHOLD 75
 #define ITERATIONS 500
@@ -147,11 +148,14 @@ Solution Ils::run(Solution best) {
 
   Solution currentSolution;
   while (iteration <= ITERATIONS) {
+    // debug("iteration=%d", iteration);
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
     currentSolution = Perturbation(&best, alpha);
+    // debug("perturbed");
     LocalSearch(currentSolution, iteration);
+    // debug("localsearched");
 
     if (currentSolution.getObjective() > best.getObjective()) {
       // currentSolution.print();
@@ -161,6 +165,9 @@ Solution Ils::run(Solution best) {
       if (best.getObjective() > globalBest.getObjective()) {
         globalBest = best;
         globalBest.setIterationFoud(iteration);
+        std::cout << "\nNew global best (it= "<< iteration << "): ";
+        best.print();
+        // writeSolution(input->filename, globalBest);
       }
 
       iterationsWithoutImprovement = 0;

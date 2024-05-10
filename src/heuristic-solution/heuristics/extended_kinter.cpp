@@ -13,7 +13,6 @@ Solution ExtendedKInter::run() {
 
   Solution solution(input->quantityOfSubsets);
 
-  // debug("\noriginalSet[0]: %d", originalSets[currentSet].identifier);
   while (
     bestIntersection < originalSets[currentSet].getNumberOfElements() && 
     currentSet < input->quantityOfSubsets
@@ -57,7 +56,7 @@ Solution ExtendedKInter::run() {
 
     currentSet++;
   }
-  
+
   for (int s: solution.subsetsInSolution) {
     solution.isSubsetInSolution[s] = true;
   }

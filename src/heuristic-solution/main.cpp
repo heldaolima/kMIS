@@ -14,8 +14,9 @@
 #include "heuristics/tabu.h"
 #include "partialExperiments.h"
 #include "heuristics/extended_kinter.h"
+#include "heuristics/vnd.h"
 
-// #define TEST_SINGLE
+//  #define TEST_SINGLE
 // #define PRELIMINARIES
 
 int nonImprovementsThreshold = 75;
@@ -28,12 +29,24 @@ const string path = "../instances/";
 void testSingle(string test) {
   string file = path + test;
   bool resolve = false;
-  Input *input = new Input(file, &resolve);
+  Input *input = new Input(file,  &resolve);
 
   partialSolutions = PartialSolution(input);
   Tabu tabu(input->quantityOfSubsets);
+
+  Solution initial = ExtendedKInter(input).run();
+  std::cout << "initial: \n";
+  initial.print();
+  vnd(input, initial, 0);
+  std::cout << "\nafter vnd: \n";
+  initial.print();
+
   Ils ils(input);
-  Solution s_ils = ils.run();
+  Solution s_ils = ils.run(initial);
+  std::cout << "\nfinal: \n";
+  s_ils.print();
+
+
   // LocalSearch ls = LocalSearch(input, 0);
   //
   // GreedyKInter greedy(input);

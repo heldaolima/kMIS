@@ -4,6 +4,7 @@
 #include <string>
 #include "../data_structures/objectives.h"
 #include "../data_structures/times.h"
+#include "../data_structures/solution.h"
 
 using std::string;
 
@@ -14,5 +15,7 @@ public:
   ResultsWriter(string outFilePath, string header);
   void writeResults(const string inputFileName, Objectives* objs, Times* times, int k);
 };
+
+void writeSolution(const string inputFileName, Solution& solution);
 
 #endif

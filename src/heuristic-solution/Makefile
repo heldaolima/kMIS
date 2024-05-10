@@ -1,15 +1,26 @@
 CC=g++
-DEPENDENCIES= globals.cpp heuristic_factory.cpp helpers/*.cpp data_structures/*.cpp heuristics/*.cpp heuristics/grasp/*.cpp
 FLAGS=-g -lm -O0
 
-ils: clean dependencies
-	$(CC) $(FLAGS) -o main.out main.cpp *.o
+SOURCES = $(wildcard *.cpp) $(wildcard helpers/*.cpp) $(wildcard data_structures/*.cpp) $(wildcard heuristics/*.cpp) $(wildcard heuristics/grasp/*.cpp)
+OBJECTS = $(SOURCES:.cpp=.o)
 
-pre: clean dependencies
-	$(CC) $(FLAGS) -o pre.out preliminaries.cpp *.o
+.PHONY: all clean
 
-dependencies:
-	$(CC) -c $(DEPENDENCIES) 
+all: main.out 
+
+main.out: $(OBJECTS)
+	$(CC) $(FLAGS) -o $@ $^
+
+%.o: %.cpp
+	$(CC) $(FLAGS) -c -o $@ $<
+
+-include $(SOURCES:.cpp=.d)
+
+%.d: %.cpp
+	@set -e; rm -f $@; \
+	$(CC) -MM $(FLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
 
 clean:
-	rm -f *.o *.out
+	rm -f *.o *.out *.d

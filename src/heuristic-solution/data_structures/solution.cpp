@@ -1,8 +1,7 @@
 #include "solution.h"
 #include <iostream>
-#include "../dbg.h"
+#include <sstream>
 #include "input.h"
-#include <algorithm>
 
 using std::cout;
 
@@ -54,6 +53,25 @@ void Solution::print() {
     }
   }
   cout << "\n";
+}
+
+string Solution::toString() {
+  std::stringstream ss;
+  ss << "Objective: " << getObjective() << "| Iteration " << iterationFound << " | Subsets in solution: ";
+
+  for (const int el : this->subsetsInSolution) {
+    ss << el << " ";
+  }
+
+  ss << "\nElements in solution: ";
+  for (int i = 0; i < numberOfBits; i++) {
+    if (this->bits[i]) {
+      ss << i << " ";
+    }
+  }
+  ss << "\n";
+
+  return ss.str();
 }
 
 int Solution::getSubsetInSolution(int i) {
