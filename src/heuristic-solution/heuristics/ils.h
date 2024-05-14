@@ -13,15 +13,15 @@ private:
   Solution Construction();
   Solution Construction(RestartSolution* restart);
   Solution Perturbation(Solution*, double);
-  void LocalSearch(Solution&, int iteration);
+  void LocalSearch(Solution&, int iteration, clock_t t1);
   Solution PathRelinking(Solution, Solution);
   void updateEliteSolutions(vector<Solution>&, Solution);
   int getWorstSolutionIdx(vector<Solution>);
 public:
-  Ils(Input* input) : input(input) { };
+  Ils(Input* input) : input(input) {};
 
   virtual Solution run() override;
-  virtual Solution run(Solution best) override;
+  virtual Solution run(clock_t t1) override;
 };
 
 #endif

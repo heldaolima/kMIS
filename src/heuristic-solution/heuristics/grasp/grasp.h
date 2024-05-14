@@ -12,7 +12,7 @@ private:
 public:
   Grasp_PathRelinking(Input* input) : input(input) {}
   Solution run() override;
-  virtual Solution run(Solution best) override {
+  virtual Solution run(clock_t t1) override {
     return run();
   }
 };
@@ -23,7 +23,7 @@ private:
 public:
   Grasp_Reactive(Input* input) : input(input) {}
   virtual Solution run() override;
-  virtual Solution run(Solution best) override {
+  virtual Solution run(clock_t t1) override {
     return run();
   }
 };

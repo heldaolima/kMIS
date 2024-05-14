@@ -16,6 +16,4 @@ public:
   void writeResults(const string inputFileName, Objectives* objs, Times* times, int k);
 };
 
-void writeSolution(const string inputFileName, Solution& solution);
-
 #endif

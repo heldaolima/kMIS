@@ -10,7 +10,7 @@ private:
   int numberOfAvailableSets;
 
 public:
-  Solution run();
+  Solution run(clock_t t1);
   void setSubsetAsUsed(int subset);
   RestartSolution(Input* input) : input(input) {
     for (int i = 0; i < input->quantityOfSubsets; i++) {

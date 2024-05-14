@@ -11,75 +11,79 @@
 #include "tabu.h"
 #include "vnd.h"
 #include "kinter.h"
-#include "../helpers/results_writer.h"
+#include <ctime>
 
 #define NON_IMPROVEMENTS_THRESHOLD 75
 #define ITERATIONS 500
 
-Solution Ils::run() {
+Solution Ils::run(clock_t t1) {
+  clock_t t2;
   constructionArrays auxArrays;
   int idxAlpha = auxArrays.getIdxAlpha();
   double alpha = X[idxAlpha];
 
-  // RestartSolution restart(input);
+  RestartSolution restart(input);
 
-  Solution best = Construction();
-  LocalSearch(best, 0);
+  Solution best = ExtendedKInter(input).run(t1);
+
+  LocalSearch(best, 0, t1);
   Solution globalBest = best;
 
+  restart.setSubsetAsUsed(best.subsetsInSolution[0]);
   int iteration = 1;
   int iterationsWithoutImprovement = 0;
 
   Solution currentSolution;
-  while (iteration <= ITERATIONS) {
+  double elapsedTime = globalBest.timeFound;
+  while (elapsedTime <= (double)input->k / 10) {
+    // debug("iteration=%d", iteration);
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
     currentSolution = Perturbation(&best, alpha);
-    LocalSearch(currentSolution, iteration);
-
+    LocalSearch(currentSolution, iteration, t1);
     if (currentSolution.getObjective() > best.getObjective()) {
-      // currentSolution.print();
       best = currentSolution;
       best.setIterationFoud(iteration);
 
       if (best.getObjective() > globalBest.getObjective()) {
         globalBest = best;
         globalBest.setIterationFoud(iteration);
+        std::cout << "\nNew global best (it= "<< iteration << "): ";
+        best.print();
+        std::cout << "ellapsed since start: " << globalBest.timeFound << "\n";
       }
 
-      // iterationsWithoutImprovement = 0;
+      iterationsWithoutImprovement = 0;
     } else {
-      // iterationsWithoutImprovement++;
+      iterationsWithoutImprovement++;
     }
 
-    // if (iterationsWithoutImprovement > NON_IMPROVEMENTS_THRESHOLD) {
-    //   best = restart.run();
-    //
-    //   // std::cout << "\n\nrestarted best: ";
-    //   // best.print();
-    //
-    //   LocalSearch(best, iteration);
-    //   // std::cout << "\nlocal-searched it: \n";
-    //   // best.print();
-    //   if (best.getObjective() > globalBest.getObjective()) {
-    //     globalBest = best;
-    //     globalBest.setIterationFoud(iteration);
-    //   }
-    //   iterationsWithoutImprovement = 0;
-    // }
+    if (iterationsWithoutImprovement > NON_IMPROVEMENTS_THRESHOLD) {
+      best = restart.run(t1);
+
+      LocalSearch(best, iteration, t1);
+      if (best.getObjective() > globalBest.getObjective()) {
+        globalBest = best;
+        globalBest.setIterationFoud(iteration);
+      }
+      iterationsWithoutImprovement = 0;
+    }
 
     auxArrays.computeIdxAlpha(idxAlpha, currentSolution.getObjective());
 
     if (iteration % TAM_X == 0)
       auxArrays.updateProbabilities(best.getObjective());
 
+    t2 = clock();
     iteration++;
-    // currentSolution.print();
+
+    elapsedTime = (t2 - t1) / (double) CLOCKS_PER_SEC;
   }
 
   return globalBest;
 }
+
 
 Solution Ils::Construction(RestartSolution *restart) {
   GreedyKInter kInter(input);
@@ -99,8 +103,8 @@ Solution Ils::Perturbation(Solution *solution, double alpha) {
   return perturbReactive(*solution, input, alpha);
 }
 
-void Ils::LocalSearch(Solution &solution, int iteration) {
-  vnd(input, solution, iteration);
+void Ils::LocalSearch(Solution &solution, int iteration, clock_t t1) {
+  vnd(input, solution, iteration, t1);
 }
 
 Solution Ils::PathRelinking(Solution origin, Solution destiny) {
@@ -133,72 +137,67 @@ int Ils::getWorstSolutionIdx(vector<Solution> solutions) {
   return worstIdx;
 }
 
-Solution Ils::run(Solution best) {
-  constructionArrays auxArrays;
-  int idxAlpha = auxArrays.getIdxAlpha();
-  double alpha = X[idxAlpha];
-
-  RestartSolution restart(input);
-  restart.setSubsetAsUsed(best.subsetsInSolution[0]);
-
+Solution Ils::run() {
+//   constructionArrays auxArrays;
+//   int idxAlpha = auxArrays.getIdxAlpha();
+//   double alpha = X[idxAlpha];
+//
+//   // RestartSolution restart(input);
+//
+  Solution best = Construction();
+//   LocalSearch(best, 0);
   Solution globalBest = best;
-
-  int iteration = 1;
-  int iterationsWithoutImprovement = 0;
-
-  Solution currentSolution;
-  while (iteration <= ITERATIONS) {
-    // debug("iteration=%d", iteration);
-    idxAlpha = auxArrays.getIdxAlpha();
-    alpha = X[idxAlpha];
-
-    currentSolution = Perturbation(&best, alpha);
-    // debug("perturbed");
-    LocalSearch(currentSolution, iteration);
-    // debug("localsearched");
-
-    if (currentSolution.getObjective() > best.getObjective()) {
-      // currentSolution.print();
-      best = currentSolution;
-      best.setIterationFoud(iteration);
-
-      if (best.getObjective() > globalBest.getObjective()) {
-        globalBest = best;
-        globalBest.setIterationFoud(iteration);
-        std::cout << "\nNew global best (it= "<< iteration << "): ";
-        best.print();
-        // writeSolution(input->filename, globalBest);
-      }
-
-      iterationsWithoutImprovement = 0;
-    } else {
-      iterationsWithoutImprovement++;
-    }
-
-    if (iterationsWithoutImprovement > NON_IMPROVEMENTS_THRESHOLD) {
-      best = restart.run();
-
-      // std::cout << "\n\nrestarted best: ";
-      // best.print();
-
-      LocalSearch(best, iteration);
-      // std::cout << "\nlocal-searched it: \n";
-      // best.print();
-      if (best.getObjective() > globalBest.getObjective()) {
-        globalBest = best;
-        globalBest.setIterationFoud(iteration);
-      }
-      iterationsWithoutImprovement = 0;
-    }
-
-    auxArrays.computeIdxAlpha(idxAlpha, currentSolution.getObjective());
-
-    if (iteration % TAM_X == 0)
-      auxArrays.updateProbabilities(best.getObjective());
-
-    iteration++;
-    // currentSolution.print();
-  }
-
+//
+//   int iteration = 1;
+//   int iterationsWithoutImprovement = 0;
+//
+//   Solution currentSolution;
+//   while (iteration <= ITERATIONS) {
+//     idxAlpha = auxArrays.getIdxAlpha();
+//     alpha = X[idxAlpha];
+//
+//     currentSolution = Perturbation(&best, alpha);
+//     LocalSearch(currentSolution, iteration);
+//
+//     if (currentSolution.getObjective() > best.getObjective()) {
+//       // currentSolution.print();
+//       best = currentSolution;
+//       best.setIterationFoud(iteration);
+//
+//       if (best.getObjective() > globalBest.getObjective()) {
+//         globalBest = best;
+//         globalBest.setIterationFoud(iteration);
+//       }
+//
+//       // iterationsWithoutImprovement = 0;
+//     } else {
+//       // iterationsWithoutImprovement++;
+//     }
+//
+//     // if (iterationsWithoutImprovement > NON_IMPROVEMENTS_THRESHOLD) {
+//     //   best = restart.run();
+//     //
+//     //   // std::cout << "\n\nrestarted best: ";
+//     //   // best.print();
+//     //
+//     //   LocalSearch(best, iteration);
+//     //   // std::cout << "\nlocal-searched it: \n";
+//     //   // best.print();
+//     //   if (best.getObjective() > globalBest.getObjective()) {
+//     //     globalBest = best;
+//     //     globalBest.setIterationFoud(iteration);
+//     //   }
+//     //   iterationsWithoutImprovement = 0;
+//     // }
+//
+//     auxArrays.computeIdxAlpha(idxAlpha, currentSolution.getObjective());
+//
+//     if (iteration % TAM_X == 0)
+//       auxArrays.updateProbabilities(best.getObjective());
+//
+//     iteration++;
+//     // currentSolution.print();
+//   }
+//
   return globalBest;
 }

@@ -12,7 +12,7 @@ void RestartSolution::setSubsetAsUsed(int subset) {
   }
 }
 
-Solution RestartSolution::run() {
+Solution RestartSolution::run(clock_t t1) {
   int i = 0;
   Solution solution(input->quantityOfSubsets);
   vector<Subset> subsets = input->subsets;
@@ -41,6 +41,8 @@ Solution RestartSolution::run() {
   }
 
   solution.updateBitsAndObjective(partialSolution);
+
+  solution.setTimeFound(t1, clock());
 
   partialSolutions.computeOne(&solution);
 

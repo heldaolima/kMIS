@@ -86,8 +86,8 @@ bool LocalSearch::swap2(Solution& solution) {
             solution.swap(idxFirstRemove, idxBefore);
             solution.swap(idxSecondRemove, idxAfter, &bits, newObjective);
 
-            tabu.setTabu(input->subsets[idxBefore].identifier, iteration);
-            tabu.setTabu(input->subsets[idxAfter].identifier, iteration);
+            // tabu.setTabu(input->subsets[idxBefore].identifier, iteration);
+            // tabu.setTabu(input->subsets[idxAfter].identifier, iteration);
 
             return true;
           }

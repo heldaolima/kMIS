@@ -10,9 +10,7 @@ public:
   ExtendedKInter() {};
   ExtendedKInter(Input* input): input(input) {};
   virtual Solution run() override;
-  virtual Solution run(Solution best) override {
-    return run();
-  }
+  virtual Solution run(clock_t t1) override;
 };
 
 #endif

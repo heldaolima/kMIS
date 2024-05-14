@@ -4,7 +4,7 @@
 #include "../globals.h"
 #include "../dbg.h"
 
-Solution ExtendedKInter::run() {
+Solution ExtendedKInter::run(clock_t t1) {
   int bestIntersection = 0, currentSet = 0, currentK = 0, currentCount = 0;
 
   vector<Subset> originalSets = input->subsets, loopSets;
@@ -13,6 +13,7 @@ Solution ExtendedKInter::run() {
 
   Solution solution(input->quantityOfSubsets);
 
+  clock_t t2;
   while (
     bestIntersection < originalSets[currentSet].getNumberOfElements() && 
     currentSet < input->quantityOfSubsets
@@ -43,6 +44,7 @@ Solution ExtendedKInter::run() {
     }
 
     if (currentCount > bestIntersection) {
+      t2 = clock();
       bestIntersection = currentCount;
       solution.bits = partialBits;
       solution.setObjective(currentCount);
@@ -61,7 +63,13 @@ Solution ExtendedKInter::run() {
     solution.isSubsetInSolution[s] = true;
   }
 
+  solution.setTimeFound(t1 ,t2);
+
   partialSolutions.computeOne(&solution);
 
   return solution;
+}
+
+Solution ExtendedKInter::run() {
+  return Solution();
 }

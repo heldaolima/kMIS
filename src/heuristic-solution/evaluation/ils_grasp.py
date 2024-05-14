@@ -21,17 +21,25 @@ if __name__ == "__main__":
         max_val = max(ils_best, grasp_best)
 
         print(ils_row.input, end="\t")
+        print(f"ILS={ils_best} | GRASP={grasp_best}", end="\t")
+        if ils_best == grasp_best:
+            print("[EQUAL]")
+        elif ils_best == max_val:
+            print("[ILS]")
+        elif grasp_best == max_val:
+            print("[GRASP]")
+
         if ils_best == grasp_best :
-            print(f"Mesmo valor ({max_val})")
+            # print(f"Mesmo valor ({max_val})")
             equal_count += 1
         else:
             if ils_best == max_val:
                 ils_max_count += 1
-                print(f"ILS ", end="")
+                # print(f"ILS ", end="")
             if grasp_best == max_val:
                 grasp_max_count += 1
-                print(f"GRASP ", end="")
-            print(f"({max_val})")
+                # print(f"GRASP ", end="")
+            # print(f"({max_val})")
 
     print()
     print(f"ILS teve o maior valor {ils_max_count} vezes")

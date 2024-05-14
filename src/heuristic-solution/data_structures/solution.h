@@ -18,8 +18,11 @@ public:
   vector<bool> isSubsetInSolution;
   vector<int> subsetsInSolution;
 
+  double timeFound = 0.0;
+
   Solution() {}
   Solution(int);
+  void setTimeFound(clock_t t1, clock_t t2);
   void clean(int);
   void initializeIsSubsetInSolutionVec(int);
   void addSubsetAndUpdateIntersection(Subset);
@@ -40,7 +43,6 @@ public:
   void swap(int idxOut, int in);
   void swap(int idxOut, int in, bitset<numberOfBits> *bits, int newObjective);
   void setObjective(unsigned int obj);
-  string toString();
 };
 
 #endif

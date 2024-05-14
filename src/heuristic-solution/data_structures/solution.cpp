@@ -55,25 +55,6 @@ void Solution::print() {
   cout << "\n";
 }
 
-string Solution::toString() {
-  std::stringstream ss;
-  ss << "Objective: " << getObjective() << "| Iteration " << iterationFound << " | Subsets in solution: ";
-
-  for (const int el : this->subsetsInSolution) {
-    ss << el << " ";
-  }
-
-  ss << "\nElements in solution: ";
-  for (int i = 0; i < numberOfBits; i++) {
-    if (this->bits[i]) {
-      ss << i << " ";
-    }
-  }
-  ss << "\n";
-
-  return ss.str();
-}
-
 int Solution::getSubsetInSolution(int i) {
   return (i > 0 && i < subsetsInSolution.size()) ? subsetsInSolution[i] : -1;
 }
@@ -145,19 +126,11 @@ unsigned int Solution::getIterationFound() {
 }
 
 void Solution::swapSets(int idxOut, int in) {
-  // printf("Before swap:\n");
-  // print();
-
   int out = subsetsInSolution[idxOut];
-  // debug("idxOut=%d out=%d, in=%d ", idxOut, out, in);
-
 
   isSubsetInSolution[out] = false;
   isSubsetInSolution[in] = true;
   subsetsInSolution[idxOut] = in;
-
-  // printf("after swap: ");
-  // print();
 }
 
 void Solution::swap(int idxOut, int in) {
@@ -173,4 +146,8 @@ void Solution::swap(int idxOut, int in, bitset<numberOfBits> *bits, int newObjec
 
 void Solution::setObjective(unsigned int obj) {
   objective = obj;
+}
+
+void Solution::setTimeFound(clock_t t1, clock_t t2) {
+  timeFound = (t2 - t1) / (double) CLOCKS_PER_SEC;
 }

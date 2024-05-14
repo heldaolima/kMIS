@@ -20,18 +20,26 @@ if __name__ == "__main__":
 
         max_val = max(ils_best, vns_best)
 
+
         print(ils_row.input, end="\t")
+        print(f"ILS={ils_best} | VNS={vns_best}", end="\t")
         if ils_best == vns_best:
-            print(f"Mesmo valor ({max_val})")
+            print("[EQUAL]")
+        elif ils_best == max_val:
+            print("[ILS]")
+        elif vns_best == max_val:
+            print("[VNS]")
+        if ils_best == vns_best:
+            # print(f"Mesmo valor ({max_val})")
             equal_count += 1
         else:
             if ils_best == max_val:
                 ils_max_count += 1
-                print(f"ILS ", end="")
+                # print(f"ILS ", end="")
             if vns_best == max_val:
                 vns_max_count += 1
-                print(f"VNS ", end="")
-            print(f"({max_val})")
+                # print(f"VNS ", end="")
+            # print(f"({max_val})")
 
     print()
     print(f"ILS teve o maior valor {ils_max_count} vezes")

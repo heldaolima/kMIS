@@ -1,3 +1,4 @@
+#include <ctime>
 #include <filesystem>
 #include <iostream>
 
@@ -16,7 +17,7 @@
 #include "heuristics/extended_kinter.h"
 #include "heuristics/vnd.h"
 
-//  #define TEST_SINGLE
+// #define TEST_SINGLE
 // #define PRELIMINARIES
 
 int nonImprovementsThreshold = 75;
@@ -27,25 +28,22 @@ bool useLocalSearchRand = false;
 const string path = "../instances/";
 
 void testSingle(string test) {
-  string file = path + test;
-  bool resolve = false;
-  Input *input = new Input(file,  &resolve);
+  // clock_t t1, t2;
+  // string file = path + test;
+  // bool resolve = false;
+  // Input *input = new Input(file,  &resolve);
+  //
+  // partialSolutions = PartialSolution(input);
+  // Tabu tabu(input->quantityOfSubsets);
 
-  partialSolutions = PartialSolution(input);
-  Tabu tabu(input->quantityOfSubsets);
+  // Ils ils(input);
+  // t1 = clock();
+  //   Solution s_ils = ils.run(t1);
+  // t2 = clock();
+  // std::cout << "\nfinal: \n";
+  // s_ils.print();
 
-  Solution initial = ExtendedKInter(input).run();
-  std::cout << "initial: \n";
-  initial.print();
-  vnd(input, initial, 0);
-  std::cout << "\nafter vnd: \n";
-  initial.print();
-
-  Ils ils(input);
-  Solution s_ils = ils.run(initial);
-  std::cout << "\nfinal: \n";
-  s_ils.print();
-
+  // std::cout << "ellapsed time: " << (t2 - t1) / (double) CLOCKS_PER_SEC << "\n";
 
   // LocalSearch ls = LocalSearch(input, 0);
   //
@@ -61,7 +59,7 @@ void testSingle(string test) {
   // std::cout << "\nkInter: \n";
   // x.print();
 
-  delete input;
+  // delete input;
 }
 
 namespace fs = std::filesystem;
@@ -75,7 +73,7 @@ int main(int argc, char *argv[]) {
   string dirs[3] = {"type1", "type2", "type3"};
 #endif
 
-  HeuristicTester ilsExperiments("results_extended.csv", ILS);
+  HeuristicTester ilsExperiments("test_time.csv", ILS);
 
 #ifdef TEST_SINGLE
   testSingle(argv[1]);

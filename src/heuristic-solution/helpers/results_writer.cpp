@@ -16,24 +16,9 @@ void ResultsWriter::writeResults(const string inputFileName, Objectives* objs, T
 
   outFile << inputFileName << ",";
   outFile << k << ",";
-  outFile << times->average << "," << objs->average << ",";
-  outFile << objs->averageFound << ",";
-  outFile << objs->worst << "," << objs->best << "\n";
+  outFile << objs->best << "," << objs->worst << ",";
+  outFile << objs->average << "," << times->avgTimeToFindBest << "\n";
+
 
   outFile.close();
-}
-
-void writeSolution(const string inputFileName, Solution& solution) {
-  std::ofstream outFile("../outputs/"+inputFileName, std::ios_base::app);
-
-
-  std::time_t now = std::time(nullptr);
-  string now_str = std::asctime(std::localtime(&now));
-  now_str.pop_back();
-
-  outFile << "[" << now_str << "]\n";
-  outFile << solution.toString() << "\n";
-  outFile.close();
-
-  std::cout << "wrote\n";
 }
