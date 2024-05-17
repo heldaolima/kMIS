@@ -5,9 +5,8 @@
 #include "data_structures/input.h"
 
 enum HeuristicsEnum {
-    ILS,
-    GRASP_PATH_RELINKING,
-    GRASP_REACTIVE,
+    ILS_TIME,
+    ILS_ITERATIONS,
 };
 
 class HeuristicFactory {

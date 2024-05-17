@@ -18,7 +18,7 @@ public:
   vector<bool> isSubsetInSolution;
   vector<int> subsetsInSolution;
 
-  double timeFound = 0.0;
+  double timeFound;
 
   Solution() {}
   Solution(int);

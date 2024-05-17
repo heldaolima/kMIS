@@ -1,8 +1,8 @@
-#include "kinter.h"
-#include "../dbg.h"
-#include "../globals.h"
 #include <algorithm>
-#include "../data_structures/partialSolution.h"
+#include "kinter.h"
+#include "../../dbg.h"
+#include "../../globals.h"
+#include "../../data_structures/partialSolution.h"
 
 void GreedyKInter::setRestart(RestartSolution* restart) {
   this->restart = restart;
@@ -28,7 +28,7 @@ Solution GreedyKInter::run() {
     for (i = currentK; i < input->quantityOfSubsets; i++) {
       subsets[i].setBits(intersection(partialSolution, subsets[i].bits));
     }
-  
+
     std::sort(subsets.begin() + currentK, subsets.end(), input->sortByObjectiveFunc);
 
     partialSolution = subsets[currentK].bits;
@@ -38,7 +38,6 @@ Solution GreedyKInter::run() {
   }
 
   solution.updateBitsAndObjective(partialSolution);
-
   partialSolutions.computeOne(&solution);
 
   return solution;

@@ -1,6 +1,6 @@
 #include "heuristic_tester.h"
 #include "../data_structures/partialSolution.h"
-#include "../heuristics/tabu.h"
+#include "../data_structures/tabu.h"
 #include <ctime>
 #include "../dbg.h"
 #include "tester.h"
@@ -19,8 +19,7 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
 
   bool solvable = true;
 
-  Input *input = new Input(inputFile.path(), 
-                           &solvable);
+  Input *input = new Input(inputFile.path(), &solvable);
   if (solvable) {
     Heuristic *heuristic = HeuristicFactory::create(input, type);
     partialSolutions = PartialSolution(input);
@@ -31,7 +30,7 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
 
       std::cout << "run " << i + 1 << "\n";
       t1 = clock();
-        Solution solution = heuristic->run(t1);
+        Solution solution = heuristic->run();
       t2 = clock();
 
       times.set(t1, t2);

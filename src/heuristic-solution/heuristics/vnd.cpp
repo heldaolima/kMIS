@@ -2,14 +2,16 @@
 #include "local_search.h"
 #include "../dbg.h"
 #include "../data_structures/partialSolution.h"
+#include <ctime>
 
 void vnd(Input* input, Solution &solution, int iteration, clock_t t1) {
   int it = 1;
   bool improvedOne = false, improvedTwo = false;
-  Solution copy;
   LocalSearch ls = LocalSearch(input, iteration);
 
-  clock_t t2;
+  clock_t t2 = clock();
+
+  Solution copy;
   while (it <= 2) {
     copy = solution;
 
@@ -35,6 +37,7 @@ void vnd(Input* input, Solution &solution, int iteration, clock_t t1) {
       it++;
     } else {
       solution = copy;
+      solution.timeFound = copy.timeFound;
       it = 1;
     }
   }

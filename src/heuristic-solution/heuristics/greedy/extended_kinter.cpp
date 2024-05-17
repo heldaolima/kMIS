@@ -1,10 +1,14 @@
-#include "extended_kinter.h"
 #include <algorithm>
-#include "../data_structures/partialSolution.h"
-#include "../globals.h"
-#include "../dbg.h"
+#include "extended_kinter.h"
+#include "../../data_structures/partialSolution.h"
+#include "../../globals.h"
+#include "../../dbg.h"
 
-Solution ExtendedKInter::run(clock_t t1) {
+void ExtendedKInter::setTime(clock_t t1) {
+  this->t1 = t1;
+}
+
+Solution ExtendedKInter::run() {
   int bestIntersection = 0, currentSet = 0, currentK = 0, currentCount = 0;
 
   vector<Subset> originalSets = input->subsets, loopSets;
@@ -20,7 +24,7 @@ Solution ExtendedKInter::run(clock_t t1) {
   ) {
     vector<int> subsetsInSolution(input->k);
     loopSets = originalSets;
-    
+
     // current subset needs to get into the solution first
     std::swap(loopSets[0], loopSets[currentSet]);
 
@@ -40,6 +44,7 @@ Solution ExtendedKInter::run(clock_t t1) {
       currentCount = partialBits.count();
 
       currentK++;
+      t2 = clock();
       if (currentCount < bestIntersection) break;
     }
 
@@ -68,8 +73,4 @@ Solution ExtendedKInter::run(clock_t t1) {
   partialSolutions.computeOne(&solution);
 
   return solution;
-}
-
-Solution ExtendedKInter::run() {
-  return Solution();
 }

@@ -11,7 +11,6 @@ class Heuristic {
 public:
     virtual ~Heuristic() {}
     virtual Solution run() = 0;
-    virtual Solution run(clock_t t1) = 0;
 };
 
 #endif // !heuristic_h

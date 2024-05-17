@@ -1,7 +1,7 @@
 #include "solution.h"
 #include <iostream>
-#include <sstream>
 #include "input.h"
+#include "../dbg.h"
 
 using std::cout;
 
@@ -41,7 +41,7 @@ void Solution::removeSubset(int idx, int subset) {
 }
 
 void Solution::print() {
-  cout << "Objective: " << getObjective() << " | Subsets in solution: ";
+  cout << "Objective: " << getObjective() << " | Time found: " << timeFound << " | Subsets in solution: ";
   for (const int el : this->subsetsInSolution) {
     cout << el << " ";
   }

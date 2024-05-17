@@ -44,9 +44,4 @@ void computeMinusTwoBetter(Input* input, Solution* solution);
 
 extern PartialSolution partialSolutions; 
 
-
-// extern map<int, partial> solutionMinusOne;
-// void computeSolutionMinusOne(Input* input, Solution* solution);
-// void removeKey(int key);
-
 #endif
