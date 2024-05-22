@@ -1,8 +1,8 @@
 SYSTEM     = x86-64_linux
 LIBFORMAT  = static_pic
 
-CPLEXDIR      = /opt/ibm/ILOG/CPLEX_Studio_Community2211/cplex/
-CONCERTDIR    = /opt/ibm/ILOG/CPLEX_Studio_Community2211/concert/
+CPLEXDIR      = /opt/ibm/ILOG/CPLEX_Studio2211/cplex/
+CONCERTDIR    = /opt/ibm/ILOG/CPLEX_Studio2211/concert/
 
 CXX=g++ -O0
 

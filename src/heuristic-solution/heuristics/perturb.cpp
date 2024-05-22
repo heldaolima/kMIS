@@ -8,8 +8,6 @@
 #include <cstdlib>
 
 Solution perturbReactive(Solution solution, Input *input, double alpha) {
-  // debug("solution: ");
-  // solution.print();
   int i = 0;
   Solution perturbed = Solution(input->quantityOfSubsets);
 
@@ -26,7 +24,6 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
   for (int s : avaliableSets) {
     isAvaliable[s] = false;
   }
-  // printVec(isAvaliable);
 
   int chosenIdx;
   for (i = 0; i < input->k - numberOfSetsToBeRemoved; i++) {
@@ -53,16 +50,11 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
   i = perturbed.subsetsInSolution.size();
   while (i < input->k) {
     inferiorLimit = getInferiorLimit(alpha, costs.c_min, costs.c_max);
-    // debug("inferior limit: %d", inferiorLimit);
     tam_lrc = lrc.set(&perturbed, &costs.incremental_cost, inferiorLimit);
-    // debug("tam_lrc: %d", tam_lrc);
 
     random_index = randBetween(0, tam_lrc-1);
-    // debug("random_index: %d", random_index);
     chosenFromLRC = lrc.getIth(random_index);
 
-    // debug("chosen=%d", input->subsets[chosenFromLRC].identifier);
-    // std::cout << "is avaliable " << isAvaliable[chosenFromLRC] << "\n";
     isAvaliable[input->subsets[chosenFromLRC].identifier] = false;
     intersec = intersection(intersec, input->subsets[chosenFromLRC].bits);
 
@@ -77,7 +69,6 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
   }
 
   perturbed.setBitsAndObjective(intersec);
-
   partialSolutions.computeOne(&perturbed);
 
   return perturbed;
