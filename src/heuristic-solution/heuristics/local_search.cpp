@@ -58,17 +58,11 @@ bool LocalSearch::swap2(Solution& solution) {
   for (idxFirstRemove = 0; idxFirstRemove < input->k; idxFirstRemove++) {
     firstRemove = solution.subsetsInSolution[idxFirstRemove];
 
-    if (tabu.isTabu(firstRemove, iteration)) 
-      continue;
-
     for (idxSecondRemove = idxFirstRemove; idxSecondRemove < input->k; idxSecondRemove++) {
       if (idxFirstRemove == idxSecondRemove) 
         continue;
 
       secondRemove = solution.subsetsInSolution[idxSecondRemove];
-
-      if (tabu.isTabu(secondRemove, iteration)) 
-        continue;
 
       if (!partialSolutions.interesting(firstRemove, secondRemove)) 
         continue;
