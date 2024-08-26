@@ -45,6 +45,9 @@ bool LS_Swap2_UsePartial_Complete::swap(Input *input, Solution &solution,
             newObjective = newSolution.count();
 
             if (newObjective > solution.getObjective()) {
+              tabu.setTabu(input->subsets[i].identifier, iteration);
+              tabu.setTabu(input->subsets[j].identifier, iteration);
+
               solution.swap(idxFirstRemove, input->subsets[i].identifier);
               solution.swap(idxSecondRemove, input->subsets[j].identifier,
                             &newSolution, newObjective);
