@@ -6,7 +6,7 @@ OBJECTS = $(SOURCES:.cpp=.o)
 
 .PHONY: all clean
 
-all: main.out 
+all: main.out
 
 main.out: $(OBJECTS)
 	$(CC) $(FLAGS) -o $@ $^
@@ -23,4 +23,4 @@ main.out: $(OBJECTS)
 	rm -f $@.$$$$
 
 clean:
-	rm -f *.o *.out *.d
+	rm -f $(OBJECTS) $(SOURCES:.cpp=.d) main.out

@@ -38,6 +38,7 @@ public:
   void setBitsAndObjective(bitset<numberOfBits> bits);
   void setBits(bitset<numberOfBits>);
   Solution copyWithoutSubsets(Input* input, RemoveSubsets remove);
+  bitset<numberOfBits> bitsWithoutSet(Input* input, RemoveSubsets remove);
   void setIterationFoud(int it);
   unsigned int getIterationFound();
   void swap(int idxOut, int in);

@@ -98,6 +98,7 @@ void PartialSolution::printOne() {
     }
   }
 }
+
 void PartialSolution::printTwo() {
   for (int i = 0; i < input->quantityOfSubsets; i++) {
     for (int j = 0; j < input->quantityOfSubsets; j++) {

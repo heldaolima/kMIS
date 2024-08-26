@@ -117,6 +117,18 @@ Solution Solution::copyWithoutSubsets(Input* input, RemoveSubsets remove) {
   return solution;
 }
 
+bitset<numberOfBits> Solution::bitsWithoutSet(Input* input, RemoveSubsets remove) {
+  bitset<numberOfBits> minusOne;
+  minusOne.set();
+  for (const int subset: this->subsetsInSolution) {
+    if (remove != subset) {
+      minusOne &= input->subsets[subset].bits;
+    }
+  }
+
+  return minusOne;
+}
+
 void Solution::setIterationFoud(int it) { 
   this->iterationFound = it;
 }
