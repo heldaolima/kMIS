@@ -5,20 +5,20 @@
 #include "../../heuristic_factory.h"
 #include "../restart.h"
 
-class IlsIterations: public Heuristic {
+class IlsIterations : public Heuristic {
 private:
   time_t t1;
-  Input* input;
+  Input *input;
   Solution Construction(double);
   Solution Construction();
-  Solution Construction(RestartSolution* restart);
-  Solution Perturbation(Solution*, double);
-  void LocalSearch(Solution&, int iteration, clock_t t1);
+  Solution Construction(RestartSolution *restart);
+  Solution Perturbation(Solution *, double);
+  void LocalSearch(Solution &, int iteration, clock_t t1);
+
 public:
-  IlsIterations(Input* input) : input(input) {};
+  IlsIterations(Input *input) : input(input){};
 
   virtual Solution run() override;
 };
 
 #endif
-

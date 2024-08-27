@@ -4,7 +4,8 @@
 #include "../../helpers/random_utils.h"
 
 #define TAM_X 11
-static const double X[TAM_X] = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
+static const double X[TAM_X] = {0.0, 0.1, 0.2, 0.3, 0.4, 0.5,
+                                0.6, 0.7, 0.8, 0.9, 1.0};
 
 struct constructionArrays {
   int numberOfTimesAnXValueWasChosen[TAM_X];
@@ -55,7 +56,7 @@ struct constructionArrays {
         return;
       }
 
-      avg[i] = (double) score[i] / numberOfTimesAnXValueWasChosen[i];
+      avg[i] = (double)score[i] / numberOfTimesAnXValueWasChosen[i];
       Q[i] = avg[i] / zStar;
 
       sigma += Q[i];

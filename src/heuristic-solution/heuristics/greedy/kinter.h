@@ -7,13 +7,14 @@
 
 using std::vector;
 
-class GreedyKInter : public Heuristic { 
+class GreedyKInter : public Heuristic {
 private:
-  Input* input;
-  RestartSolution* restart = nullptr;
+  Input *input;
+  RestartSolution *restart = nullptr;
+
 public:
-  GreedyKInter(Input* input) : input(input) {}
-  void setRestart(RestartSolution* restart);
+  GreedyKInter(Input *input) : input(input) {}
+  void setRestart(RestartSolution *restart);
   virtual Solution run() override;
 };
 

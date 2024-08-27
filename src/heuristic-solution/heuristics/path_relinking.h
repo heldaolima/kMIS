@@ -4,6 +4,6 @@
 #include "../data_structures/input.h"
 #include "../data_structures/solution.h"
 
-Solution pathRelinking(Input* input, Solution, Solution);
+Solution pathRelinking(Input *input, Solution, Solution);
 
 #endif

@@ -1,8 +1,8 @@
 #ifndef _lrc_h__
 #define _lrc_h__
 
-#include <vector>
 #include "costs.h"
+#include <vector>
 
 using std::vector;
 
@@ -11,7 +11,7 @@ private:
 public:
   vector<bool> lrc;
   Lrc(int);
-  int set(Solution* solution, vector<setForCosts>* incremental_cost, int);
+  int set(Solution *solution, vector<setForCosts> *incremental_cost, int);
   int getIth(int);
 };
 

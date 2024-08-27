@@ -1,15 +1,16 @@
 #include "path_relinking.h"
 #include "../globals.h"
 #include <vector>
-#include <iostream>
 
 #define DEBUG
 
-using std::vector; 
+using std::vector;
 
-#define printVec(V) for(auto n: V) std::cout << n << " ";
+#define printVec(V)                                                            \
+  for (auto n : V)                                                             \
+    std::cout << n << " ";
 
-Solution pathRelinking(Input* input, Solution origin, Solution destiny) {
+Solution pathRelinking(Input *input, Solution origin, Solution destiny) {
   int bestObjective = 0;
 
   Solution bestSolution(input->quantityOfSubsets);
@@ -24,7 +25,7 @@ Solution pathRelinking(Input* input, Solution origin, Solution destiny) {
     destiny = origin;
     origin = bestSolution;
   }
-  
+
   int difference = origin.symmetricDifference(destiny);
 
   while (difference > 0) {
@@ -44,12 +45,12 @@ Solution pathRelinking(Input* input, Solution origin, Solution destiny) {
     // get elements only in destiny
     for (int i = 0; i < origin.subsetsInSolution.size(); i++) {
       int q = origin.subsetsInSolution[i];
-      
+
       if (destiny.isSubsetInSolution[q] == false) {
         onlyInOrigin.push_back(q);
-      }
-      else {
-        intersectionOriginDestiny = intersection(intersectionOriginDestiny, input->subsets[q].bits);
+      } else {
+        intersectionOriginDestiny =
+            intersection(intersectionOriginDestiny, input->subsets[q].bits);
       }
     }
 
@@ -57,23 +58,26 @@ Solution pathRelinking(Input* input, Solution origin, Solution destiny) {
     int outOfOrigin = 0, inOrigin = 0;
     bitset<numberOfBits> movementsBits;
 
-    for (const int outOnlyInOrigin : onlyInOrigin) { // this will get out of origin
-      bitset<numberOfBits> intersectionWithoutTheOneLeftOut = intersectionOriginDestiny;
-      
+    for (const int outOnlyInOrigin :
+         onlyInOrigin) { // this will get out of origin
+      bitset<numberOfBits> intersectionWithoutTheOneLeftOut =
+          intersectionOriginDestiny;
+
       for (const int inOnlyInOrigin : onlyInOrigin) {
         if (inOnlyInOrigin != outOnlyInOrigin) {
-          intersectionWithoutTheOneLeftOut = intersection(
-            intersectionWithoutTheOneLeftOut, input->subsets[inOnlyInOrigin].bits
-          );
+          intersectionWithoutTheOneLeftOut =
+              intersection(intersectionWithoutTheOneLeftOut,
+                           input->subsets[inOnlyInOrigin].bits);
         }
       }
 
       // cost of movements foreach element only in destiny
       for (const int inDestiny : onlyInDestiny) {
-        bitset<numberOfBits> movement = intersection(intersectionWithoutTheOneLeftOut, input->subsets[inDestiny].bits);
-        
+        bitset<numberOfBits> movement = intersection(
+            intersectionWithoutTheOneLeftOut, input->subsets[inDestiny].bits);
+
         int currBest = movement.count();
-        
+
         if (bestMovement < currBest) {
           bestMovement = currBest;
           outOfOrigin = outOnlyInOrigin;

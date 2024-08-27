@@ -6,7 +6,7 @@
 class LocalSearchStrategy {
 public:
   virtual ~LocalSearchStrategy() {}
-  virtual bool swap(Input* input, Solution &solution, int iteration) = 0;
+  virtual bool swap(Input *input, Solution &solution, int iteration) = 0;
 };
 
 #endif

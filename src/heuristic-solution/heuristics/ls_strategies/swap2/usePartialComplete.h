@@ -3,10 +3,10 @@
 
 #include "../ls_strategy.h"
 
-class LS_Swap2_UsePartial_Complete: public LocalSearchStrategy {
+class LS_Swap2_UsePartial_Complete : public LocalSearchStrategy {
 public:
   LS_Swap2_UsePartial_Complete() {}
-  virtual bool swap(Input* input, Solution& solution, int iteration);
+  virtual bool swap(Input *input, Solution &solution, int iteration);
 };
 
 #endif
