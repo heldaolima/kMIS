@@ -19,13 +19,13 @@ int main(int argc, char *argv[]) {
 
   string dirs[3] = {"type1", "type2", "type3"};
 
-  HeuristicTester ilsExperiments("test_time.csv", ILS_TIME);
+  /*HeuristicTester ilsExperiments("test_time.csv", ILS_TIME);*/
 
   for (const string dir : dirs) {
     for (const auto &file : fs::directory_iterator(path + dir)) {
       if (file.exists()) {
         std::cout << file.path().filename() << "\n";
-        ilsExperiments.testFile(file);
+        /*ilsExperiments.testFile(file);*/
       }
     }
   }

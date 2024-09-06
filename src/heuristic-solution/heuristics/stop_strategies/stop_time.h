@@ -4,7 +4,7 @@
 #include "stop_strategy.h"
 #include <ctime>
 
-class StopByTime : StopStrategy {
+class StopByTime : public StopStrategy {
 private:
   clock_t t1;
   double elapsedTime;

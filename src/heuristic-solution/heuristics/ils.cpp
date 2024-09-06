@@ -6,7 +6,6 @@
 #include "greedy/kinter.h"
 #include "perturb.h"
 #include "restart.h"
-#include "vnd.h"
 #include <ctime>
 
 Solution Ils::run() {
@@ -75,7 +74,37 @@ Solution Ils::run() {
 }
 
 void Ils::Vnd(Solution &solution, int iteration, clock_t t1) {
-  vnd(localSearch, solution, iteration, t1);
+  int it = 1;
+  clock_t t2 = clock();
+  bool improved;
+
+  Solution copy;
+
+  while (it <= 2) {
+    copy = solution;
+
+    if (it == 1) {
+      improved = localSearch->swap1(copy, iteration);
+      t2 = clock();
+      if (improved) {
+        copy.setTimeFound(t1, t2);
+      }
+    } else if (it == 2) {
+      improved = localSearch->swap2(copy, iteration);
+      t2 = clock();
+      if (improved) {
+        copy.setTimeFound(t1, t2);
+      }
+    }
+
+    if (copy.getObjective() <= solution.getObjective()) {
+      it++;
+    } else {
+      solution = copy;
+      solution.timeFound = copy.timeFound;
+      it = 1;
+    }
+  }
 }
 
 Solution Ils::Construction(RestartSolution *restart) {

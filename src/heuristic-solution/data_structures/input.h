@@ -1,19 +1,19 @@
 #ifndef __input_h__
 #define __input_h__
 
-#include "subset.h" 
+#include "subset.h"
 #include <string>
 
 using std::string;
 
 class Input {
-public: 
-  int quantityOfSubsets; // |L|
+public:
+  int quantityOfSubsets;  // |L|
   int quantityOfElements; // |R|
   int k;
   vector<Subset> subsets;
 
-  Input(string path, bool* solvable);
+  Input(string path, bool *solvable);
   void print();
   void sortByOrder();
   void sortByObjective();

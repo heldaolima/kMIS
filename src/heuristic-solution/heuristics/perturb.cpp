@@ -52,7 +52,7 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
     inferiorLimit = getInferiorLimit(alpha, costs.c_min, costs.c_max);
     tam_lrc = lrc.set(&perturbed, &costs.incremental_cost, inferiorLimit);
 
-    random_index = randBetween(0, tam_lrc-1);
+    random_index = randBetween(0, tam_lrc - 1);
     chosenFromLRC = lrc.getIth(random_index);
 
     isAvaliable[input->subsets[chosenFromLRC].identifier] = false;

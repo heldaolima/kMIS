@@ -1,9 +1,9 @@
 #ifndef __subset_h__
 #define __subset_h__
 
+#include "../globals.h"
 #include <bitset>
 #include <vector>
-#include "../globals.h"
 
 #define NOT_DEFINED -1
 
@@ -14,7 +14,7 @@ typedef struct RemoveSubsets {
   int s2 = NOT_DEFINED;
 
   bool operator!=(int identifier) {
-    if (s2 == NOT_DEFINED) 
+    if (s2 == NOT_DEFINED)
       return identifier != s1;
     return identifier != s1 && identifier != s2;
   }

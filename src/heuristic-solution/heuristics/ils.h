@@ -20,11 +20,15 @@ private:
   void Vnd(Solution &solution, int iteration, clock_t t1);
 
 public:
-  Ils(Input *input, StopStrategy *stopStrategy, LocalSearch *ls)
+  Ils(Input *input, LocalSearch *ls, StopStrategy *stopStrategy)
       : input(input) {
-    this->stopStrategy = stopStrategy;
     this->localSearch = ls;
+    this->stopStrategy = stopStrategy;
   };
+  ~Ils() {
+    delete stopStrategy;
+    delete localSearch;
+  }
 
   virtual Solution run() override;
 };

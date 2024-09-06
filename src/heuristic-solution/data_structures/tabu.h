@@ -12,6 +12,7 @@ class Tabu {
 private:
   int tenure;
   vector<int> tabu_list;
+
 public:
   Tabu() {}
   Tabu(int numberOfSubsets);

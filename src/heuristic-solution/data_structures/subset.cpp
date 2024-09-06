@@ -1,14 +1,12 @@
 #include "subset.h"
 
-Subset::Subset(int identifier) {
-  this->identifier = identifier;
-}
+Subset::Subset(int identifier) { this->identifier = identifier; }
 
 Subset::Subset(vector<int> array) {
   this->bits.reset();
 
   for (const int number : array) {
-    bits.set((size_t) number);
+    bits.set((size_t)number);
   }
 }
 

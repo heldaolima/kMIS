@@ -1,7 +1,18 @@
 CC=g++
 FLAGS=-g -lm -O0
 
-SOURCES = $(wildcard *.cpp) $(wildcard helpers/*.cpp) $(wildcard data_structures/*.cpp) $(wildcard heuristics/*.cpp) $(wildcard heuristics/grasp/*.cpp) $(wildcard heuristics/ils/*.cpp) $(wildcard heuristics/greedy/*.cpp)
+SOURCES = $(wildcard *.cpp) $(wildcard helpers/*.cpp) \
+						$(wildcard data_structures/*.cpp) \
+						$(wildcard heuristics/*.cpp) \
+						$(wildcard heuristics/grasp/*.cpp) \
+						$(wildcard heuristics/ils/*.cpp) \
+						$(wildcard heuristics/greedy/*.cpp) \
+						$(wildcard heuristics/ls_strategies/*.cpp) \
+						$(wildcard heuristics/ls_strategies/factories/*.cpp) \
+						$(wildcard heuristics/ls_strategies/swap1/*.cpp) \
+						$(wildcard heuristics/ls_strategies/swap2/*.cpp) \
+						$(wildcard heuristics/stop_strategies/*.cpp) \
+						
 OBJECTS = $(SOURCES:.cpp=.o)
 
 .PHONY: all clean

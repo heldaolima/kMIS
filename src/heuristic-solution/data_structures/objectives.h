@@ -14,9 +14,8 @@ typedef struct objectives {
     if (iteration == 0) {
       best = current;
       worst = current;
-    } 
-    else {
-      if (current > best) 
+    } else {
+      if (current > best)
         best = current;
       if (current < worst)
         worst = current;
