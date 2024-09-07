@@ -13,7 +13,7 @@ class LS_StrategyFactory {
 public:
   virtual ~LS_StrategyFactory() {}
   virtual LocalSearchStrategy *createSwap1() = 0;
-  virtual LocalSearchStrategy *createSwap2(Swap2StrategyEnum strategy) = 0;
+  virtual LocalSearchStrategy *createSwap2() = 0;
 };
 
 #endif

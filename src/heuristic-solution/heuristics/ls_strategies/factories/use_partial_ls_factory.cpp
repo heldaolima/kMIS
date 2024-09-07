@@ -8,8 +8,8 @@ LocalSearchStrategy *UsePartialLSFactory::createSwap1() {
   return new LS_Swap1_UsePartial();
 }
 
-LocalSearchStrategy *UsePartialLSFactory::createSwap2(Swap2StrategyEnum strategy) {
-  switch (strategy) {
+LocalSearchStrategy *UsePartialLSFactory::createSwap2() {
+  switch (swap2Strategy) {
   case BEFORE_AND_AFTER:
     return new LS_Swap2_UsePartial_BeforeAndAfter();
   case COMPLETE:

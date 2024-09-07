@@ -7,7 +7,7 @@
 #include "heuristics/stop_strategies/stop_time.h"
 #include <ctime>
 
-Heuristic *HeuristicFactory::createIls(LS_StrategyFactory* factory) {
+Heuristic *HeuristicFactory::createIls(LS_StrategyFactory *factory) {
   StopStrategy *stop;
   switch (stopStrategy) {
   case TIME: {
@@ -22,9 +22,8 @@ Heuristic *HeuristicFactory::createIls(LS_StrategyFactory* factory) {
   }
 
   LocalSearchStrategy *s1 = factory->createSwap1(),
-                      *s2 = factory->createSwap2(swap2Strategy);
+                      *s2 = factory->createSwap2();
 
   LocalSearch *ls = new LocalSearch(input, s1, s2);
   return new Ils(input, ls, stop);
 }
-

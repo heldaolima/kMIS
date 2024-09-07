@@ -14,14 +14,10 @@ class HeuristicFactory {
 private:
   Input *input;
   StopStrategyEnum stopStrategy;
-  Swap2StrategyEnum swap2Strategy;
 
 public:
-  HeuristicFactory(Input *input, StopStrategyEnum stopStrategy,
-                   Swap2StrategyEnum swap2)
-      : input(input) {
+  HeuristicFactory(Input *input, StopStrategyEnum stopStrategy) : input(input) {
     this->stopStrategy = stopStrategy;
-    this->swap2Strategy = swap2;
   }
 
   Heuristic *createIls(LS_StrategyFactory *factory);
