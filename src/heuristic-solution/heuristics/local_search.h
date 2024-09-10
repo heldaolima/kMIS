@@ -8,7 +8,7 @@
 
 class LocalSearch {
 private:
-  Input *input;
+  const Input *input;
   LocalSearchStrategy *_swap1, *_swap2;
 
 public:

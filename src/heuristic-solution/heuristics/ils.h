@@ -10,9 +10,9 @@
 class Ils : public Heuristic {
 private:
   StopStrategy *stopStrategy;
-  LocalSearch *localSearch;
+  const LocalSearch *localSearch;
   time_t t1;
-  Input *input;
+  const Input *input;
   Solution Construction(double);
   Solution Construction();
   Solution Construction(RestartSolution *restart);

@@ -5,7 +5,7 @@
 
 class RestartSolution {
 private:
-  Input *input;
+  const Input *input;
   vector<int> avaliableSets;
   int numberOfAvailableSets;
 

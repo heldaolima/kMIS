@@ -8,7 +8,7 @@
 
 class Grasp_PathRelinking : public Heuristic {
 private:
-  Input* input;
+  const Input* input;
 public:
   Grasp_PathRelinking(Input* input) : input(input) {}
   Solution run() override;

@@ -17,7 +17,7 @@ typedef struct partial {
 
 class PartialSolution {
 private:
-  Input *input;
+  const Input *input;
 
 public:
   vector<partial> listOne;
