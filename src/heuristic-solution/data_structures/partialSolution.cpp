@@ -5,7 +5,7 @@
 
 PartialSolution partialSolutions;
 
-void PartialSolution::computeOne(Solution *solution) {
+void PartialSolution::computeOne(const Solution &solution) {
   int i = 0;
 
   bitset<numberOfBits> partialBits;
@@ -17,23 +17,23 @@ void PartialSolution::computeOne(Solution *solution) {
   prefix[0] = partialBits;
   for (i = 1; i < input->k; i++) {
     prefix[i] = intersection(
-        input->subsets[solution->subsetsInSolution[i - 1]].bits, prefix[i - 1]);
+        input->subsets[solution.subsetsInSolution[i - 1]].bits, prefix[i - 1]);
   }
 
   for (i = input->k - 1; i >= 0; i--) {
     partialBits = intersection(suffixResult, prefix[i]);
     suffixResult = intersection(
-        input->subsets[solution->subsetsInSolution[i]].bits, suffixResult);
+        input->subsets[solution.subsetsInSolution[i]].bits, suffixResult);
 
-    listOne[solution->subsetsInSolution[i]] = {
+    listOne[solution.subsetsInSolution[i]] = {
         true,
         partialBits,
-        partialBits.count() > solution->getObjective(),
+        partialBits.count() > solution.getObjective(),
     };
   }
 }
 
-void PartialSolution::computeTwo(Solution *solution) {
+void PartialSolution::computeTwo(const Solution &solution) {
   int newK = input->k - 1;
 
   bitset<numberOfBits> partialBits;
@@ -51,7 +51,7 @@ void PartialSolution::computeTwo(Solution *solution) {
 
     for (j = 0; j < input->k; j++) {
       if (j != i) {
-        minusOneSubset[auxIdx++] = solution->subsetsInSolution[j];
+        minusOneSubset[auxIdx++] = solution.subsetsInSolution[j];
       }
     }
 
@@ -64,10 +64,10 @@ void PartialSolution::computeTwo(Solution *solution) {
       partialBits = prefix[j] & suffixResult;
       suffixResult = suffixResult & input->subsets[minusOneSubset[j]].bits;
 
-      listTwo[solution->subsetsInSolution[i]][minusOneSubset[j]] = {
+      listTwo[solution.subsetsInSolution[i]][minusOneSubset[j]] = {
           true,
           partialBits,
-          partialBits.count() > solution->getObjective(),
+          partialBits.count() > solution.getObjective(),
       };
     }
   }

@@ -10,7 +10,8 @@ private:
 
 public:
   LS_Swap2_UsePartial_BeforeAndAfter(){};
-  virtual bool swap(Input *input, Solution &solution, int iteration) override;
+  virtual bool swap(const Input *input, Solution &solution,
+                    int iteration) override;
 };
 
 #endif

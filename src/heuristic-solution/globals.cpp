@@ -1,8 +1,8 @@
 #include "globals.h"
 #include <iostream>
 
-bitset<numberOfBits> intersection(bitset<numberOfBits> &setA,
-                                  bitset<numberOfBits> &setB) {
+bitset<numberOfBits> intersection(const bitset<numberOfBits> &setA,
+                                  const bitset<numberOfBits> &setB) {
   return setA & setB;
 }
 

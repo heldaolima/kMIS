@@ -8,11 +8,10 @@ private:
   Swap2StrategyEnum swap2Strategy;
 
 public:
-  UsePartialLSFactory(Swap2StrategyEnum swap2Strategy) {
-    this->swap2Strategy = swap2Strategy;
-  }
-  virtual LocalSearchStrategy *createSwap1() override;
-  virtual LocalSearchStrategy *createSwap2() override;
+  UsePartialLSFactory(Swap2StrategyEnum swap2Strategy)
+      : swap2Strategy(swap2Strategy) {}
+  virtual LocalSearchStrategy *createSwap1() const override;
+  virtual LocalSearchStrategy *createSwap2() const override;
 };
 
 #endif

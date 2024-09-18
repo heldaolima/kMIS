@@ -6,7 +6,7 @@
 class LS_Swap2_UsePartial_Complete : public LocalSearchStrategy {
 public:
   LS_Swap2_UsePartial_Complete() {}
-  virtual bool swap(Input *input, Solution &solution, int iteration);
+  virtual bool swap(const Input *input, Solution &solution, int iteration);
 };
 
 #endif

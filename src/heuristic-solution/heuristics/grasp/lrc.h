@@ -11,7 +11,8 @@ private:
 public:
   vector<bool> lrc;
   Lrc(int);
-  int set(Solution *solution, vector<setForCosts> *incremental_cost, int);
+  int set(const Solution &solution, const vector<setForCosts> &incremental_cost,
+          int);
   int getIth(int);
 };
 

@@ -7,19 +7,19 @@
 
 const string header = "input,k,best,worst,avg_obj,avg_time_to_best\n";
 
-HeuristicTester::HeuristicTester(string outPath) {
+HeuristicTester::HeuristicTester(const string &outPath) {
   this->writer = new ResultsWriter(outPath, header);
   /*this->type = type;*/
 }
 
-void HeuristicTester::testFile(fs::directory_entry inputFile) {
+void HeuristicTester::testFile(const fs::directory_entry &inputFile) {
   Objectives objs;
   Times times;
   clock_t t1, t2;
 
   bool solvable = true;
 
-  Input *input = new Input(inputFile.path(), &solvable);
+  const Input *input = new Input(inputFile.path(), &solvable);
   if (solvable) {
     /*Heuristic *heuristic = HeuristicFactory::create(input, type);*/
     partialSolutions = PartialSolution(input);
@@ -30,7 +30,7 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
 
       std::cout << "run " << i + 1 << "\n";
       t1 = clock();
-      Solution solution; 
+      Solution solution;
       t2 = clock();
 
       times.set(t1, t2);
@@ -43,7 +43,7 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
     objs.average /= NUMBER_OF_TESTS;
     objs.averageFound /= NUMBER_OF_TESTS;
 
-    writer->writeResults(inputFile.path().stem(), &objs, &times, input->k);
+    writer->writeResults(inputFile.path().stem(), objs, times, input->k);
 
     /*delete heuristic;*/
     delete input;

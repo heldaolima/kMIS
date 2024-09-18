@@ -14,7 +14,8 @@ using std::string;
 
 class Tester {
 public:
-  virtual void testFile(fs::directory_entry inputFile) = 0;
+  ~Tester() {}
+  virtual void testFile(const fs::directory_entry &inputFile) = 0;
 };
 
 #endif

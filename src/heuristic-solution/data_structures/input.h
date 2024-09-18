@@ -8,12 +8,12 @@ using std::string;
 
 class Input {
 public:
-  int quantityOfSubsets;  // |L|
-  int quantityOfElements; // |R|
-  int k;
+  int quantityOfSubsets = 0;  // |L|
+  int quantityOfElements = 0; // |R|
+  int k = 0;
   vector<Subset> subsets;
 
-  Input(string path, bool *solvable);
+  Input(const string& path, bool *solvable);
   void print();
   void sortByOrder();
   void sortByObjective();

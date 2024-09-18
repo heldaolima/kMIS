@@ -12,19 +12,16 @@ private:
   LocalSearchStrategy *_swap1, *_swap2;
 
 public:
-  LocalSearch(Input *input, LocalSearchStrategy *swap1,
+  LocalSearch(const Input *input, LocalSearchStrategy *swap1,
               LocalSearchStrategy *swap2)
-      : input(input) {
-    this->_swap1 = swap1;
-    this->_swap2 = swap2;
-  }
+      : input(input), _swap1(swap1), _swap2(swap2) {}
   ~LocalSearch() {
     delete _swap1;
     delete _swap2;
   }
 
-  bool swap1(Solution &solution, int iteration);
-  bool swap2(Solution &solution, int iteration);
+  bool swap1(Solution &solution, int iteration) const;
+  bool swap2(Solution &solution, int iteration) const;
 };
 
 #endif

@@ -3,10 +3,11 @@
 
 #include "../ls_strategy.h"
 
-class LS_Swap1_NoPartial: public LocalSearchStrategy {
+class LS_Swap1_NoPartial : public LocalSearchStrategy {
 public:
-  LS_Swap1_NoPartial() {};
-  virtual bool swap(Input* input, Solution& solution, int iteration) override;
+  LS_Swap1_NoPartial(){};
+  virtual bool swap(const Input *input, Solution &solution,
+                    int iteration) override;
 };
 
 #endif

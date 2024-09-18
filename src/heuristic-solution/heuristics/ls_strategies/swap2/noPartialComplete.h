@@ -6,7 +6,8 @@
 class LS_Swap2_NoPartial_Complete : public LocalSearchStrategy {
 public:
   LS_Swap2_NoPartial_Complete(){};
-  virtual bool swap(Input *input, Solution &solution, int iteration) override;
+  virtual bool swap(const Input *input, Solution &solution,
+                    int iteration) override;
 };
 
 #endif

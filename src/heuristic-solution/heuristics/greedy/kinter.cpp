@@ -4,7 +4,7 @@
 #include "../../globals.h"
 #include "../../data_structures/partialSolution.h"
 
-void GreedyKInter::setRestart(RestartSolution* restart) {
+void GreedyKInter::setRestart(RestartSolution *restart) {
   this->restart = restart;
 }
 
@@ -38,7 +38,6 @@ Solution GreedyKInter::run() {
   }
 
   solution.updateBitsAndObjective(partialSolution);
-  partialSolutions.computeOne(&solution);
 
   return solution;
 }

@@ -8,7 +8,7 @@
 
 using std::fstream, std::vector;
 
-Input::Input(string path, bool* solvable) {
+Input::Input(const string &path, bool* solvable) {
   int num_instances, set, value;
   fstream inFile(path);
   if (inFile.is_open()) {

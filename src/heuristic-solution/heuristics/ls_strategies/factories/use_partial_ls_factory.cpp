@@ -4,11 +4,11 @@
 #include "../swap2/usePartialComplete.h"
 #include "local_search_factory.h"
 
-LocalSearchStrategy *UsePartialLSFactory::createSwap1() {
+LocalSearchStrategy *UsePartialLSFactory::createSwap1() const {
   return new LS_Swap1_UsePartial();
 }
 
-LocalSearchStrategy *UsePartialLSFactory::createSwap2() {
+LocalSearchStrategy *UsePartialLSFactory::createSwap2() const {
   switch (swap2Strategy) {
   case BEFORE_AND_AFTER:
     return new LS_Swap2_UsePartial_BeforeAndAfter();

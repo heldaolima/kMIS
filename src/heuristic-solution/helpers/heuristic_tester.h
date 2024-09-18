@@ -17,8 +17,8 @@ private:
   ResultsWriter *writer;
 
 public:
-  HeuristicTester(string outputPath);
-  void testFile(fs::directory_entry inputFile) override;
+  HeuristicTester(const string &outputPath);
+  void testFile(const fs::directory_entry &inputFile) override;
   ~HeuristicTester() { delete writer; }
 };
 

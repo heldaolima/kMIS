@@ -16,11 +16,10 @@ private:
   StopStrategyEnum stopStrategy;
 
 public:
-  HeuristicFactory(Input *input, StopStrategyEnum stopStrategy) : input(input) {
-    this->stopStrategy = stopStrategy;
-  }
+  HeuristicFactory(Input* input, StopStrategyEnum stopStrategy)
+      : input(input), stopStrategy(stopStrategy) {}
 
-  Heuristic *createIls(LS_StrategyFactory *factory);
+  Heuristic* createIls(const LS_StrategyFactory &factory);
 };
 
 #endif

@@ -34,7 +34,7 @@ Solution Ils::run() {
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
-    currentSolution = Perturbation(&best, alpha);
+    currentSolution = Perturbation(best, alpha);
     Vnd(currentSolution, iteration, t1);
     if (currentSolution.getObjective() > best.getObjective()) {
       best = currentSolution;
@@ -84,13 +84,13 @@ void Ils::Vnd(Solution &solution, int iteration, clock_t t1) {
     copy = solution;
 
     if (it == 1) {
-      improved = localSearch->swap1(copy, iteration);
+      improved = localSearch.swap1(copy, iteration);
       t2 = clock();
       if (improved) {
         copy.setTimeFound(t1, t2);
       }
     } else if (it == 2) {
-      improved = localSearch->swap2(copy, iteration);
+      improved = localSearch.swap2(copy, iteration);
       t2 = clock();
       if (improved) {
         copy.setTimeFound(t1, t2);
@@ -117,8 +117,8 @@ Solution Ils::Construction(double alpha) {
   return grasp_construction(input, alpha);
 }
 
-Solution Ils::Construction() { return ExtendedKInter().run(); }
+Solution Ils::Construction() { return ExtendedKInter(input).run(); }
 
-Solution Ils::Perturbation(Solution *solution, double alpha) {
-  return perturbReactive(*solution, input, alpha);
+Solution Ils::Perturbation(const Solution &solution, double alpha) {
+  return perturbReactive(solution, input, alpha);
 }

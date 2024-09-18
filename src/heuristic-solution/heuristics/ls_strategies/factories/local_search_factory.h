@@ -11,9 +11,9 @@ enum Swap2StrategyEnum {
 
 class LS_StrategyFactory {
 public:
-  virtual ~LS_StrategyFactory() {}
-  virtual LocalSearchStrategy *createSwap1() = 0;
-  virtual LocalSearchStrategy *createSwap2() = 0;
+  ~LS_StrategyFactory() {}
+  virtual LocalSearchStrategy *createSwap1() const = 0;
+  virtual LocalSearchStrategy *createSwap2() const = 0;
 };
 
 #endif

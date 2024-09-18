@@ -69,7 +69,5 @@ Solution ExtendedKInter::run() {
 
   solution.setTimeFound(t1, t2);
 
-  partialSolutions.computeOne(&solution);
-
   return solution;
 }

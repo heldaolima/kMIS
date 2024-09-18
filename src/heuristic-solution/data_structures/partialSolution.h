@@ -4,10 +4,7 @@
 #include "../globals.h"
 #include "input.h"
 #include "solution.h"
-#include <map>
 #include <vector>
-
-using std::map;
 
 typedef struct partial {
   bool set = false;
@@ -24,14 +21,14 @@ public:
   vector<vector<partial>> listTwo;
 
   PartialSolution() {}
-  PartialSolution(Input *input) : input(input) {
+  PartialSolution(const Input *input) : input(input) {
     listOne = vector<partial>(input->quantityOfSubsets);
     listTwo = vector(input->quantityOfSubsets,
                      vector<partial>(input->quantityOfSubsets));
   };
 
-  void computeOne(Solution *solution);
-  void computeTwo(Solution *solution);
+  void computeOne(const Solution &solution);
+  void computeTwo(const Solution &solution);
   void remove(int idx);
   void remove(int i, int j);
   void printOne();
@@ -39,9 +36,6 @@ public:
   bool interesting(int idx);
   bool interesting(int i, int j);
 };
-
-void computeMinusTwoBAD(Input *input, Solution *sol);
-void computeMinusTwoBetter(Input *input, Solution *solution);
 
 extern PartialSolution partialSolutions;
 

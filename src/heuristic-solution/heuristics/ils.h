@@ -9,26 +9,21 @@
 
 class Ils : public Heuristic {
 private:
-  StopStrategy *stopStrategy;
-  const LocalSearch *localSearch;
-  time_t t1;
   const Input *input;
+  const LocalSearch localSearch;
+  StopStrategy *stopStrategy;
+  time_t t1;
+
   Solution Construction(double);
   Solution Construction();
   Solution Construction(RestartSolution *restart);
-  Solution Perturbation(Solution *, double);
+  Solution Perturbation(const Solution& solution, double alpha);
   void Vnd(Solution &solution, int iteration, clock_t t1);
 
 public:
-  Ils(Input *input, LocalSearch *ls, StopStrategy *stopStrategy)
-      : input(input) {
-    this->localSearch = ls;
-    this->stopStrategy = stopStrategy;
-  };
-  ~Ils() {
-    delete stopStrategy;
-    delete localSearch;
-  }
+  Ils(const Input *input, const LocalSearch &ls, StopStrategy *stopStrategy)
+      : input(input), localSearch(ls), stopStrategy(stopStrategy){};
+  ~Ils() { delete stopStrategy; }
 
   virtual Solution run() override;
 };

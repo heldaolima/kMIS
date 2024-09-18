@@ -26,24 +26,26 @@ public:
   void setTimeFound(clock_t t1, clock_t t2);
   void clean(int);
   void initializeIsSubsetInSolutionVec(int);
-  void addSubsetAndUpdateIntersection(Subset);
+  void addSubsetAndUpdateIntersection(const Subset &subset);
   void addSubset(int);
   void removeSubset(int, int);
   void print();
   int getSubsetInSolution(int);
-  int getObjective();
-  int symmetricDifference(Solution);
-  void updateIntersection(vector<Subset>);
-  void updateBits(bitset<numberOfBits>);
-  void updateBitsAndObjective(bitset<numberOfBits> bits);
-  void setBitsAndObjective(bitset<numberOfBits> bits);
-  void setBits(bitset<numberOfBits>);
-  Solution copyWithoutSubsets(Input *input, RemoveSubsets remove);
-  bitset<numberOfBits> bitsWithoutSet(Input *input, RemoveSubsets remove);
+  int getObjective() const;
+  int symmetricDifference(const Solution &sol);
+  void updateIntersection(const vector<Subset> &sets);
+  void updateBits(const bitset<numberOfBits> &);
+  void updateBitsAndObjective(const bitset<numberOfBits> &bits);
+  void setBitsAndObjective(const bitset<numberOfBits> &bits);
+  void setBits(const bitset<numberOfBits> &);
+  Solution copyWithoutSubsets(const Input &input, const RemoveSubsets &remove);
+  bitset<numberOfBits> bitsWithoutSet(const Input *input,
+                                      const RemoveSubsets &remove);
   void setIterationFoud(int it);
   unsigned int getIterationFound();
   void swap(int idxOut, int in);
-  void swap(int idxOut, int in, bitset<numberOfBits> *bits, int newObjective);
+  void swap(int idxOut, int in, const bitset<numberOfBits> &bits,
+            int newObjective);
   void setObjective(unsigned int obj);
 };
 

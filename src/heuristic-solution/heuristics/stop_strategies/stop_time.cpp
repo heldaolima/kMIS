@@ -1,10 +1,5 @@
 #include "stop_time.h"
 
-StopByTime::StopByTime(int k, clock_t t1) {
-  this->k = k;
-  this->t1 = t1;
-}
-
 void StopByTime::updateElapsed(clock_t t2) {
   elapsedTime = (t2 - t1) / (double)CLOCKS_PER_SEC;
 }

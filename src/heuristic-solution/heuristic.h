@@ -9,7 +9,7 @@
 
 class Heuristic {
 public:
-  virtual ~Heuristic() {}
+  virtual ~Heuristic();
   virtual Solution run() = 0;
 };
 

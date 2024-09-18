@@ -12,7 +12,7 @@ private:
   void updateElapsed(clock_t t2);
 
 public:
-  StopByTime(int k, clock_t t1);
+  StopByTime(int k, clock_t t1) : k(k), t1(t1) {}
   virtual void init() override;
   virtual bool stopCondition() override;
   virtual void update() override;

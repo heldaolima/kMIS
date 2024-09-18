@@ -9,11 +9,11 @@ using std::vector;
 
 class GreedyKInter : public Heuristic {
 private:
-  Input *input;
+  const Input *input;
   RestartSolution *restart = nullptr;
 
 public:
-  GreedyKInter(Input *input) : input(input) {}
+  GreedyKInter(const Input *input) : input(input) {}
   void setRestart(RestartSolution *restart);
   virtual Solution run() override;
 };

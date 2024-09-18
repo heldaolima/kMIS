@@ -10,7 +10,7 @@ using std::vector;
   for (auto n : V)                                                             \
     std::cout << n << " ";
 
-Solution pathRelinking(Input *input, Solution origin, Solution destiny) {
+Solution pathRelinking(const Input *input, Solution origin, Solution destiny) {
   int bestObjective = 0;
 
   Solution bestSolution(input->quantityOfSubsets);
