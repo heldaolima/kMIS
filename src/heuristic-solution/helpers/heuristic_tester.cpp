@@ -6,25 +6,23 @@
 #include <ctime>
 
 void HeuristicTester::testFile(const fs::directory_entry &inputFile) {
-  Objectives objs;
-  Times times;
-  clock_t t1, t2;
-
   bool solvable = true;
-
   const Input *input = new Input(inputFile.path(), &solvable);
 
   if (solvable) {
-    Heuristic *heuritic = heuristicFactory.createIls(input, *lsFactory);
-    partialSolutions = PartialSolution(input);
+    Objectives objs;
+    Times times;
+    clock_t t1, t2;
+
+    Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory);
 
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
       tabu = Tabu(input->quantityOfSubsets);
       partialSolutions = PartialSolution(input);
 
       std::cout << "run " << i + 1 << "\n";
-      t1 = clock();
-      Solution solution;
+      t1 = clock(); 
+        Solution solution = heuristic->run();
       t2 = clock();
 
       times.set(t1, t2);
@@ -39,7 +37,7 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) {
 
     writer->writeResults(inputFile.path().stem(), objs, times, input->k);
 
-    /*delete heuristic;*/
+    delete heuristic;
     delete input;
   }
 }

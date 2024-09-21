@@ -12,7 +12,7 @@ SOURCES = $(wildcard *.cpp) $(wildcard helpers/*.cpp) \
 						$(wildcard heuristics/ls_strategies/swap1/*.cpp) \
 						$(wildcard heuristics/ls_strategies/swap2/*.cpp) \
 						$(wildcard heuristics/stop_strategies/*.cpp)
-						
+
 OBJECTS = $(SOURCES:.cpp=.o)
 
 .PHONY: all clean

@@ -14,11 +14,11 @@ using std::string;
 
 class HeuristicTester : Tester {
 private:
-  ResultsWriter *writer;
+  const string header = "input,k,best,worst,avg_obj,avg_time_to_best\n";
   const LS_StrategyFactory *lsFactory;
   const StopStrategyEnum stopStrategy;
   const HeuristicFactory heuristicFactory;
-  const string header = "input,k,best,worst,avg_obj,avg_time_to_best\n";
+  ResultsWriter *writer;
 
 public:
   HeuristicTester(const string &outputPath, const LS_StrategyFactory *lsFactory,

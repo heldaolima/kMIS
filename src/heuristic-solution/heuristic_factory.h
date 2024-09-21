@@ -18,7 +18,8 @@ public:
   HeuristicFactory(StopStrategyEnum stopStrategy)
       : stopStrategy(stopStrategy) {}
 
-  Heuristic *createIls(const Input* input, const LS_StrategyFactory &factory) const;
+  Heuristic *createIls(const Input *input,
+                       const LS_StrategyFactory &factory) const;
 };
 
 #endif

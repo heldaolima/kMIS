@@ -71,8 +71,8 @@ int main(int argc, char *argv[]) {
   for (const string dir : dirs) {
     for (const auto &file : fs::directory_iterator(path + dir)) {
       if (file.exists()) {
-        /*std::cout << file.path().filename() << "\n";*/
-        /*ilsExperiments.testFile(file);*/
+        std::cout << file.path().filename() << "\n";
+        ilsExperiments.testFile(file);
       }
     }
   }
