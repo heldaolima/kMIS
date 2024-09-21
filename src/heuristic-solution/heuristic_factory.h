@@ -6,20 +6,19 @@
 #include "heuristics/ls_strategies/factories/local_search_factory.h"
 
 enum StopStrategyEnum {
-  TIME,
-  ITERATIONS,
+  STOP_TIME,
+  STOP_ITERATIONS,
 };
 
 class HeuristicFactory {
 private:
-  Input *input;
   StopStrategyEnum stopStrategy;
 
 public:
-  HeuristicFactory(Input* input, StopStrategyEnum stopStrategy)
-      : input(input), stopStrategy(stopStrategy) {}
+  HeuristicFactory(StopStrategyEnum stopStrategy)
+      : stopStrategy(stopStrategy) {}
 
-  Heuristic* createIls(const LS_StrategyFactory &factory);
+  Heuristic *createIls(const Input* input, const LS_StrategyFactory &factory) const;
 };
 
 #endif

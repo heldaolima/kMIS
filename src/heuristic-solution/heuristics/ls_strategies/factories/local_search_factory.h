@@ -4,14 +4,14 @@
 #include "../ls_strategy.h"
 
 enum Swap2StrategyEnum {
-  BEFORE_AND_AFTER,
-  COMPLETE,
-  RANDOM,
+  SWAP2_BEFORE_AND_AFTER,
+  SWAP2_COMPLETE,
+  SWAP2_RANDOM,
 };
 
 class LS_StrategyFactory {
 public:
-  ~LS_StrategyFactory() {}
+  virtual ~LS_StrategyFactory() {}
   virtual LocalSearchStrategy *createSwap1() const = 0;
   virtual LocalSearchStrategy *createSwap2() const = 0;
 };

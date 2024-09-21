@@ -7,15 +7,17 @@
 #include "heuristics/stop_strategies/stop_time.h"
 #include <ctime>
 
-Heuristic *HeuristicFactory::createIls(const LS_StrategyFactory &factory) {
+Heuristic *
+HeuristicFactory::createIls(const Input *input,
+                            const LS_StrategyFactory &factory) const {
   StopStrategy *stop;
   switch (stopStrategy) {
-  case TIME: {
+  case STOP_TIME: {
     clock_t t1 = clock();
     stop = new StopByTime(input->k, t1);
     break;
   }
-  case ITERATIONS: {
+  case STOP_ITERATIONS: {
     stop = new StopByIteration();
     break;
   }

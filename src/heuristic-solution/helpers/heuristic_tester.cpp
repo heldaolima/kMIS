@@ -5,13 +5,6 @@
 #include "tester.h"
 #include <ctime>
 
-const string header = "input,k,best,worst,avg_obj,avg_time_to_best\n";
-
-HeuristicTester::HeuristicTester(const string &outPath) {
-  this->writer = new ResultsWriter(outPath, header);
-  /*this->type = type;*/
-}
-
 void HeuristicTester::testFile(const fs::directory_entry &inputFile) {
   Objectives objs;
   Times times;
@@ -20,8 +13,9 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) {
   bool solvable = true;
 
   const Input *input = new Input(inputFile.path(), &solvable);
+
   if (solvable) {
-    /*Heuristic *heuristic = HeuristicFactory::create(input, type);*/
+    Heuristic *heuritic = heuristicFactory.createIls(input, *lsFactory);
     partialSolutions = PartialSolution(input);
 
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {

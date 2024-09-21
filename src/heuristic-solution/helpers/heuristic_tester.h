@@ -15,9 +15,18 @@ using std::string;
 class HeuristicTester : Tester {
 private:
   ResultsWriter *writer;
+  const LS_StrategyFactory *lsFactory;
+  const StopStrategyEnum stopStrategy;
+  const HeuristicFactory heuristicFactory;
+  const string header = "input,k,best,worst,avg_obj,avg_time_to_best\n";
 
 public:
-  HeuristicTester(const string &outputPath);
+  HeuristicTester(const string &outputPath, const LS_StrategyFactory *lsFactory,
+                  StopStrategyEnum stopStrategy)
+      : lsFactory(lsFactory), stopStrategy(stopStrategy),
+        heuristicFactory(stopStrategy) {
+    this->writer = new ResultsWriter(outputPath, header);
+  }
   void testFile(const fs::directory_entry &inputFile) override;
   ~HeuristicTester() { delete writer; }
 };
