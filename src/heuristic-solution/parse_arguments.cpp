@@ -35,6 +35,9 @@ HeuristicTester parseArguments(int argc, char **argv) {
     swap2Strategy = SWAP2_BEFORE_AND_AFTER;
   } else if (swap2Arg == "complete") {
     swap2Strategy = SWAP2_COMPLETE;
+  } else {
+    std::cout << "Unknown option for swap(2, 2) strategy: " << swap2Arg << "\n";
+    exit(1);
   }
 
   const bool useDataStructures = result["data-structures"].as<bool>();
@@ -43,7 +46,7 @@ HeuristicTester parseArguments(int argc, char **argv) {
     lsFactory = new UsePartialLSFactory(swap2Strategy);
   } else {
     lsFactory = new NoPartialLSFactory(swap2Strategy);
-  }
+  } 
 
   const std::string stopArg = result["stop"].as<std::string>();
   StopStrategyEnum stop;
@@ -51,10 +54,12 @@ HeuristicTester parseArguments(int argc, char **argv) {
     stop = STOP_TIME;
   } else if (stopArg == "iterations") {
     stop = STOP_ITERATIONS;
+  } else {
+    std::cout << "Unknown option for type stop condition: " << stopArg << "\n";
+    exit(1);
   }
 
   const std::string outFileName = result["file"].as<std::string>();
-  std::cout << "outFileName: " << outFileName << "\n";
 
   return HeuristicTester(outFileName, lsFactory, stop);
 }
