@@ -28,7 +28,10 @@ public:
     this->writer = new ResultsWriter(outputPath, header);
   }
   void testFile(const fs::directory_entry &inputFile) override;
-  ~HeuristicTester() { delete writer; }
+  ~HeuristicTester() {
+    delete writer;
+    delete lsFactory;
+  }
 };
 
 #endif

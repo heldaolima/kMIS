@@ -10,11 +10,13 @@ LocalSearchStrategy *UsePartialLSFactory::createSwap1() const {
 
 LocalSearchStrategy *UsePartialLSFactory::createSwap2() const {
   switch (swap2Strategy) {
-  case BEFORE_AND_AFTER:
+  case SWAP2_BEFORE_AND_AFTER:
     return new LS_Swap2_UsePartial_BeforeAndAfter();
-  case COMPLETE:
+  case SWAP2_COMPLETE:
     return new LS_Swap2_UsePartial_Complete();
-  case RANDOM:
+  case SWAP2_RANDOM:
+    return NULL;
+  default:
     return NULL;
   }
 }
