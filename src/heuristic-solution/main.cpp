@@ -1,17 +1,13 @@
+#include "data_structures/input.h"
+#include "helpers/heuristic_tester.h"
+#include "helpers/random_utils.h"
+#include "parse_arguments.h"
+#include "partialExperiments.h"
+
 #include <ctime>
 #include <cxxopts.hpp>
 #include <filesystem>
 #include <iostream>
-
-#include "data_structures/input.h"
-#include "helpers/heuristic_tester.h"
-#include "helpers/random_utils.h"
-#include "heuristic_factory.h"
-#include "heuristics/ls_strategies/factories/local_search_factory.h"
-#include "heuristics/ls_strategies/factories/no_partial_ls_factory.h"
-#include "heuristics/ls_strategies/factories/use_partial_ls_factory.h"
-#include "parse_arguments.h"
-#include "partialExperiments.h"
 
 bool useTabu = false;
 
