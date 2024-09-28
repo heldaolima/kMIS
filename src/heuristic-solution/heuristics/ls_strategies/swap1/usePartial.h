@@ -8,6 +8,9 @@ public:
   LS_Swap1_UsePartial(){};
   virtual bool swap(const Input *input, Solution &solution,
                     int iteration) override;
+  virtual void print() const override {
+    std::cout << "LS_Swap1_UsePartial\n";
+  }
 };
 
 #endif

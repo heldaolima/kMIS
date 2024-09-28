@@ -16,6 +16,7 @@ public:
   GreedyKInter(const Input *input) : input(input) {}
   void setRestart(RestartSolution *restart);
   virtual Solution run() override;
+  virtual void print() const override {}
 };
 
 #endif

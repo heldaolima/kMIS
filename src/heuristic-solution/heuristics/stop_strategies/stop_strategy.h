@@ -6,7 +6,8 @@ public:
   virtual void init() = 0;
   virtual bool stopCondition() = 0;
   virtual void update() = 0;
-  ~StopStrategy() {}
+  virtual void print() const = 0;
+  virtual ~StopStrategy();
 };
 
 #endif

@@ -12,6 +12,7 @@ public:
   ExtendedKInter(const Input *input) : input(input){};
   void setTime(clock_t t1);
   virtual Solution run() override;
+  virtual void print() const override {}
 };
 
 #endif

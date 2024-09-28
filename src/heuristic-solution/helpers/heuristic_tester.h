@@ -27,7 +27,7 @@ public:
         heuristicFactory(stopStrategy) {
     this->writer = new ResultsWriter(outputPath, header);
   }
-  void testFile(const fs::directory_entry &inputFile) override ;
+  void testFile(const fs::directory_entry &inputFile) override;
   ~HeuristicTester() {
     delete writer;
     delete lsFactory;

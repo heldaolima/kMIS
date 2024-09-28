@@ -3,6 +3,7 @@
 
 #include "stop_strategy.h"
 #include <ctime>
+#include <iostream>
 
 class StopByTime : public StopStrategy {
 private:
@@ -16,6 +17,9 @@ public:
   virtual void init() override;
   virtual bool stopCondition() override;
   virtual void update() override;
+  virtual void print() const override {
+    std::cout << "StopByTime\n";
+  }
 };
 
 #endif

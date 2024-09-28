@@ -84,13 +84,13 @@ void Ils::Vnd(Solution &solution, int iteration, clock_t t1) {
     copy = solution;
 
     if (it == 1) {
-      improved = localSearch.swap1(copy, iteration);
+      improved = localSearch->swap1(copy, iteration);
       t2 = clock();
       if (improved) {
         copy.setTimeFound(t1, t2);
       }
     } else if (it == 2) {
-      improved = localSearch.swap2(copy, iteration);
+      improved = localSearch->swap2(copy, iteration);
       t2 = clock();
       if (improved) {
         copy.setTimeFound(t1, t2);

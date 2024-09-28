@@ -40,13 +40,10 @@ HeuristicTester parseArguments(int argc, char **argv) {
     exit(1);
   }
 
-  const bool useDataStructures = result["data-structures"].as<bool>();
-  LS_StrategyFactory *lsFactory;
-  if (useDataStructures) {
+  LS_StrategyFactory *lsFactory = new NoPartialLSFactory(swap2Strategy);
+  if (result.count("data-structures")) {
     lsFactory = new UsePartialLSFactory(swap2Strategy);
-  } else {
-    lsFactory = new NoPartialLSFactory(swap2Strategy);
-  } 
+  }
 
   const std::string stopArg = result["stop"].as<std::string>();
   StopStrategyEnum stop;
@@ -60,6 +57,5 @@ HeuristicTester parseArguments(int argc, char **argv) {
   }
 
   const std::string outFileName = result["file"].as<std::string>();
-
   return HeuristicTester(outFileName, lsFactory, stop);
 }

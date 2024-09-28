@@ -15,13 +15,14 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) {
     clock_t t1, t2;
 
     Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory);
+    heuristic->print();
 
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
       tabu = Tabu(input->quantityOfSubsets);
       partialSolutions = PartialSolution(input);
 
       std::cout << "run " << i + 1 << "\n";
-      t1 = clock(); 
+      t1 = clock();
         Solution solution = heuristic->run();
       t2 = clock();
 

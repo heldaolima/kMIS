@@ -15,8 +15,8 @@ LocalSearchStrategy *UsePartialLSFactory::createSwap2() const {
   case SWAP2_COMPLETE:
     return new LS_Swap2_UsePartial_Complete();
   case SWAP2_RANDOM:
-    return NULL;
+    return nullptr;
   default:
-    return NULL;
+    return nullptr;
   }
 }

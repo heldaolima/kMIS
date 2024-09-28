@@ -5,6 +5,7 @@
 #include "../data_structures/solution.h"
 #include "../heuristic.h"
 #include "ls_strategies/ls_strategy.h"
+#include <iostream>
 
 class LocalSearch {
 private:
@@ -22,6 +23,6 @@ public:
 
   bool swap1(Solution &solution, int iteration) const;
   bool swap2(Solution &solution, int iteration) const;
+  void print() const;
 };
-
 #endif
