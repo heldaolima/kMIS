@@ -16,6 +16,8 @@ Solution Ils::run() {
 
   RestartSolution restart(input);
 
+  stopStrategy->init();
+
   ExtendedKInter greedy(input);
   greedy.setTime(t1);
   Solution best = greedy.run();
@@ -28,7 +30,6 @@ Solution Ils::run() {
   int iterationsWithoutImprovement = 0, iteration = 1;
 
   Solution currentSolution;
-  stopStrategy->init();
   while (!stopStrategy->stopCondition()) {
     // debug("iteration=%d", iteration);
     idxAlpha = auxArrays.getIdxAlpha();

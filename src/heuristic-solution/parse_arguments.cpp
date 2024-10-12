@@ -23,7 +23,7 @@ HeuristicTester parseArguments(int argc, char **argv) {
       cxxopts::value<std::string>()->default_value("results_ils.csv"))(
       "h,help", "Print usage");
 
-  const auto result = options.parse(argc, argv);
+  const cxxopts::ParseResult result = options.parse(argc, argv);
   if (result.count("help")) {
     std::cout << options.help() << "\n";
     exit(0);
@@ -40,9 +40,11 @@ HeuristicTester parseArguments(int argc, char **argv) {
     exit(1);
   }
 
-  LS_StrategyFactory *lsFactory = new NoPartialLSFactory(swap2Strategy);
+  LS_StrategyFactory *lsFactory;
   if (result.count("data-structures")) {
     lsFactory = new UsePartialLSFactory(swap2Strategy);
+  } else {
+    lsFactory = new NoPartialLSFactory(swap2Strategy);
   }
 
   const std::string stopArg = result["stop"].as<std::string>();

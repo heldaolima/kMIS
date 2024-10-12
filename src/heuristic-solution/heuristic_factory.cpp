@@ -14,8 +14,7 @@ HeuristicFactory::createIls(const Input *input,
   StopStrategy *stop;
   switch (stopStrategy) {
   case STOP_TIME: {
-    clock_t t1 = clock();
-    stop = new StopByTime(input->k, t1);
+    stop = new StopByTime(input->k);
     break;
   }
   case STOP_ITERATIONS: {
