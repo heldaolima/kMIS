@@ -1,28 +1,21 @@
 #include "heuristic_tester.h"
 #include "../data_structures/partialSolution.h"
 #include "../data_structures/tabu.h"
-#include <ctime>
 #include "../dbg.h"
 #include "tester.h"
+#include <ctime>
 
-const string header = "input,k,best,worst,avg_obj,avg_time_to_best\n";
-
-HeuristicTester::HeuristicTester(string outPath, HeuristicsEnum type) {
-  this->writer = new ResultsWriter(outPath, header);
-  this->type = type;
-}
-
-void HeuristicTester::testFile(fs::directory_entry inputFile) {
-  Objectives objs;
-  Times times;
-  clock_t t1, t2;
-
+void HeuristicTester::testFile(const fs::directory_entry &inputFile) {
   bool solvable = true;
+  const Input *input = new Input(inputFile.path(), &solvable);
 
-  Input *input = new Input(inputFile.path(), &solvable);
   if (solvable) {
-    Heuristic *heuristic = HeuristicFactory::create(input, type);
-    partialSolutions = PartialSolution(input);
+    Objectives objs;
+    Times times;
+    clock_t t1, t2;
+
+    Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory);
+    heuristic->print();
 
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
       tabu = Tabu(input->quantityOfSubsets);
@@ -43,7 +36,7 @@ void HeuristicTester::testFile(fs::directory_entry inputFile) {
     objs.average /= NUMBER_OF_TESTS;
     objs.averageFound /= NUMBER_OF_TESTS;
 
-    writer->writeResults(inputFile.path().stem(), &objs, &times, input->k);
+    writer->writeResults(inputFile.path().stem(), objs, times, input->k);
 
     delete heuristic;
     delete input;

@@ -5,18 +5,20 @@
 
 class RestartSolution {
 private:
-  Input* input;
+  const Input *input;
   vector<int> avaliableSets;
   int numberOfAvailableSets;
 
 public:
+  const unsigned int noImprovementsThreshold = 75;
   Solution run(clock_t t1);
   void setSubsetAsUsed(int subset);
-  RestartSolution(Input* input) : input(input) {
+  RestartSolution();
+  RestartSolution(const Input *input)
+      : input(input), numberOfAvailableSets(input->quantityOfSubsets) {
     for (int i = 0; i < input->quantityOfSubsets; i++) {
       avaliableSets.push_back(i);
     }
-    numberOfAvailableSets = input->quantityOfSubsets;
   };
 };
 

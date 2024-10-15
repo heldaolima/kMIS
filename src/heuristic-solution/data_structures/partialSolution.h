@@ -1,13 +1,10 @@
 #ifndef __partial_solution_h__
 #define __partial_solution_h__
 
-#include <map>
-#include <vector>
 #include "../globals.h"
 #include "input.h"
 #include "solution.h"
-
-using std::map;
+#include <vector>
 
 typedef struct partial {
   bool set = false;
@@ -17,20 +14,21 @@ typedef struct partial {
 
 class PartialSolution {
 private:
-  Input* input;
+  const Input *input;
+
 public:
   vector<partial> listOne;
   vector<vector<partial>> listTwo;
 
   PartialSolution() {}
-  PartialSolution(Input *input): input(input) {
+  PartialSolution(const Input *input) : input(input) {
     listOne = vector<partial>(input->quantityOfSubsets);
-    listTwo = vector(input->quantityOfSubsets, 
+    listTwo = vector(input->quantityOfSubsets,
                      vector<partial>(input->quantityOfSubsets));
   };
 
-  void computeOne(Solution* solution);
-  void computeTwo(Solution* solution);
+  void computeOne(const Solution &solution);
+  void computeTwo(const Solution &solution);
   void remove(int idx);
   void remove(int i, int j);
   void printOne();
@@ -39,9 +37,6 @@ public:
   bool interesting(int i, int j);
 };
 
-void computeMinusTwoBAD(Input* input, Solution* sol);
-void computeMinusTwoBetter(Input* input, Solution* solution);
-
-extern PartialSolution partialSolutions; 
+extern PartialSolution partialSolutions;
 
 #endif

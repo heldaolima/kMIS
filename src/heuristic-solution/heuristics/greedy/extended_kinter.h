@@ -3,15 +3,16 @@
 
 #include "../../heuristic.h"
 
-class ExtendedKInter: Heuristic {
+class ExtendedKInter : Heuristic {
 private:
-  Input* input;
+  const Input *input;
   clock_t t1;
+
 public:
-  ExtendedKInter() {};
-  ExtendedKInter(Input* input): input(input) {};
+  ExtendedKInter(const Input *input) : input(input){};
   void setTime(clock_t t1);
   virtual Solution run() override;
+  virtual void print() const override {}
 };
 
 #endif

@@ -1,27 +1,24 @@
-#include <algorithm>
 #include "extended_kinter.h"
 #include "../../data_structures/partialSolution.h"
-#include "../../globals.h"
 #include "../../dbg.h"
+#include "../../globals.h"
+#include <algorithm>
 
-void ExtendedKInter::setTime(clock_t t1) {
-  this->t1 = t1;
-}
+void ExtendedKInter::setTime(clock_t t1) { this->t1 = t1; }
 
 Solution ExtendedKInter::run() {
   int bestIntersection = 0, currentSet = 0, currentK = 0, currentCount = 0;
 
   vector<Subset> originalSets = input->subsets, loopSets;
-  std::sort(originalSets.begin(), originalSets.end(), input->sortByObjectiveFunc);
+  std::sort(originalSets.begin(), originalSets.end(),
+            input->sortByObjectiveFunc);
   bitset<numberOfBits> partialBits, bestBits;
 
   Solution solution(input->quantityOfSubsets);
 
   clock_t t2;
-  while (
-    bestIntersection < originalSets[currentSet].getNumberOfElements() && 
-    currentSet < input->quantityOfSubsets
-  ) {
+  while (bestIntersection < originalSets[currentSet].getNumberOfElements() &&
+         currentSet < input->quantityOfSubsets) {
     vector<int> subsetsInSolution(input->k);
     loopSets = originalSets;
 
@@ -37,7 +34,8 @@ Solution ExtendedKInter::run() {
         loopSets[i].setBits(intersection(partialBits, loopSets[i].bits));
       }
 
-      std::sort(loopSets.begin() + currentK, loopSets.end(), input->sortByObjectiveFunc);
+      std::sort(loopSets.begin() + currentK, loopSets.end(),
+                input->sortByObjectiveFunc);
       subsetsInSolution[currentK] = loopSets[currentK].identifier;
 
       partialBits = loopSets[currentK].bits;
@@ -45,7 +43,8 @@ Solution ExtendedKInter::run() {
 
       currentK++;
       t2 = clock();
-      if (currentCount < bestIntersection) break;
+      if (currentCount < bestIntersection)
+        break;
     }
 
     if (currentCount > bestIntersection) {
@@ -64,13 +63,11 @@ Solution ExtendedKInter::run() {
     currentSet++;
   }
 
-  for (int s: solution.subsetsInSolution) {
+  for (int s : solution.subsetsInSolution) {
     solution.isSubsetInSolution[s] = true;
   }
 
-  solution.setTimeFound(t1 ,t2);
-
-  partialSolutions.computeOne(&solution);
+  solution.setTimeFound(t1, t2);
 
   return solution;
 }

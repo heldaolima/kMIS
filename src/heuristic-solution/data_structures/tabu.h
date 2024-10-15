@@ -10,8 +10,9 @@ using std::vector;
 
 class Tabu {
 private:
-  int tenure;
+  int tenure = 0;
   vector<int> tabu_list;
+
 public:
   Tabu() {}
   Tabu(int numberOfSubsets);

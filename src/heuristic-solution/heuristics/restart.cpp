@@ -1,11 +1,11 @@
 #include "restart.h"
-#include "../helpers/random_utils.h"
 #include "../data_structures/partialSolution.h"
 #include "../dbg.h"
+#include "../helpers/random_utils.h"
 #include <algorithm>
 
 void RestartSolution::setSubsetAsUsed(int subset) {
-  std::swap(avaliableSets[subset], avaliableSets[numberOfAvailableSets-1]);
+  std::swap(avaliableSets[subset], avaliableSets[numberOfAvailableSets - 1]);
   numberOfAvailableSets--;
   if (numberOfAvailableSets <= 1) {
     numberOfAvailableSets = input->quantityOfSubsets;
@@ -29,10 +29,11 @@ Solution RestartSolution::run(clock_t t1) {
   int currentK = 1;
   while (currentK < input->k) {
     for (i = currentK; i < input->quantityOfSubsets; i++) {
-      subsets[i].setBits(intersection(partialSolution, subsets[i].bits));
+      subsets[i].setBits(partialSolution & subsets[i].bits);
     }
 
-    std::sort(subsets.begin() + currentK, subsets.end(), input->sortByObjectiveFunc);
+    std::sort(subsets.begin() + currentK, subsets.end(),
+              input->sortByObjectiveFunc);
 
     partialSolution = subsets[currentK].bits;
     solution.addSubset(subsets[currentK].identifier);
@@ -43,8 +44,6 @@ Solution RestartSolution::run(clock_t t1) {
   solution.updateBitsAndObjective(partialSolution);
 
   solution.setTimeFound(t1, clock());
-
-  partialSolutions.computeOne(&solution);
 
   return solution;
 }

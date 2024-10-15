@@ -7,7 +7,8 @@
 #include <cmath>
 #include <cstdlib>
 
-Solution perturbReactive(Solution solution, Input *input, double alpha) {
+Solution perturbReactive(const Solution &solution, const Input *input,
+                         double alpha) {
   int i = 0;
   Solution perturbed = Solution(input->quantityOfSubsets);
 
@@ -36,7 +37,7 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
     numberOfAvaliableSets--;
   }
 
-  Costs costs(&isAvaliable, &input->subsets);
+  Costs costs(isAvaliable, input->subsets);
   Lrc lrc(input->quantityOfSubsets);
 
   bitset<numberOfBits> intersec;
@@ -50,9 +51,9 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
   i = perturbed.subsetsInSolution.size();
   while (i < input->k) {
     inferiorLimit = getInferiorLimit(alpha, costs.c_min, costs.c_max);
-    tam_lrc = lrc.set(&perturbed, &costs.incremental_cost, inferiorLimit);
+    tam_lrc = lrc.set(perturbed, costs.incremental_cost, inferiorLimit);
 
-    random_index = randBetween(0, tam_lrc-1);
+    random_index = randBetween(0, tam_lrc - 1);
     chosenFromLRC = lrc.getIth(random_index);
 
     isAvaliable[input->subsets[chosenFromLRC].identifier] = false;
@@ -64,12 +65,11 @@ Solution perturbReactive(Solution solution, Input *input, double alpha) {
       break;
     }
 
-    costs.update(&isAvaliable, &input->subsets, &perturbed);
+    costs.update(isAvaliable, input->subsets, perturbed);
     i++;
   }
 
   perturbed.setBitsAndObjective(intersec);
-  partialSolutions.computeOne(&perturbed);
 
   return perturbed;
 }

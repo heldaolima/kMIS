@@ -9,8 +9,9 @@
 
 class Heuristic {
 public:
-    virtual ~Heuristic() {}
-    virtual Solution run() = 0;
+  virtual ~Heuristic();
+  virtual Solution run() = 0;
+  virtual void print() const = 0;
 };
 
 #endif // !heuristic_h

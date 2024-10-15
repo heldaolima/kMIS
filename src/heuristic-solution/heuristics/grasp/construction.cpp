@@ -4,7 +4,7 @@
 #include "lrc.h"
 #include "../../dbg.h"
 
-Solution grasp_construction(Input* input, double alpha) {
+Solution grasp_construction(const Input* input, double alpha) {
   // int i = 0;
   // // Costs costs(input->subsets);
   //

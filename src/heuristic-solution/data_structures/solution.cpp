@@ -1,7 +1,7 @@
 #include "solution.h"
-#include <iostream>
-#include "input.h"
 #include "../dbg.h"
+#include "input.h"
+#include <iostream>
 
 using std::cout;
 
@@ -28,7 +28,7 @@ void Solution::addSubset(int subset) {
   this->isSubsetInSolution[subset] = true;
 }
 
-void Solution::addSubsetAndUpdateIntersection(Subset subset) {
+void Solution::addSubsetAndUpdateIntersection(const Subset &subset) {
   this->subsetsInSolution.push_back(subset.identifier);
   this->isSubsetInSolution[subset.identifier] = true;
   this->updateBits(subset.bits);
@@ -41,7 +41,8 @@ void Solution::removeSubset(int idx, int subset) {
 }
 
 void Solution::print() {
-  cout << "Objective: " << getObjective() << " | Time found: " << timeFound << " | Subsets in solution: ";
+  cout << "Objective: " << getObjective() << " | Time found: " << timeFound
+       << " | Subsets in solution: ";
   for (const int el : this->subsetsInSolution) {
     cout << el << " ";
   }
@@ -59,13 +60,11 @@ int Solution::getSubsetInSolution(int i) {
   return (i > 0 && i < subsetsInSolution.size()) ? subsetsInSolution[i] : -1;
 }
 
-int Solution::getObjective() {
-  return this->objective;
-}
+int Solution::getObjective() const { return this->objective; }
 
-int Solution::symmetricDifference(Solution sol) {
+int Solution::symmetricDifference(const Solution &sol) {
   int count = 0, k = 0;
-  for (int subset: this->subsetsInSolution) {
+  for (int subset : this->subsetsInSolution) {
     k++;
     if (sol.isSubsetInSolution[subset]) {
       count++;
@@ -75,40 +74,41 @@ int Solution::symmetricDifference(Solution sol) {
   return (k - count);
 }
 
-void Solution::updateIntersection(vector<Subset> sets) {
+void Solution::updateIntersection(const vector<Subset> &sets) {
   this->bits.set();
 
-  for (const int s: this->subsetsInSolution) {
+  for (const int s : this->subsetsInSolution) {
     this->updateBits(sets[s].bits);
   }
 
   this->objective = bits.count();
 }
 
-void Solution::updateBits(bitset<numberOfBits> bits) {
+void Solution::updateBits(const bitset<numberOfBits> &bits) {
   this->bits = intersection(this->bits, bits);
 }
 
-void Solution::updateBitsAndObjective(bitset<numberOfBits> bits) {
+void Solution::updateBitsAndObjective(const bitset<numberOfBits> &bits) {
   this->updateBits(bits);
   this->objective = this->bits.count();
 }
 
-void Solution::setBits(bitset<numberOfBits> bits) {
+void Solution::setBits(const bitset<numberOfBits> &bits) {
   this->bits = bits;
   // this->objective = bits.count();
 }
 
-void Solution::setBitsAndObjective(bitset<numberOfBits> bits) {
+void Solution::setBitsAndObjective(const bitset<numberOfBits> &bits) {
   this->bits = bits;
   this->objective = bits.count();
 }
 
-Solution Solution::copyWithoutSubsets(Input* input, RemoveSubsets remove) {
-  Solution solution(input->quantityOfSubsets);
-  for (const int subset: this->subsetsInSolution) {
+Solution Solution::copyWithoutSubsets(const Input &input,
+                                      const RemoveSubsets &remove) {
+  Solution solution(input.quantityOfSubsets);
+  for (const int subset : this->subsetsInSolution) {
     if (remove != subset) {
-      solution.updateBits(input->subsets[subset].bits);
+      solution.updateBits(input.subsets[subset].bits);
       solution.addSubset(subset);
     }
   }
@@ -117,13 +117,22 @@ Solution Solution::copyWithoutSubsets(Input* input, RemoveSubsets remove) {
   return solution;
 }
 
-void Solution::setIterationFoud(int it) { 
-  this->iterationFound = it;
+bitset<numberOfBits> Solution::bitsWithoutSet(const Input *input,
+                                              const RemoveSubsets &remove) {
+  bitset<numberOfBits> minusOne;
+  minusOne.set();
+  for (const int subset : this->subsetsInSolution) {
+    if (remove != subset) {
+      minusOne &= input->subsets[subset].bits;
+    }
+  }
+
+  return minusOne;
 }
 
-unsigned int Solution::getIterationFound() {
-  return iterationFound;
-}
+void Solution::setIterationFoud(int it) { this->iterationFound = it; }
+
+unsigned int Solution::getIterationFound() { return iterationFound; }
 
 void Solution::swapSets(int idxOut, int in) {
   int out = subsetsInSolution[idxOut];
@@ -133,21 +142,18 @@ void Solution::swapSets(int idxOut, int in) {
   subsetsInSolution[idxOut] = in;
 }
 
-void Solution::swap(int idxOut, int in) {
-  swapSets(idxOut, in);
-}
+void Solution::swap(int idxOut, int in) { swapSets(idxOut, in); }
 
-void Solution::swap(int idxOut, int in, bitset<numberOfBits> *bits, int newObjective) {
-  this->bits = *bits;
+void Solution::swap(int idxOut, int in, const bitset<numberOfBits> &bits,
+                    int newObjective) {
+  this->bits = bits;
   objective = newObjective;
 
   swapSets(idxOut, in);
 }
 
-void Solution::setObjective(unsigned int obj) {
-  objective = obj;
-}
+void Solution::setObjective(unsigned int obj) { objective = obj; }
 
 void Solution::setTimeFound(clock_t t1, clock_t t2) {
-  timeFound = (t2 - t1) / (double) CLOCKS_PER_SEC;
+  timeFound = (t2 - t1) / (double)CLOCKS_PER_SEC;
 }
