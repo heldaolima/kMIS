@@ -23,6 +23,10 @@ bool LS_Swap2_NoPartial_BeforeAndAfter::swap(const Input *input,
 
       bitset<numberOfBits> partialBits =
           solution.bitsWithoutSet(input, {firstRemove, secondRemove});
+
+      if (partialBits.count() <= solution.getObjective()) {
+        continue;
+      }
       for (int i = 0; i < input->quantityOfSubsets; i++) {
         const int idxBefore = getIdxBefore(i, input->quantityOfSubsets);
         const int idxAfter = getIdxAfter(i, input->quantityOfSubsets);

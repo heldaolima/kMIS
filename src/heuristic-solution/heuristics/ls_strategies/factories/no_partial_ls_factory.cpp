@@ -5,7 +5,6 @@
 
 
 LocalSearchStrategy *NoPartialLSFactory::createSwap1() const {
-  std::cout << "wil create LS_Swap1_NoPartial\n";
   return new LS_Swap1_NoPartial();
 }
 

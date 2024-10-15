@@ -6,7 +6,7 @@ void StopByIteration::init() {
 }
 
 bool StopByIteration::stopCondition() {
-  return this->iteration == MAX_ITERATIONS;
+  return this->iteration == maxIterations;
 }
 
 void StopByIteration::update() {

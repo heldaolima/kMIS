@@ -13,13 +13,11 @@ HeuristicTester parseArguments(int argc, char **argv) {
   options.add_options()(
       "d,data-structures",
       "Use auxiliary data structures in the local search phase")(
-      "s,stop", "Type of stop condition [time | iterations] (default: time)",
+      "s,stop", "Type of stop condition [time | iterations]",
       cxxopts::value<std::string>()->default_value("time"))(
-      "swap2",
-      "Type of swap(2,2) strategy [before-and-after | complete] (default: "
-      "before-and-after)",
+      "swap2", "Type of swap(2,2) strategy [before-and-after | complete] ",
       cxxopts::value<std::string>()->default_value("before-and-after"))(
-      "f,file", "Output file name (default: results_ils.csv)",
+      "f,file", "Output file name",
       cxxopts::value<std::string>()->default_value("results_ils.csv"))(
       "h,help", "Print usage");
 

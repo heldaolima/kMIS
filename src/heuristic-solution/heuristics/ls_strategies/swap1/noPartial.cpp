@@ -11,6 +11,10 @@ bool LS_Swap1_NoPartial::swap(const Input *input, Solution &solution,
       continue;
 
     bitset<numberOfBits> partialBits = solution.bitsWithoutSet(input, {remove});
+    if (partialBits.count() <= solution.getObjective()) {
+      continue;
+    }
+
     for (int i = 0; i < input->subsets.size(); i++) {
       if (!solution.isSubsetInSolution[input->subsets[i].identifier] &&
           input->subsets[i].identifier != remove) {

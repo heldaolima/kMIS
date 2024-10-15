@@ -6,9 +6,6 @@
 
 class LS_Swap1_NoPartial : public LocalSearchStrategy {
 public:
-  LS_Swap1_NoPartial() {
-    std::cout << "constructor of LS_Swap1_NoPartial";
-  }
   virtual bool swap(const Input *input, Solution &solution,
                     int iteration) override;
   virtual void print() const override {

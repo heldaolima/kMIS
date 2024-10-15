@@ -4,10 +4,10 @@
 #include "stop_strategy.h"
 #include <iostream>
 
-#define MAX_ITERATIONS 500
 
 class StopByIteration : public StopStrategy {
 private:
+  const int maxIterations = 500;
   int iteration = 0;
 
 public:
