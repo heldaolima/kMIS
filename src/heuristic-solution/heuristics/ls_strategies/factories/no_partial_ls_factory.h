@@ -10,7 +10,7 @@ private:
 
 public:
   NoPartialLSFactory(Swap2StrategyEnum swap2Strategy)
-      : swap2Strategy(swap2Strategy) {std::cout << "noUse\n"; }
+      : swap2Strategy(swap2Strategy) {}
   virtual LocalSearchStrategy *createSwap1() const override;
   virtual LocalSearchStrategy *createSwap2() const override;
   virtual void print() const override {

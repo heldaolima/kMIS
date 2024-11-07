@@ -10,12 +10,10 @@ private:
 
 public:
   UsePartialLSFactory(Swap2StrategyEnum swap2Strategy)
-      : swap2Strategy(swap2Strategy) { std::cout << "use\n"; }
+      : swap2Strategy(swap2Strategy) {}
   virtual LocalSearchStrategy *createSwap1() const override;
   virtual LocalSearchStrategy *createSwap2() const override;
-  virtual void print() const override {
-    std::cout << "UsePartialLSFactory\n";
-  }
+  virtual void print() const override { std::cout << "UsePartialLSFactory\n"; }
 };
 
 #endif
