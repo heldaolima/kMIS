@@ -26,9 +26,8 @@ Solution perturbReactive(const Solution &solution, const Input *input,
     isAvaliable[s] = false;
   }
 
-  int chosenIdx;
   for (i = 0; i < input->k - numberOfSetsToBeRemoved; i++) {
-    chosenIdx = randint(numberOfAvaliableSets);
+    int chosenIdx = randint(numberOfAvaliableSets);
     perturbed.addSubset(avaliableSets[chosenIdx]);
 
     std::swap(avaliableSets[chosenIdx],

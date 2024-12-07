@@ -1,7 +1,9 @@
 #include "solution.h"
 #include "../dbg.h"
 #include "input.h"
+#include "../helpers/random_utils.h"
 #include <iostream>
+
 
 using std::cout;
 
@@ -157,3 +159,4 @@ void Solution::setObjective(unsigned int obj) { objective = obj; }
 void Solution::setTimeFound(clock_t t1, clock_t t2) {
   timeFound = (t2 - t1) / (double)CLOCKS_PER_SEC;
 }
+
