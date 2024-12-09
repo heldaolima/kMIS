@@ -4,6 +4,7 @@
 #include "heuristics/local_search.h"
 #include "heuristics/ls_strategies/factories/local_search_factory.h"
 #include "heuristics/ls_strategies/ls_strategy.h"
+#include "heuristics/perturb_strategies/random_proportion.h"
 #include "heuristics/stop_strategies/stop_iteration.h"
 #include "heuristics/stop_strategies/stop_time.h"
 #include <ctime>
@@ -11,6 +12,8 @@
 Heuristic *
 HeuristicFactory::createIls(const Input *input,
                             const LS_StrategyFactory &factory) const {
+
+  debug("will create ILS");
   StopStrategy *stop;
   switch (stopStrategy) {
   case STOP_TIME: {
@@ -25,5 +28,5 @@ HeuristicFactory::createIls(const Input *input,
 
   LocalSearchStrategy *s1 = factory.createSwap1(), *s2 = factory.createSwap2();
   LocalSearch *ls = new LocalSearch(input, s1, s2);
-  return new Ils(input, ls, stop);
+  return new Ils(input, ls, stop, Perturbation(getNumber));
 }

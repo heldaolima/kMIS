@@ -6,17 +6,17 @@
 
 class Perturbation {
 private:
-  const Input *input;
   const GetNumberToRemoveStrategy *numberToRemoveGetter;
 
   int setInitialSubsetsAsUnavaliable(const Solution &solution,
-                                     vector<Subset> &setsForInsertion) const;
-  public:
-    Perturbation(const Input *input,
-                 const GetNumberToRemoveStrategy *numberToRemoveGetter)
-        : input(input), numberToRemoveGetter(numberToRemoveGetter) {}
+                                     vector<Subset> &setsForInsertion,
+                                     const Input *input) const;
 
-    Solution perturb(const Solution &solution) const;
-  };
+public:
+  Perturbation(const GetNumberToRemoveStrategy *numberToRemoveGetter)
+      : numberToRemoveGetter(numberToRemoveGetter) {}
+
+  Solution perturb(const Solution &solution, const Input *input) const;
+};
 
 #endif

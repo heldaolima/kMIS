@@ -1,5 +1,6 @@
 CC=g++
-FLAGS=-g -lm -O0
+BASE_FLAGS=-g -lm -O0
+FLAGS=$(BASE_FLAGS) $(EXTRA_FLAGS)
 
 SOURCES = $(wildcard *.cpp) $(wildcard helpers/*.cpp) \
 						$(wildcard data_structures/*.cpp) \

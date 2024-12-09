@@ -4,6 +4,9 @@
 #include "heuristics/ls_strategies/factories/local_search_factory.h"
 #include "heuristics/ls_strategies/factories/no_partial_ls_factory.h"
 #include "heuristics/ls_strategies/factories/use_partial_ls_factory.h"
+#include "heuristics/perturb_strategies/get_number_to_remove_strategy.h"
+#include "heuristics/perturb_strategies/number_root.h"
+#include "heuristics/perturb_strategies/random_proportion.h"
 #include <cxxopts.hpp>
 #include <iostream>
 
@@ -19,7 +22,9 @@ HeuristicTester parseArguments(int argc, char **argv) {
       cxxopts::value<std::string>()->default_value("before-and-after"))(
       "f,file", "Output file name",
       cxxopts::value<std::string>()->default_value("results_ils.csv"))(
-      "h,help", "Print usage");
+      "h,help", "Print usage")(
+      "p,perturbation", "Type of perturbation [root | proportion]",
+      cxxopts::value<std::string>()->default_value("root"));
 
   const cxxopts::ParseResult result = options.parse(argc, argv);
   if (result.count("help")) {
@@ -56,6 +61,17 @@ HeuristicTester parseArguments(int argc, char **argv) {
     exit(1);
   }
 
+  const std::string perturbArg = result["perturbation"].as<std::string>();
+  GetNumberToRemoveStrategy* getNumber;
+  if (perturbArg == "root") {
+    getNumber = new GetRootOfK();
+  } else if (perturbArg == "proportion") {
+    getNumber = new GetRandomProportionOfK();
+  } else {
+    std::cout << "Unknown option for type of perturbation: " << stopArg << "\n";
+    exit(1);
+  }
+
   const std::string outFileName = result["file"].as<std::string>();
-  return HeuristicTester(outFileName, lsFactory, stop);
-}
+  return HeuristicTester(outFileName, lsFactory, stop, getNumber);
+  }
