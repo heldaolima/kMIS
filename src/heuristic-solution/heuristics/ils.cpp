@@ -31,13 +31,10 @@ Solution Ils::run() {
 
   Solution currentSolution;
   while (!stopStrategy->stopCondition()) {
-     debug("iteration=%d", iteration);
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
-    best.print();
     currentSolution = perturbation->perturb(best, input);
-    debug("out of perturbation");
     Vnd(currentSolution, iteration, t1);
     if (currentSolution.getObjective() > best.getObjective()) {
       best = currentSolution;
@@ -46,7 +43,6 @@ Solution Ils::run() {
       if (best.getObjective() > globalBest.getObjective()) {
         globalBest = best;
         globalBest.setIterationFoud(iteration);
-        globalBest.print();
       }
 
       iterationsWithoutImprovement = 0;

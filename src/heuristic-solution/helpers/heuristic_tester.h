@@ -14,7 +14,7 @@ using std::string;
 
 class HeuristicTester : Tester {
 private:
-  const string header = "input,k,best,worst,avg_obj,avg_time_to_best\n";
+  const string header = "input,k,best,worst,avg_obj,avg_time_to_best,avg_time\n";
   const LS_StrategyFactory *lsFactory;
   const HeuristicFactory heuristicFactory;
   const unsigned int numberOfTests = 10;

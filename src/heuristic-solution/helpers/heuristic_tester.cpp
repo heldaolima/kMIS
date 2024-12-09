@@ -9,20 +9,18 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
   bool solvable = true;
   const Input *input = new Input(inputFile.path(), &solvable);
 
-  debug("created input, k=%d", input->k);
   if (solvable) {
     Objectives objs;
     Times times;
     clock_t t1, t2;
 
     Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory);
-    debug("created heuristic");
 
     for (int i = 0; i < numberOfTests; i++) {
       tabu = Tabu(input->quantityOfSubsets);
       partialSolutions = PartialSolution(input);
 
-      std::cout << "run " << i + 1 << "\n";
+      std::cout << "Running [" << i + 1 << "]\n";
       t1 = clock();
       Solution solution = heuristic->run();
       t2 = clock();
