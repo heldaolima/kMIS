@@ -6,11 +6,7 @@
 
 class GetRootOfK : public GetNumberToRemoveStrategy {
 public:
-  GetRootOfK() {
-    std::cout << "ioeweasd\n";
-  }
-  ~GetRootOfK();
-  int getNumber(int k) const override;
+  virtual int getNumber(int k) const override;
 };
 
 #endif
