@@ -5,6 +5,8 @@
 #include "data_structures/solution.h"
 #include <ctime>
 
+#define MAX_ITERATIONS 500
+
 class Heuristic {
 public:
   virtual ~Heuristic();
