@@ -15,7 +15,6 @@ typedef struct times {
 
   void setTimeToFindBest(clock_t t1, clock_t t2) {
     currentFound = (t2 - t1) / (double) CLOCKS_PER_SEC;
-    debug("currentFound: %lf", currentFound);
     avgTimeToFindBest += currentFound;
   }
 

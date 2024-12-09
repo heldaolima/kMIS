@@ -15,18 +15,10 @@ private:
 
 public:
   Perturbation(GetNumberToRemoveStrategy *getNumber)
-      : numberToRemoveGetter(getNumber) {
-    if (numberToRemoveGetter == nullptr) {
-      debug("nullptr fudeu");
-    }
-    debug("%d", numberToRemoveGetter->getNumber(10));
-  }
+      : numberToRemoveGetter(getNumber) {}
 
   Solution perturb(const Solution &solution, const Input *input) const;
-  ~Perturbation() {
-    delete numberToRemoveGetter;
-  }
-
+  ~Perturbation() { delete numberToRemoveGetter; }
 };
 
 #endif

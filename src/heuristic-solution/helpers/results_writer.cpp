@@ -18,7 +18,9 @@ void ResultsWriter::writeResults(const string &inputFileName, const Objectives& 
   outFile << inputFileName << ",";
   outFile << k << ",";
   outFile << objs.best << "," << objs.worst << ",";
-  outFile << objs.average << "," << times.avgTimeToFindBest << "\n";
+  outFile << objs.average << "," << times.avgTimeToFindBest << ",";
+    outFile << times.average << "\n";
+
 
   outFile.close();
 }

@@ -74,4 +74,4 @@ HeuristicTester parseArguments(int argc, char **argv) {
 
   const std::string outFileName = result["file"].as<std::string>();
   return HeuristicTester(outFileName, lsFactory, stop, getNumber);
-  }
+}

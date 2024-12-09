@@ -15,7 +15,6 @@ Heuristic *
 HeuristicFactory::createIls(const Input *input,
                             const LS_StrategyFactory &factory) const {
 
-  debug("will create ILS");
   StopStrategy *stop;
   switch (stopStrategy) {
   case STOP_TIME: {
