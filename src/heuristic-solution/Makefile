@@ -1,5 +1,6 @@
 CC=g++
-FLAGS=-g -lm -O0
+BASE_FLAGS=-g -lm -O0
+FLAGS=$(BASE_FLAGS) $(EXTRA_FLAGS)
 
 SOURCES = $(wildcard *.cpp) $(wildcard helpers/*.cpp) \
 						$(wildcard data_structures/*.cpp) \
@@ -11,7 +12,8 @@ SOURCES = $(wildcard *.cpp) $(wildcard helpers/*.cpp) \
 						$(wildcard heuristics/ls_strategies/factories/*.cpp) \
 						$(wildcard heuristics/ls_strategies/swap1/*.cpp) \
 						$(wildcard heuristics/ls_strategies/swap2/*.cpp) \
-						$(wildcard heuristics/stop_strategies/*.cpp)
+						$(wildcard heuristics/stop_strategies/*.cpp) \
+						$(wildcard heuristics/perturb_strategies/*.cpp)
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

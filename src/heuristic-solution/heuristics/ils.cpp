@@ -31,11 +31,13 @@ Solution Ils::run() {
 
   Solution currentSolution;
   while (!stopStrategy->stopCondition()) {
-    // debug("iteration=%d", iteration);
+     debug("iteration=%d", iteration);
     idxAlpha = auxArrays.getIdxAlpha();
     alpha = X[idxAlpha];
 
-    currentSolution = Perturbation(best, alpha);
+    best.print();
+    currentSolution = perturbation->perturb(best, input);
+    debug("out of perturbation");
     Vnd(currentSolution, iteration, t1);
     if (currentSolution.getObjective() > best.getObjective()) {
       best = currentSolution;
@@ -120,6 +122,6 @@ Solution Ils::Construction(double alpha) {
 
 Solution Ils::Construction() { return ExtendedKInter(input).run(); }
 
-Solution Ils::Perturbation(const Solution &solution, double alpha) {
-  return perturbReactive(solution, input, alpha);
-}
+/*Solution Ils::Perturbation(const Solution &solution, double alpha) {*/
+/*  return perturbReactive(solution, input, alpha);*/
+/*}*/

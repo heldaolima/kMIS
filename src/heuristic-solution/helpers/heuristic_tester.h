@@ -16,18 +16,18 @@ class HeuristicTester : Tester {
 private:
   const string header = "input,k,best,worst,avg_obj,avg_time_to_best\n";
   const LS_StrategyFactory *lsFactory;
-  const StopStrategyEnum stopStrategy;
   const HeuristicFactory heuristicFactory;
+  const unsigned int numberOfTests = 10;
   ResultsWriter *writer;
 
 public:
   HeuristicTester(const string &outputPath, const LS_StrategyFactory *lsFactory,
-                  StopStrategyEnum stopStrategy)
-      : lsFactory(lsFactory), stopStrategy(stopStrategy),
-        heuristicFactory(stopStrategy) {
+                  StopStrategyEnum stopStrategy,
+                  NumberToRemoveEstrategyEnum num_remove)
+      : lsFactory(lsFactory), heuristicFactory(stopStrategy, num_remove) {
     this->writer = new ResultsWriter(outputPath, header);
   }
-  void testFile(const fs::directory_entry &inputFile) override;
+  void testFile(const fs::directory_entry &inputFile) const override;
   ~HeuristicTester() {
     delete writer;
     delete lsFactory;

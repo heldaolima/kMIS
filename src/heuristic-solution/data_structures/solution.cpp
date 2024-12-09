@@ -1,5 +1,6 @@
 #include "solution.h"
 #include "../dbg.h"
+#include "../helpers/random_utils.h"
 #include "input.h"
 #include <iostream>
 
