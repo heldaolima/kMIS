@@ -29,50 +29,50 @@ Solution Ils::run() {
   restart.setSubsetAsUsed(best.subsetsInSolution[0]);
   int iterationsWithoutImprovement = 0, iteration = 1;
 
-  /*Solution currentSolution;*/
-  /*while (!stopStrategy->stopCondition()) {*/
-  /*   debug("iteration=%d", iteration);*/
-  /*  idxAlpha = auxArrays.getIdxAlpha();*/
-  /*  alpha = X[idxAlpha];*/
-  /**/
-  /*  best.print();*/
-  /*  currentSolution = perturbation.perturb(best, input);*/
-  /*  debug("out of perturbation");*/
-  /*  Vnd(currentSolution, iteration, t1);*/
-  /*  if (currentSolution.getObjective() > best.getObjective()) {*/
-  /*    best = currentSolution;*/
-  /*    best.setIterationFoud(iteration);*/
-  /**/
-  /*    if (best.getObjective() > globalBest.getObjective()) {*/
-  /*      globalBest = best;*/
-  /*      globalBest.setIterationFoud(iteration);*/
-  /*      globalBest.print();*/
-  /*    }*/
-  /**/
-  /*    iterationsWithoutImprovement = 0;*/
-  /*  } else {*/
-  /*    iterationsWithoutImprovement++;*/
-  /*  }*/
-  /**/
-  /*  if (iterationsWithoutImprovement > restart.noImprovementsThreshold) {*/
-  /*    best = restart.run(t1);*/
-  /**/
-  /*    Vnd(best, iteration, t1);*/
-  /*    if (best.getObjective() > globalBest.getObjective()) {*/
-  /*      globalBest = best;*/
-  /*      globalBest.setIterationFoud(iteration);*/
-  /*    }*/
-  /*    iterationsWithoutImprovement = 0;*/
-  /*  }*/
-  /**/
-  /*  auxArrays.computeIdxAlpha(idxAlpha, currentSolution.getObjective());*/
-  /**/
-  /*  if (iteration % TAM_X == 0)*/
-  /*    auxArrays.updateProbabilities(best.getObjective());*/
-  /**/
-  /*  stopStrategy->update();*/
-  /*  iteration++;*/
-  /*}*/
+  Solution currentSolution;
+  while (!stopStrategy->stopCondition()) {
+     debug("iteration=%d", iteration);
+    idxAlpha = auxArrays.getIdxAlpha();
+    alpha = X[idxAlpha];
+
+    best.print();
+    currentSolution = perturbation->perturb(best, input);
+    debug("out of perturbation");
+    Vnd(currentSolution, iteration, t1);
+    if (currentSolution.getObjective() > best.getObjective()) {
+      best = currentSolution;
+      best.setIterationFoud(iteration);
+
+      if (best.getObjective() > globalBest.getObjective()) {
+        globalBest = best;
+        globalBest.setIterationFoud(iteration);
+        globalBest.print();
+      }
+
+      iterationsWithoutImprovement = 0;
+    } else {
+      iterationsWithoutImprovement++;
+    }
+
+    if (iterationsWithoutImprovement > restart.noImprovementsThreshold) {
+      best = restart.run(t1);
+
+      Vnd(best, iteration, t1);
+      if (best.getObjective() > globalBest.getObjective()) {
+        globalBest = best;
+        globalBest.setIterationFoud(iteration);
+      }
+      iterationsWithoutImprovement = 0;
+    }
+
+    auxArrays.computeIdxAlpha(idxAlpha, currentSolution.getObjective());
+
+    if (iteration % TAM_X == 0)
+      auxArrays.updateProbabilities(best.getObjective());
+
+    stopStrategy->update();
+    iteration++;
+  }
   return globalBest;
 }
 

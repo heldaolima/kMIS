@@ -23,8 +23,8 @@ private:
 public:
   HeuristicTester(const string &outputPath, const LS_StrategyFactory *lsFactory,
                   StopStrategyEnum stopStrategy,
-                  GetNumberToRemoveStrategy *getNumber)
-      : lsFactory(lsFactory), heuristicFactory(stopStrategy, getNumber) {
+                  NumberToRemoveEstrategyEnum num_remove)
+      : lsFactory(lsFactory), heuristicFactory(stopStrategy, num_remove) {
     this->writer = new ResultsWriter(outputPath, header);
   }
   void testFile(const fs::directory_entry &inputFile) const override;

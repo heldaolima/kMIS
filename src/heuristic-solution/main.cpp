@@ -42,8 +42,8 @@ int main(int argc, char *argv[]) {
 
 void partialTest(const HeuristicTester &tester) {
   const std::vector<string> files = {
-      /*"type1/classe_1_40_40.txt"*/
-    "type1/classe_2_80_80.txt"
+      "type1/classe_1_40_40.txt"
+    /*"type1/classe_2_80_80.txt"*/
       /*"type1/classe_3_140_140.txt", "type1/classe_4_200_200.txt",*/
       /*"type1/classe_5_300_300.txt", "type1/classe_6_60_60.txt"*/
       /*"type1/classe_7_240_240.txt", "type1/classe_8_100_100.txt",*/

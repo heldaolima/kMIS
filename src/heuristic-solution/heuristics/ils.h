@@ -13,8 +13,8 @@ class Ils : public Heuristic {
 private:
   const Input *input;
   const LocalSearch *localSearch;
+  const Perturbation *perturbation;
   StopStrategy *stopStrategy;
-  const Perturbation &perturbation;
   time_t t1;
 
   Solution Construction(double);
@@ -25,12 +25,13 @@ private:
 
 public:
   Ils(const Input *input, const LocalSearch *ls, StopStrategy *stopStrategy,
-      const class Perturbation &perturbation)
+      const Perturbation *perturbation)
       : input(input), localSearch(ls), stopStrategy(stopStrategy),
         perturbation(perturbation) {};
   ~Ils() {
     delete stopStrategy;
     delete localSearch;
+    delete perturbation;
   }
 
   virtual Solution run() override;

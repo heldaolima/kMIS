@@ -14,16 +14,15 @@ enum StopStrategyEnum {
 class HeuristicFactory {
 private:
   StopStrategyEnum stopStrategy;
-  GetNumberToRemoveStrategy *getNumber;
+  NumberToRemoveEstrategyEnum num_remove;
 
 public:
   HeuristicFactory(StopStrategyEnum stopStrategy,
-                   GetNumberToRemoveStrategy *getNumber)
-      : stopStrategy(stopStrategy), getNumber(getNumber) {}
+                   NumberToRemoveEstrategyEnum num_remove)
+      : stopStrategy(stopStrategy), num_remove(num_remove) {}
 
   Heuristic *createIls(const Input *input,
                        const LS_StrategyFactory &factory) const;
-  ~HeuristicFactory() { delete getNumber; }
 };
 
 #endif

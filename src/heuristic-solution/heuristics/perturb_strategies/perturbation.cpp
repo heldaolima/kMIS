@@ -5,6 +5,7 @@
 Solution Perturbation::perturb(const Solution &solution,
                                const Input *input) const {
   debug("inside perturbation");
+  debug("number inside perturbation: %d", numberToRemoveGetter->getNumber(10));
   debug("input->k = %d", input->k);
   Solution perturbed = Solution(input->quantityOfSubsets);
 

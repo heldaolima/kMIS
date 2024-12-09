@@ -2,10 +2,15 @@
 #define __number_root_h__
 
 #include "get_number_to_remove_strategy.h"
+#include <iostream>
 
 class GetRootOfK : public GetNumberToRemoveStrategy {
 public:
-  virtual int getNumber(int k) const override;
+  GetRootOfK() {
+    std::cout << "ioeweasd\n";
+  }
+  ~GetRootOfK();
+  int getNumber(int k) const override;
 };
 
 #endif

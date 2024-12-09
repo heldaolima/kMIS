@@ -62,11 +62,11 @@ HeuristicTester parseArguments(int argc, char **argv) {
   }
 
   const std::string perturbArg = result["perturbation"].as<std::string>();
-  GetNumberToRemoveStrategy* getNumber;
+  NumberToRemoveEstrategyEnum getNumber;
   if (perturbArg == "root") {
-    getNumber = new GetRootOfK();
+    getNumber = ROOT_OF_K;
   } else if (perturbArg == "proportion") {
-    getNumber = new GetRandomProportionOfK();
+    getNumber = RANDOM_PROPORTION;
   } else {
     std::cout << "Unknown option for type of perturbation: " << stopArg << "\n";
     exit(1);
