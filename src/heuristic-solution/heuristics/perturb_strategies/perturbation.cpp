@@ -11,7 +11,8 @@ Solution Perturbation::perturb(const Solution &solution,
 
   bitset<numberOfBits> intersec;
   intersec.set();
-  const int num_setsToRemove = numberToRemoveGetter->getNumber(input->k);
+  int num_setsToRemove = std::min(numberToRemoveGetter->getNumber(input->k),
+                                  input->quantityOfSubsets - input->k);
   int num_avaliableSetsForRemoval = input->k;
   vector<int> setsForRemoval = solution.subsetsInSolution;
 
