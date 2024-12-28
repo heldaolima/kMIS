@@ -4,9 +4,10 @@
 #include "heuristics/ls_strategies/factories/local_search_factory.h"
 #include "heuristics/ls_strategies/factories/no_partial_ls_factory.h"
 #include "heuristics/ls_strategies/factories/use_partial_ls_factory.h"
-#include "heuristics/perturb_strategies/get_number_to_remove_strategy.h"
-#include "heuristics/perturb_strategies/number_root.h"
-#include "heuristics/perturb_strategies/random_proportion.h"
+#include "heuristics/perturb_strategies/factories/perturbation_factory.h"
+#include "heuristics/perturb_strategies/factories/reactive_perturbation_factory.h"
+#include "heuristics/perturb_strategies/factories/simple_perturbation_factory.h"
+#include "heuristics/perturb_strategies/get_number_strategies/get_number_to_remove_strategy.h"
 #include <cxxopts.hpp>
 #include <iostream>
 
@@ -23,7 +24,11 @@ HeuristicTester parseArguments(int argc, char **argv) {
       "f,file", "Output file name",
       cxxopts::value<std::string>()->default_value("results_ils.csv"))(
       "h,help", "Print usage")(
-      "p,perturbation", "Type of perturbation [root | proportion]",
+      "p,perturbation", "Type of perturbation [simple | reactive]",
+      cxxopts::value<std::string>()->default_value("simple"))(
+      "n,number",
+      "Type of strategy for removing subsets in perturbation phase [root | "
+      "proportion]",
       cxxopts::value<std::string>()->default_value("root"));
 
   const cxxopts::ParseResult result = options.parse(argc, argv);
@@ -61,17 +66,29 @@ HeuristicTester parseArguments(int argc, char **argv) {
     exit(1);
   }
 
-  const std::string perturbArg = result["perturbation"].as<std::string>();
+  const std::string numberArg = result["number"].as<std::string>();
   NumberToRemoveEstrategyEnum getNumber;
-  if (perturbArg == "root") {
+  if (numberArg == "root") {
     getNumber = ROOT_OF_K;
-  } else if (perturbArg == "proportion") {
+  } else if (numberArg == "proportion") {
     getNumber = RANDOM_PROPORTION;
   } else {
-    std::cout << "Unknown option for type of perturbation: " << stopArg << "\n";
+    std::cout << "Unknown option for type of number removal strategy: "
+              << numberArg << "\n";
     exit(1);
   }
 
+  const std::string perturbArg = result["perturbation"].as<std::string>();
+  PerturbationFactory *perturbationFactory;
+  if (perturbArg == "simple") {
+    perturbationFactory = new SimplePerturbationFactory(getNumber);
+  } else if (perturbArg == "reactive") {
+    perturbationFactory = new ReactivePerturbationFactory(getNumber);
+  } else {
+    std::cout << "Unknown option for perturbation type: " << perturbArg << "\n";
+    std::exit(1);
+  }
+
   const std::string outFileName = result["file"].as<std::string>();
-  return HeuristicTester(outFileName, lsFactory, stop, getNumber);
+  return HeuristicTester(outFileName, lsFactory, stop, perturbationFactory);
 }

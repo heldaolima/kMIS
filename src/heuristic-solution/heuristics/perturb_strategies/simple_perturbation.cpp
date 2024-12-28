@@ -1,8 +1,8 @@
-#include "perturbation.h"
+#include "simple_perturbation.h"
 #include "../../helpers/random_utils.h"
 
-Solution Perturbation::perturb(const Solution &solution,
-                               const Input *input) const {
+Solution SimplePerturbation::perturb(const Solution &solution,
+                                     const Input *input) {
   Solution perturbed = Solution(input->quantityOfSubsets);
 
   vector<Subset> setsForInsertion = input->subsets;
@@ -11,7 +11,7 @@ Solution Perturbation::perturb(const Solution &solution,
 
   bitset<numberOfBits> intersec;
   intersec.set();
-  int num_setsToRemove = std::min(numberToRemoveGetter->getNumber(input->k),
+  int num_setsToRemove = std::min(removalNumberStrategy->getNumber(input->k),
                                   input->quantityOfSubsets - input->k);
   int num_avaliableSetsForRemoval = input->k;
   vector<int> setsForRemoval = solution.subsetsInSolution;
@@ -40,7 +40,7 @@ Solution Perturbation::perturb(const Solution &solution,
   return perturbed;
 }
 
-int Perturbation::setInitialSubsetsAsUnavaliable(
+int SimplePerturbation::setInitialSubsetsAsUnavaliable(
     const Solution &solution, vector<Subset> &setsForInsertion,
     const Input *input) const {
   int numberAvaliable = input->quantityOfSubsets;
@@ -52,3 +52,7 @@ int Perturbation::setInitialSubsetsAsUnavaliable(
 
   return numberAvaliable;
 }
+
+void SimplePerturbation::update(int currentIteration,
+                                const Solution &currentSolution,
+                                const Solution &bestSolution) {}

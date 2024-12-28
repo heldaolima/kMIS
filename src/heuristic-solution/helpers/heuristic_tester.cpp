@@ -14,7 +14,7 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
     Times times;
     clock_t t1, t2;
 
-    Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory);
+    Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory, *perturbationFactory);
 
     for (int i = 0; i < numberOfTests; i++) {
       tabu = Tabu(input->quantityOfSubsets);

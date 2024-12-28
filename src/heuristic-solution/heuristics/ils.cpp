@@ -1,18 +1,12 @@
 #include "ils.h"
 #include "grasp/construction.h"
-#include "grasp/construction_arrays.h"
-#include "grasp/costs.h"
 #include "greedy/extended_kinter.h"
 #include "greedy/kinter.h"
-#include "perturb.h"
 #include "restart.h"
 #include <ctime>
 
 Solution Ils::run() {
   clock_t t1 = clock(), t2 = clock();
-  constructionArrays auxArrays;
-  int idxAlpha = auxArrays.getIdxAlpha();
-  double alpha = X[idxAlpha];
 
   RestartSolution restart(input);
 
@@ -31,11 +25,9 @@ Solution Ils::run() {
 
   Solution currentSolution;
   while (!stopStrategy->stopCondition()) {
-    idxAlpha = auxArrays.getIdxAlpha();
-    alpha = X[idxAlpha];
-
     currentSolution = perturbation->perturb(best, input);
     Vnd(currentSolution, iteration, t1);
+
     if (currentSolution.getObjective() > best.getObjective()) {
       best = currentSolution;
       best.setIterationFoud(iteration);
@@ -61,11 +53,7 @@ Solution Ils::run() {
       iterationsWithoutImprovement = 0;
     }
 
-    auxArrays.computeIdxAlpha(idxAlpha, currentSolution.getObjective());
-
-    if (iteration % TAM_X == 0)
-      auxArrays.updateProbabilities(best.getObjective());
-
+    perturbation->update(iteration, currentSolution, best);
     stopStrategy->update();
     iteration++;
   }
@@ -118,6 +106,10 @@ Solution Ils::Construction(double alpha) {
 
 Solution Ils::Construction() { return ExtendedKInter(input).run(); }
 
-/*Solution Ils::Perturbation(const Solution &solution, double alpha) {*/
-/*  return perturbReactive(solution, input, alpha);*/
-/*}*/
+void Ils::print() const {
+  std::cout << "ILS\n";
+  std::cout << "stop: ";
+  stopStrategy->print();
+  localSearch->print();
+  perturbation->print();
+}

@@ -2,23 +2,21 @@
 #define __perturb_strategy_h__
 
 #include "../../data_structures/solution.h"
-#include "../../dbg.h"
-#include "get_number_to_remove_strategy.h"
+#include "get_number_strategies/get_number_to_remove_strategy.h"
 
 class Perturbation {
-private:
-  GetNumberToRemoveStrategy *numberToRemoveGetter;
-
-  int setInitialSubsetsAsUnavaliable(const Solution &solution,
-                                     vector<Subset> &setsForInsertion,
-                                     const Input *input) const;
+protected:
+  GetNumberToRemoveStrategy *removalNumberStrategy;
 
 public:
-  Perturbation(GetNumberToRemoveStrategy *getNumber)
-      : numberToRemoveGetter(getNumber) {}
+  explicit Perturbation(GetNumberToRemoveStrategy *getNumber)
+      : removalNumberStrategy(getNumber) {}
 
-  Solution perturb(const Solution &solution, const Input *input) const;
-  ~Perturbation() { delete numberToRemoveGetter; }
+  virtual ~Perturbation();
+  virtual Solution perturb(const Solution &solution, const Input *input) = 0;
+  virtual void update(int currentIteration, const Solution &currentSolution,
+                      const Solution &bestSolution) = 0;
+  virtual void print() = 0;
 };
 
 #endif

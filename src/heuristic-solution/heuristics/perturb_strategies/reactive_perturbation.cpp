@@ -1,14 +1,13 @@
-#include "perturb.h"
-#include "../data_structures/partialSolution.h"
-#include "../dbg.h"
-#include "grasp/costs.h"
-#include "grasp/lrc.h"
-#include <algorithm>
+#include "reactive_perturbation.h"
+#include "../grasp/costs.h"
+#include "../grasp/lrc.h"
 #include <cmath>
-#include <cstdlib>
 
-Solution perturbReactive(const Solution &solution, const Input *input,
-                         double alpha) {
+Solution ReactivePerturbation::perturb(const Solution &solution,
+                                       const Input *input) {
+  idxAlpha = auxArrays.getIdxAlpha();
+  double alpha = X[idxAlpha];
+
   int i = 0;
   Solution perturbed = Solution(input->quantityOfSubsets);
 
@@ -71,4 +70,13 @@ Solution perturbReactive(const Solution &solution, const Input *input,
   perturbed.setBitsAndObjective(intersec);
 
   return perturbed;
+}
+
+void ReactivePerturbation::update(int currentIteration,
+                                  const Solution &currentSolution,
+                                  const Solution &bestSolution) {
+  auxArrays.computeIdxAlpha(idxAlpha, currentSolution.getObjective());
+  if (currentIteration % TAM_X == 0) {
+    auxArrays.updateProbabilities(bestSolution.getObjective());
+  }
 }

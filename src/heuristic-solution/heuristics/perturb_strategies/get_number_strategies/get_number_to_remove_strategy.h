@@ -9,6 +9,7 @@ enum NumberToRemoveEstrategyEnum {
 class GetNumberToRemoveStrategy {
 public:
   virtual int getNumber(int k) const = 0;
+  virtual void print() = 0;
   virtual ~GetNumberToRemoveStrategy();
 };
 
