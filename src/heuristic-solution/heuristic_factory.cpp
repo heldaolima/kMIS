@@ -5,6 +5,7 @@
 #include "heuristics/ls_strategies/ls_strategy.h"
 #include "heuristics/perturb_strategies/factories/perturbation_factory.h"
 #include "heuristics/stop_strategies/stop_iteration.h"
+#include "heuristics/stop_strategies/stop_target.h"
 #include "heuristics/stop_strategies/stop_time.h"
 #include <ctime>
 
@@ -14,14 +15,17 @@ Heuristic *HeuristicFactory::createIls(
 
   StopStrategy *stop;
   switch (stopStrategy) {
-  case STOP_TIME: {
+  case STOP_TIME:
     stop = new StopByTime(input->k);
     break;
-  }
-  case STOP_ITERATIONS: {
+  case STOP_ITERATIONS:
     stop = new StopByIteration();
     break;
-  }
+  case STOP_TARGET:
+    stop = new StopByTargetStrategy(target);
+    break;
+  default:
+    break;
   }
 
   LocalSearchStrategy *s1 = lsFactory.createSwap1(),
@@ -31,3 +35,5 @@ Heuristic *HeuristicFactory::createIls(
   Perturbation *perturbation = perturbationFactory.create();
   return new Ils(input, ls, stop, perturbation);
 }
+
+void HeuristicFactory::setTarget(int target) { this->target = target; }

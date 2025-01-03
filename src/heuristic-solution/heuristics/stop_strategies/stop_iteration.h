@@ -13,7 +13,7 @@ private:
 public:
   virtual void init() override;
   virtual bool stopCondition() override;
-  virtual void update() override;
+  virtual void update(int value = 0) override;
   virtual void print() const override {
     std::cout << "StopByIteration\n";
   }

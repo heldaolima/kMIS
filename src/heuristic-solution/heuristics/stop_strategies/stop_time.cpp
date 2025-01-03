@@ -15,7 +15,7 @@ bool StopByTime::stopCondition() {
   return elapsedTime >= (double)k / 10;
 }
 
-void StopByTime::update() {
+void StopByTime::update(int value) {
   clock_t t2 = clock();
 
   updateElapsed(t2);

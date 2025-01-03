@@ -15,7 +15,8 @@ private:
 public:
   ResultsWriter(const string &outFilePath, const string &header);
   void writeResults(const string &inputFileName, const Objectives &objs,
-                    const Times &times, int k);
+                    const Times &times, int k) const;
+  void writeTTT(const string &inputFileName, const Times &times) const;
 };
 
 #endif

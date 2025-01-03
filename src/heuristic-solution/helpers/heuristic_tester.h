@@ -19,20 +19,23 @@ private:
       "input,k,best,worst,avg_obj,avg_time_to_best,avg_time\n";
   const LS_StrategyFactory *lsFactory;
   const PerturbationFactory *perturbationFactory;
-  const HeuristicFactory heuristicFactory;
+  HeuristicFactory heuristicFactory;
   const unsigned int numberOfTests = 10;
-  ResultsWriter *writer;
+  const unsigned int numberOfTestsTTT = 100;
+  ResultsWriter writer;
+  bool ttt = false;
 
 public:
   HeuristicTester(const string &outputPath, const LS_StrategyFactory *lsFactory,
                   StopStrategyEnum stopStrategy, PerturbationFactory *pFactory)
       : lsFactory(lsFactory), perturbationFactory(pFactory),
-        heuristicFactory(stopStrategy) {
-    this->writer = new ResultsWriter(outputPath, header);
-  }
+        heuristicFactory(stopStrategy),
+        writer(ResultsWriter(outputPath, header)) {}
   void testFile(const fs::directory_entry &inputFile) const override;
+  void setTTT();
+  bool isTTT();
+  void testTTT(const fs::directory_entry &inputFile, int target);
   ~HeuristicTester() {
-    delete writer;
     delete lsFactory;
     delete perturbationFactory;
   }

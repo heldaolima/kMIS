@@ -15,9 +15,13 @@ Solution Ils::run() {
   ExtendedKInter greedy(input);
   greedy.setTime(t1);
   Solution best = greedy.run();
+  /*std::cout << "solution on extendedKInter: \n";*/
+  /*best.print();*/
 
   Vnd(best, 0, t1);
   Solution globalBest = best;
+  /*std::cout << "solution after vnd: \n";*/
+  /*globalBest.print();*/
   globalBest.timeFound = best.timeFound;
 
   restart.setSubsetAsUsed(best.subsetsInSolution[0]);
@@ -26,7 +30,11 @@ Solution Ils::run() {
   Solution currentSolution;
   while (!stopStrategy->stopCondition()) {
     currentSolution = perturbation->perturb(best, input);
+    /*std::cout << "\nsolution after perturbation: \n";*/
+    /*currentSolution.print();*/
     Vnd(currentSolution, iteration, t1);
+    /*std::cout << "perturbed solution after vnd:\n";*/
+    /*currentSolution.print();*/
 
     if (currentSolution.getObjective() > best.getObjective()) {
       best = currentSolution;
@@ -54,7 +62,7 @@ Solution Ils::run() {
     }
 
     perturbation->update(iteration, currentSolution, best);
-    stopStrategy->update();
+    stopStrategy->update(best.getObjective());
     iteration++;
   }
   return globalBest;

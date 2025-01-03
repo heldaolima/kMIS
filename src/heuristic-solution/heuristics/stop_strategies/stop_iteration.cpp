@@ -9,6 +9,6 @@ bool StopByIteration::stopCondition() {
   return this->iteration == maxIterations;
 }
 
-void StopByIteration::update() {
+void StopByIteration::update(int value) {
   iteration++;
 }

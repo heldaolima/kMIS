@@ -2,7 +2,6 @@ import pandas as pd
 import argparse
 
 if __name__ == '__main__':
-    BASE = '../../results/'
     parser = argparse.ArgumentParser(prog='Comparison between two result files',
                                      description='Reads the values of two .csv files and outputs the best one')
 
@@ -11,8 +10,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    df1 = pd.read_csv(BASE+args.filea)#.sort_values(by='input')
-    df2 = pd.read_csv(BASE+args.fileb)#.sort_values(by='input')
+    df1 = pd.read_csv(args.filea)#.sort_values(by='input')
+    df2 = pd.read_csv(args.fileb)#.sort_values(by='input')
 
     df1_max_count = 0
     df2_max_count = 0

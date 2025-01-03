@@ -10,11 +10,13 @@
 enum StopStrategyEnum {
   STOP_TIME,
   STOP_ITERATIONS,
+  STOP_TARGET,
 };
 
 class HeuristicFactory {
 private:
   StopStrategyEnum stopStrategy;
+  int target = 0;
 
 public:
   HeuristicFactory(StopStrategyEnum stopStrategy)
@@ -23,6 +25,7 @@ public:
   Heuristic *createIls(const Input *input,
                        const LS_StrategyFactory &lsFactory,
                        const PerturbationFactory &perturbationFactory) const;
+  void setTarget(int target);
 };
 
 #endif

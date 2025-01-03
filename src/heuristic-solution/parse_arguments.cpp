@@ -17,7 +17,7 @@ HeuristicTester parseArguments(int argc, char **argv) {
   options.add_options()(
       "d,data-structures",
       "Use auxiliary data structures in the local search phase")(
-      "s,stop", "Type of stop condition [time | iterations]",
+      "s,stop", "Type of stop condition [time | iterations | target]",
       cxxopts::value<std::string>()->default_value("time"))(
       "swap2", "Type of swap(2,2) strategy [before-and-after | complete] ",
       cxxopts::value<std::string>()->default_value("before-and-after"))(
@@ -29,7 +29,8 @@ HeuristicTester parseArguments(int argc, char **argv) {
       "n,number",
       "Type of strategy for removing subsets in perturbation phase [root | "
       "proportion]",
-      cxxopts::value<std::string>()->default_value("root"));
+      cxxopts::value<std::string>()->default_value("root"))(
+      "t,ttt", "Run Time-To-Target experiment.");
 
   const cxxopts::ParseResult result = options.parse(argc, argv);
   if (result.count("help")) {
@@ -57,13 +58,15 @@ HeuristicTester parseArguments(int argc, char **argv) {
 
   const std::string stopArg = result["stop"].as<std::string>();
   StopStrategyEnum stop;
-  if (stopArg == "time") {
+  if (result.count("ttt") || stopArg == "target") {
+    stop = STOP_TARGET;
+  } else if (stopArg == "time") {
     stop = STOP_TIME;
   } else if (stopArg == "iterations") {
     stop = STOP_ITERATIONS;
   } else {
     std::cout << "Unknown option for type stop condition: " << stopArg << "\n";
-    exit(1);
+    std::exit(1);
   }
 
   const std::string numberArg = result["number"].as<std::string>();
@@ -90,5 +93,11 @@ HeuristicTester parseArguments(int argc, char **argv) {
   }
 
   const std::string outFileName = result["file"].as<std::string>();
-  return HeuristicTester(outFileName, lsFactory, stop, perturbationFactory);
+  auto tester =
+      HeuristicTester(outFileName, lsFactory, stop, perturbationFactory);
+  if (result.count("ttt")) {
+    tester.setTTT();
+  }
+
+  return tester;
 }

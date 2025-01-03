@@ -16,7 +16,7 @@ public:
   StopByTime(int _k) : k(_k) { elapsedTime = 0; };
   virtual void init() override;
   virtual bool stopCondition() override;
-  virtual void update() override;
+  virtual void update(int value = 0) override;
   virtual void print() const override { std::cout << "StopByTime\n"; }
 };
 
