@@ -20,8 +20,12 @@ public:
   virtual void update(int currentIteration, const Solution &currentSolution,
                       const Solution &bestSolution) override;
   virtual void print() override {
-    std::cout << "ReactivePertubation\n";
+    std::cout << toString() << "\n";
     removalNumberStrategy->print();
+  }
+
+  virtual string toString() override {
+    return "ReactivePerturbation";
   }
 };
 

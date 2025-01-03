@@ -13,7 +13,11 @@ public:
   virtual bool swap(const Input *input, Solution &solution,
                     int iteration) override;
   virtual void print() const override {
-    std::cout << "LS_Swap2_NoPartial_BeforeAndAfter\n";
+    std::cout << toString() << "\n";
+  }
+
+  virtual string toString() const override {
+    return "LS_Swap2_NoPartial_BeforeAndAfter";
   }
 };
 

@@ -13,6 +13,7 @@ public:
   void setTime(clock_t t1);
   virtual Solution run() override;
   virtual void print() const override {}
+  virtual string toString() const override;
 };
 
 #endif

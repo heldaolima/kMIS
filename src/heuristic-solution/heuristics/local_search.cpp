@@ -14,3 +14,7 @@ void LocalSearch::print() const {
   std::cout << "Swap2: ";
   _swap2->print();
 }
+
+string LocalSearch::toString() const {
+  return "Swap1_" + _swap1->toString() + "_" + _swap2->toString();
+}

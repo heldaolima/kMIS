@@ -121,3 +121,11 @@ void Ils::print() const {
   localSearch->print();
   perturbation->print();
 }
+
+string Ils::toString() const {
+  string out = "ILS_";
+  out += localSearch->toString() + "_";
+  out += perturbation->toString() + "_";
+
+  return out;
+}

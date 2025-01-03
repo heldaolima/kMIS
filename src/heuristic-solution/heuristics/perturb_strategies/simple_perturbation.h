@@ -22,8 +22,12 @@ public:
                       const Solution &bestSolution) override;
 
   virtual void print() override {
-    std::cout << "SimplePertubation\n";
+    std::cout << toString() << "\n";
     removalNumberStrategy->print();
+  }
+
+  virtual string toString() override {
+    return "SimplePerturbation";
   }
 };
 

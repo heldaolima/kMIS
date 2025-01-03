@@ -17,6 +17,7 @@ public:
   virtual void update(int currentIteration, const Solution &currentSolution,
                       const Solution &bestSolution) = 0;
   virtual void print() = 0;
+  virtual string toString() = 0;
 };
 
 #endif

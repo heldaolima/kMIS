@@ -12,6 +12,7 @@ public:
   virtual ~Heuristic();
   virtual Solution run() = 0;
   virtual void print() const = 0;
+  virtual string toString() const = 0;
 };
 
 #endif // !heuristic_h

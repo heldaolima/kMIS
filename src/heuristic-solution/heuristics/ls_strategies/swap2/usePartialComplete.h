@@ -9,7 +9,10 @@ public:
   LS_Swap2_UsePartial_Complete() {}
   virtual bool swap(const Input *input, Solution &solution, int iteration) override;
   virtual void print() const override {
-    std::cout << "LS_Swap2_UsePartial_Complete\n";
+    std::cout << toString() << "\n";
+  }
+  virtual string toString() const override {
+    return "LS_Swap2_UsePartial_Complete";
   }
 };
 

@@ -21,11 +21,27 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
       tabu = Tabu(input->quantityOfSubsets);
       partialSolutions = PartialSolution(input);
 
+      Solution actual(input->quantityOfSubsets);
       std::cout << "Running [" << i + 1 << "]\n";
       t1 = clock();
       Solution solution = heuristic->run();
       t2 = clock();
       solution.print();
+      std::cout << "\n\n";
+
+      bitset<numberOfBits> bits;
+      bits.set();
+      for (int s: solution.subsetsInSolution) {
+        std::cout << "adding " << s << "\n";
+        bits &= input->subsets[s].bits;
+        actual.addSubset(s);
+        actual.setBitsAndObjective(bits);
+      }
+
+      std::cout << "checking:\n";
+      actual.print();
+
+      std::cout << "\n\n";
 
       times.set(t1, t2);
       times.setTimeToFindBest(solution.timeFound);
@@ -60,7 +76,6 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile, int target) 
 
     heuristicFactory.setTarget(target);
     Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory, *perturbationFactory);
-    heuristic->print();
 
     for (int i = 0; i < numberOfTestsTTT; i++) {
       seed();
@@ -77,7 +92,7 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile, int target) 
       solution.print();
 
       times.set(t1, t2);
-      writer.writeTTT(inputFile.path().stem(), times);
+      writer.writeTTT(inputFile.path().stem(), heuristic->toString(), times);
     }
 
     delete heuristic;

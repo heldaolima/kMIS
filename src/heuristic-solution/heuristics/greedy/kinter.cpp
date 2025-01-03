@@ -8,6 +8,10 @@ void GreedyKInter::setRestart(RestartSolution *restart) {
   this->restart = restart;
 }
 
+string GreedyKInter::toString() const {
+  return "GreedyKInter";
+}
+
 Solution GreedyKInter::run() {
   int i = 0;
   Solution solution(input->quantityOfSubsets);

@@ -17,6 +17,7 @@ public:
   void setRestart(RestartSolution *restart);
   virtual Solution run() override;
   virtual void print() const override {}
+  virtual string toString() const override;
 };
 
 #endif
