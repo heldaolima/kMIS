@@ -31,6 +31,7 @@ if __name__ == '__main__':
         description='Plots a TTT Plot based on a csv file with CPU run times'
     )
     parser.add_argument('filename')
+    parser.add_argument('output')
 
     args = parser.parse_args()
-    generate_probability_distribution_plot(args.filename)
+    generate_probability_distribution_plot(args.filename, args.output)

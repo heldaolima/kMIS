@@ -82,10 +82,10 @@ void partialTest(const HeuristicTester &tester) {
 void ttt(HeuristicTester &tester) {
   const string path = "../instances/";
   const std::map<string, int> instance_target = {
-      {"type1/classe_1_100_100.txt", 7},
-      {"type1/classe_4_180_180.txt", 22},
-      {"type2/classe_6_240_192.txt", 3},
-      {"type3/classe_8_300_240.txt", 9}};
+      {"type3/classe_1_48_60.txt", 7},
+      /*{"type1/classe_4_180_180.txt", 22},*/
+      /*{"type2/classe_6_240_192.txt", 3},*/
+      {"type2/classe_8_300_240.txt", 9}};
 
   for (auto it : instance_target) {
     const auto &file = fs::directory_entry(path + it.first);
@@ -95,3 +95,5 @@ void ttt(HeuristicTester &tester) {
     }
   }
 }
+
+// endpoint -> na hora que criar um link de pagamento, criar contrato de assinatura. (aluno, plano)

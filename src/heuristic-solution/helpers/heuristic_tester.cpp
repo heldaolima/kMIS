@@ -78,7 +78,7 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile, int target) 
     heuristicFactory.setTarget(target);
     Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory, *perturbationFactory);
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < numberOfTestsTTT; i++) {
       seed();
       Times times;
       clock_t t1, t2;
