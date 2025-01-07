@@ -41,6 +41,11 @@ Solution Ils::run() {
       best.setIterationFoud(iteration);
 
       if (best.getObjective() > globalBest.getObjective()) {
+        std::cout << "found a globalBest\nnew=\n";
+        best.print();
+        std::cout << "previous:\n";
+        globalBest.print();
+        std::cout << "\n\n";
         globalBest = best;
         globalBest.setIterationFoud(iteration);
       }
@@ -55,6 +60,11 @@ Solution Ils::run() {
 
       Vnd(best, iteration, t1);
       if (best.getObjective() > globalBest.getObjective()) {
+        std::cout << "found a globalBest\nnew=\n";
+        best.print();
+        std::cout << "previous:\n";
+        globalBest.print();
+        std::cout << "\n\n";
         globalBest = best;
         globalBest.setIterationFoud(iteration);
       }

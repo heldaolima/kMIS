@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
 
 #ifdef PARTIAL_TEST
   partialTest(ilsExperiments);
+  return 0;
 #else
 
   string dirs[3] = {"type1", "type2", "type3"};
@@ -66,7 +67,7 @@ void partialTest(const HeuristicTester &tester) {
   /*    "type3/classe_9_64_80.txt",   "type3/classe_1_144_180.txt",*/
   /*    "type3/classe_2_80_100.txt",  "type3/classe_3_240_300.txt"};*/
 
-  const std::vector<string> files = {"type1/classe_4_100_100.txt"};
+  const std::vector<string> files = {"type1/classe_1_100_100.txt"};
 
   const string path = "../instances/";
   for (const string filename : files) {
@@ -79,11 +80,12 @@ void partialTest(const HeuristicTester &tester) {
 }
 
 void ttt(HeuristicTester &tester) {
-  debug("will run ttt");
   const string path = "../instances/";
   const std::map<string, int> instance_target = {
-      {"type2/classe_9_180_144.txt", 1}
-  };
+      {"type1/classe_1_100_100.txt", 7},
+      {"type1/classe_4_180_180.txt", 22},
+      {"type2/classe_6_240_192.txt", 3},
+      {"type3/classe_8_300_240.txt", 9}};
 
   for (auto it : instance_target) {
     const auto &file = fs::directory_entry(path + it.first);

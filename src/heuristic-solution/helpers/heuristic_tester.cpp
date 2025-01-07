@@ -34,6 +34,7 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
       for (int s: solution.subsetsInSolution) {
         std::cout << "adding " << s << "\n";
         bits &= input->subsets[s].bits;
+        printBits(bits);
         actual.addSubset(s);
         actual.setBitsAndObjective(bits);
       }
@@ -77,7 +78,7 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile, int target) 
     heuristicFactory.setTarget(target);
     Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory, *perturbationFactory);
 
-    for (int i = 0; i < numberOfTestsTTT; i++) {
+    for (int i = 0; i < 10; i++) {
       seed();
       Times times;
       clock_t t1, t2;
