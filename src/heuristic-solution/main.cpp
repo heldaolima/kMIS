@@ -82,10 +82,11 @@ void partialTest(const HeuristicTester &tester) {
 void ttt(HeuristicTester &tester) {
   const string path = "../instances/";
   const std::map<string, int> instance_target = {
-      {"type3/classe_1_48_60.txt", 7},
-      /*{"type1/classe_4_180_180.txt", 22},*/
-      /*{"type2/classe_6_240_192.txt", 3},*/
-      {"type2/classe_8_300_240.txt", 9}};
+    {"type1/classe_1_300_300.txt", 3},
+    {"type2/classe_4_100_80.txt", 28},
+    {"type3/classe_5_240_300.txt", 5},
+    {"type1/classe_9_80_80.txt", 75}
+  };
 
   for (auto it : instance_target) {
     const auto &file = fs::directory_entry(path + it.first);
