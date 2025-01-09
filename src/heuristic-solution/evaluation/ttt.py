@@ -8,7 +8,6 @@ def generate_probability_distribution_plot(csv_path, output_path="probability_pl
     plt.figure(figsize=(8, 12))
     line_styles = ['-', '--', '-.', ':']
     colors = plt.cm.tab10.colors 
-    print(colors)
 
     for idx, algorithm in enumerate(data.columns):
         sorted_times = sorted(data[algorithm].dropna())
