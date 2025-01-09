@@ -82,7 +82,7 @@ void partialTest(const HeuristicTester &tester) {
 void ttt(HeuristicTester &tester) {
   const string path = "../instances/";
   const std::map<string, int> instance_target = {
-      {"type2/classe_6_240_192.txt", 3},
+      {"type1/classe_4_200_200.txt", 27},
       {"type2/classe_8_300_240.txt", 9},
       {"type3/classe_4_32_40.txt", 25},
       {"type1/classe_9_80_80.txt", 65}};
