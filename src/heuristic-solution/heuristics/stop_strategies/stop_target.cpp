@@ -4,7 +4,6 @@
 
 void StopByTargetStrategy::init() {
   currentValue = 0;
-  debug("target=%d", target);
 }
 
 bool StopByTargetStrategy::stopCondition() { return target <= currentValue; }
