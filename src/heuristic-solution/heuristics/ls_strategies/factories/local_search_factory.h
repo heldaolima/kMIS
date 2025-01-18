@@ -7,6 +7,7 @@ enum Swap2StrategyEnum {
   SWAP2_BEFORE_AND_AFTER,
   SWAP2_COMPLETE,
   SWAP2_RANDOM,
+  SWAP2_DO_NOT_APPLY,
 };
 
 class LS_StrategyFactory {

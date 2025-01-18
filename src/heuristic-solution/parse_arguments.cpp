@@ -19,7 +19,7 @@ HeuristicTester parseArguments(int argc, char **argv) {
       "Use auxiliary data structures in the local search phase")(
       "s,stop", "Type of stop condition [time | iterations | target]",
       cxxopts::value<std::string>()->default_value("time"))(
-      "swap2", "Type of swap(2,2) strategy [before-and-after | complete] ",
+      "swap2", "Type of swap(2,2) strategy [before-and-after | complete | no] ",
       cxxopts::value<std::string>()->default_value("before-and-after"))(
       "f,file", "Output file name",
       cxxopts::value<std::string>()->default_value("results_ils.csv"))(
@@ -44,7 +44,10 @@ HeuristicTester parseArguments(int argc, char **argv) {
     swap2Strategy = SWAP2_BEFORE_AND_AFTER;
   } else if (swap2Arg == "complete") {
     swap2Strategy = SWAP2_COMPLETE;
-  } else {
+  } else if (swap2Arg == "no") {
+    swap2Strategy = SWAP2_DO_NOT_APPLY;
+  }
+  else {
     std::cout << "Unknown option for swap(2, 2) strategy: " << swap2Arg << "\n";
     exit(1);
   }

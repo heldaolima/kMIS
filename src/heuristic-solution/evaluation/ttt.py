@@ -5,16 +5,16 @@ import argparse
 def generate_probability_distribution_plot(csv_path, output_path="probability_plot.png"):
     data = pd.read_csv(csv_path)
 
-    plt.figure(figsize=(8, 12))
+    plt.figure(figsize=(12, 12))
     line_styles = ['-', '--', '-.', ':']
-    colors = plt.cm.tab10.colors 
+    colors = plt.cm.Set1.colors
 
     for idx, algorithm in enumerate(data.columns):
-        sorted_times = sorted(data[algorithm].dropna())
+        sorted_times = sorted(data[algorithm].dropna() * 1000)  
         n = len(sorted_times)
 
-        color = colors[idx % len(colors)]  # Cicla pelas cores
-        line_style = line_styles[idx % len(line_styles)]  # Cicla pelos estilos
+        color = colors[idx % len(colors)]  
+        line_style = line_styles[idx % len(line_styles)]  
 
         probabilities = [(i - 0.5) / n for i in range(1, n + 1)]
 
@@ -26,9 +26,11 @@ def generate_probability_distribution_plot(csv_path, output_path="probability_pl
                  linewidth=2
                  )
 
-    plt.xlabel("Time to Target (s)")
-    plt.ylabel("Probability")
-    plt.legend()
+    plt.xlabel("Time to Target (ms)", fontsize=30)
+    plt.ylabel("Probability", fontsize=30)
+    plt.legend(fontsize=32)
+
+    plt.tick_params(axis='both', which='major', labelsize=25)
 
     plt.grid(True, linestyle="--", alpha=0.7)
     plt.ylim(0, 1.05)

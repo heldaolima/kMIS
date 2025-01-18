@@ -15,7 +15,8 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
     Times times;
     clock_t t1, t2;
 
-    Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory, *perturbationFactory);
+    Heuristic *heuristic =
+        heuristicFactory.createIls(input, *lsFactory, *perturbationFactory);
 
     for (int i = 0; i < numberOfTests; i++) {
       tabu = Tabu(input->quantityOfSubsets);
@@ -26,23 +27,6 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
       t1 = clock();
       Solution solution = heuristic->run();
       t2 = clock();
-      solution.print();
-      std::cout << "\n\n";
-
-      bitset<numberOfBits> bits;
-      bits.set();
-      for (int s: solution.subsetsInSolution) {
-        std::cout << "adding " << s << "\n";
-        bits &= input->subsets[s].bits;
-        printBits(bits);
-        actual.addSubset(s);
-        actual.setBitsAndObjective(bits);
-      }
-
-      std::cout << "checking:\n";
-      actual.print();
-
-      std::cout << "\n\n";
 
       times.set(t1, t2);
       times.setTimeToFindBest(solution.timeFound);
@@ -61,22 +45,21 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
   }
 }
 
-bool HeuristicTester::isTTT() {
-  return ttt;
-}
+bool HeuristicTester::isTTT() { return ttt; }
 
-void HeuristicTester::setTTT() {
-  ttt = true;
-}
+void HeuristicTester::setTTT() { ttt = true; }
 
-void HeuristicTester::testTTT(const fs::directory_entry &inputFile, int target) {
+void HeuristicTester::testTTT(const fs::directory_entry &inputFile,
+                              int target) {
   bool solvable = true;
   const Input *input = new Input(inputFile.path(), &solvable);
 
   if (solvable) {
 
     heuristicFactory.setTarget(target);
-    Heuristic *heuristic = heuristicFactory.createIls(input, *lsFactory, *perturbationFactory);
+    Heuristic *heuristic =
+        heuristicFactory.createIls(input, *lsFactory, *perturbationFactory);
+    heuristic->print();
 
     for (int i = 0; i < numberOfTestsTTT; i++) {
       seed();
