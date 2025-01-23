@@ -5,8 +5,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='Comparison between two result files',
                                      description='Reads the values of two .csv files and outputs the best one')
 
-    parser.add_argument('-a', '--filea')
-    parser.add_argument('-b', '--fileb')
+    parser.add_argument('filea')
+    parser.add_argument('fileb')
 
     args = parser.parse_args()
 

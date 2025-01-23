@@ -15,7 +15,8 @@ SOURCES = $(wildcard *.cpp) $(wildcard helpers/*.cpp) \
 						$(wildcard heuristics/stop_strategies/*.cpp) \
 						$(wildcard heuristics/perturb_strategies/*.cpp) \
 						$(wildcard heuristics/perturb_strategies/get_number_strategies/*.cpp) \
-						$(wildcard heuristics/perturb_strategies/factories/*.cpp)
+						$(wildcard heuristics/perturb_strategies/factories/*.cpp) \
+						$(wildcard heuristics/acceptance_criteria_strategies/*.cpp)
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

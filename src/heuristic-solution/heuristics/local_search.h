@@ -23,6 +23,7 @@ public:
 
   bool swap1(Solution &solution, int iteration) const;
   bool swap2(Solution &solution, int iteration) const;
+  void run(Solution &solution, int iteration, clock_t t1) const;
   void print() const;
   string toString() const;
 };

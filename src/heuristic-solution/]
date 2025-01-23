@@ -1,5 +1,6 @@
 #include "heuristic_factory.h"
 #include "heuristics/acceptance_criteria_strategies/acceptance_criteria_strategy.h"
+#include "heuristics/acceptance_criteria_strategies/factory.h"
 #include "heuristics/ils.h"
 #include "heuristics/local_search.h"
 #include "heuristics/ls_strategies/factories/local_search_factory.h"
@@ -35,8 +36,8 @@ Heuristic *HeuristicFactory::createIls(
   LocalSearch *ls = new LocalSearch(input, s1, s2);
 
   Perturbation *perturbation = perturbationFactory.create();
-  AcceptanceCriteriaStrategy *ac = acceptanceFactory.create(input, ls);
-  return new Ils(input, ls, stop, perturbation, ac);
+  AcceptanceCriteriaStrategy* ac = acceptanceFactory.create(ls);
+  return new Ils(input, ls, stop, perturbation);
 }
 
 void HeuristicFactory::setTarget(int target) { this->target = target; }

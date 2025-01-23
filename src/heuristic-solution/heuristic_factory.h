@@ -3,6 +3,7 @@
 
 #include "data_structures/input.h"
 #include "heuristic.h"
+#include "heuristics/acceptance_criteria_strategies/factory.h"
 #include "heuristics/ls_strategies/factories/local_search_factory.h"
 #include "heuristics/perturb_strategies/factories/perturbation_factory.h"
 #include "heuristics/perturb_strategies/get_number_strategies/get_number_to_remove_strategy.h"
@@ -22,9 +23,10 @@ public:
   HeuristicFactory(StopStrategyEnum stopStrategy)
       : stopStrategy(stopStrategy) {}
 
-  Heuristic *createIls(const Input *input,
-                       const LS_StrategyFactory &lsFactory,
-                       const PerturbationFactory &perturbationFactory) const;
+  Heuristic *
+  createIls(const Input *input, const LS_StrategyFactory &lsFactory,
+            const PerturbationFactory &perturbationFactory,
+            const AcceptanceCriteriaFactory &acceptanceFactory) const;
   void setTarget(int target);
 };
 

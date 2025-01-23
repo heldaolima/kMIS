@@ -3,6 +3,7 @@
 
 #include "../heuristic.h"
 #include "../heuristic_factory.h"
+#include "acceptance_criteria_strategies/acceptance_criteria_strategy.h"
 #include "local_search.h"
 #include "perturb_strategies/perturbation.h"
 #include "restart.h"
@@ -15,22 +16,23 @@ private:
   const LocalSearch *localSearch;
   Perturbation *perturbation;
   StopStrategy *stopStrategy;
+  AcceptanceCriteriaStrategy *acceptanceCriteria;
   time_t t1;
 
   Solution Construction(double);
   Solution Construction();
   Solution Construction(RestartSolution *restart);
-  void Vnd(Solution &solution, int iteration, clock_t t1);
 
 public:
   Ils(const Input *input, const LocalSearch *ls, StopStrategy *stopStrategy,
-      Perturbation *perturbation)
+      Perturbation *perturbation, AcceptanceCriteriaStrategy *ac)
       : input(input), localSearch(ls), stopStrategy(stopStrategy),
-        perturbation(perturbation) {};
+        perturbation(perturbation), acceptanceCriteria(ac) {};
   ~Ils() {
     delete stopStrategy;
     delete localSearch;
     delete perturbation;
+    delete acceptanceCriteria;
   }
 
   virtual Solution run() override;

@@ -1,6 +1,7 @@
 #include "parse_arguments.h"
 #include "helpers/heuristic_tester.h"
 #include "heuristic_factory.h"
+#include "heuristics/acceptance_criteria_strategies/factory.h"
 #include "heuristics/ls_strategies/factories/local_search_factory.h"
 #include "heuristics/ls_strategies/factories/no_partial_ls_factory.h"
 #include "heuristics/ls_strategies/factories/use_partial_ls_factory.h"
@@ -30,7 +31,9 @@ HeuristicTester parseArguments(int argc, char **argv) {
       "Type of strategy for removing subsets in perturbation phase [root | "
       "proportion]",
       cxxopts::value<std::string>()->default_value("root"))(
-      "t,ttt", "Run Time-To-Target experiment.");
+      "t,ttt", "Run Time-To-Target experiment.")(
+      "a,acceptance", "Type of acceptance criteria used [reactive | simple]",
+      cxxopts::value<std::string>()->default_value("reactive"));
 
   const cxxopts::ParseResult result = options.parse(argc, argv);
   if (result.count("help")) {
@@ -46,8 +49,7 @@ HeuristicTester parseArguments(int argc, char **argv) {
     swap2Strategy = SWAP2_COMPLETE;
   } else if (swap2Arg == "no") {
     swap2Strategy = SWAP2_DO_NOT_APPLY;
-  }
-  else {
+  } else {
     std::cout << "Unknown option for swap(2, 2) strategy: " << swap2Arg << "\n";
     exit(1);
   }
@@ -95,9 +97,21 @@ HeuristicTester parseArguments(int argc, char **argv) {
     std::exit(1);
   }
 
+  const std::string acceptArg = result["acceptance"].as<std::string>();
+  AcceptanceCriteriaFactory acceptanceFactory;
+  if (acceptArg == "reactive") {
+    acceptanceFactory = AcceptanceCriteriaFactory(ACCEPTANCE_REACTIVE);
+  } else if (acceptArg == "simple") {
+    acceptanceFactory = AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE);
+  } else {
+    std::cout << "Unknown option for acceptance criteria type: " << acceptArg
+              << "\n";
+    std::exit(1);
+  }
+
   const std::string outFileName = result["file"].as<std::string>();
-  auto tester =
-      HeuristicTester(outFileName, lsFactory, stop, perturbationFactory);
+  auto tester = HeuristicTester(outFileName, lsFactory, stop,
+                                perturbationFactory, acceptanceFactory);
   if (result.count("ttt")) {
     tester.setTTT();
   }
