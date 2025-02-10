@@ -2,13 +2,17 @@
 #include "dbg.h"
 #include "helpers/heuristic_tester.h"
 #include "helpers/random_utils.h"
+#include "load_ttt_files.h"
 #include "parse_arguments.h"
 #include "partialExperiments.h"
 
 #include <ctime>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <map>
+#include <sstream>
+#include <string>
 
 bool useTabu = false;
 
@@ -81,17 +85,14 @@ void partialTest(const HeuristicTester &tester) {
 
 void ttt(HeuristicTester &tester) {
   const string path = "../instances/";
-  const std::map<string, int> instance_target = {
-      {"type1/classe_4_200_200.txt", 27},
-      {"type2/classe_7_300_240.txt", 28},
-      {"type3/classe_4_32_40.txt", 25},
-      {"type1/classe_9_80_80.txt", 65}};
+  const string instances_file = "ttt_instances.txt";
+  std::map<string, int> instances = load_ttt_files(instances_file);
 
-  for (auto it : instance_target) {
-    const auto &file = fs::directory_entry(path + it.first);
+  for (const auto &[filename, target] : instances) {
+    const auto &file = fs::directory_entry(path + filename);
     if (file.exists()) {
-      std::cout << file.path().filename() << "\n";
-      tester.testTTT(file, it.second);
+      std::cout << file.path().filename() << " | "<< target << "\n";
+      tester.testTTT(file, target);
     }
   }
 }

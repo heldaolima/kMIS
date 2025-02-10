@@ -1,22 +1,20 @@
 #include "input.h"
-#include "../globals.h"
 #include "../dbg.h"
-#include <iostream>
-#include <fstream>
+#include "../globals.h"
 #include <algorithm>
+#include <fstream>
+#include <iostream>
 #include <vector>
 
 using std::fstream, std::vector;
 
-Input::Input(const string &path, bool* solvable) {
+Input::Input(const string &path, bool *solvable) {
   int num_instances, set, value;
   fstream inFile(path);
   if (inFile.is_open()) {
     int i = 0, j = 0;
-    inFile >> this->quantityOfSubsets >>
-        this->quantityOfElements >>
-        num_instances >>
-        this->k;
+    inFile >> this->quantityOfSubsets >> this->quantityOfElements >>
+        num_instances >> this->k;
 
     int tam_L = this->quantityOfSubsets;
     int tam_R = this->quantityOfElements;
@@ -60,8 +58,7 @@ Input::Input(const string &path, bool* solvable) {
 
     inFile.close();
     *solvable = hasSolution != 0;
-  }
-  else {
+  } else {
     std::cout << "ERROR: Could not read file\n";
     exit(1);
   }
