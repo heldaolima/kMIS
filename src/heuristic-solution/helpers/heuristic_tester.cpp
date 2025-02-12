@@ -15,8 +15,8 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
     Times times;
     clock_t t1, t2;
 
-    Heuristic *heuristic =
-        heuristicFactory.createIls(input, *lsFactory, *perturbationFactory, acceptanceFactory);
+    Heuristic *heuristic = heuristicFactory.createIls(
+        input, *lsFactory, *perturbationFactory, acceptanceFactory);
     heuristic->print();
 
     for (int i = 0; i < numberOfTests; i++) {
@@ -58,8 +58,8 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile,
   if (solvable) {
 
     heuristicFactory.setTarget(target);
-    Heuristic *heuristic =
-        heuristicFactory.createIls(input, *lsFactory, *perturbationFactory, acceptanceFactory);
+    Heuristic *heuristic = heuristicFactory.createIls(
+        input, *lsFactory, *perturbationFactory, acceptanceFactory);
     heuristic->print();
 
     for (int i = 0; i < 3; i++) {
@@ -77,7 +77,9 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile,
       solution.print();
 
       times.set(t1, t2);
-      writer.writeTTT(inputFile.path().stem(), heuristic->toString(), times);
+      std::cout << "Time found: " << times.current << "\n";
+      writer.writeTTT(inputFile.path().stem(), heuristic->toString(), times,
+                      target);
     }
 
     delete heuristic;

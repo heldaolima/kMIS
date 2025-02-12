@@ -20,8 +20,9 @@ Solution Ils::run() {
 
   localSearch->run(best, 0, t1);
   Solution globalBest = best;
-  /*std::cout << "solution after vnd: \n";*/
-  /*globalBest.print();*/
+  std::cout << "initial solution: \n";
+  globalBest.print();
+  std::cout << "\n\n";
   globalBest.timeFound = best.timeFound;
 
   restart.setSubsetAsUsed(best.subsetsInSolution[0]);

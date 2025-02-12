@@ -8,11 +8,8 @@
 
 #include <ctime>
 #include <filesystem>
-#include <fstream>
 #include <iostream>
 #include <map>
-#include <sstream>
-#include <string>
 
 bool useTabu = false;
 

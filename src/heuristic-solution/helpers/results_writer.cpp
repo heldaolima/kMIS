@@ -1,6 +1,7 @@
 #include "results_writer.h"
 #include <ctime>
 #include <fstream>
+#include <sstream>
 
 ResultsWriter::ResultsWriter(const string &outFilePath, const string &header)
     : outFilePath(outFilePath) {
@@ -25,11 +26,14 @@ void ResultsWriter::writeResults(const string &inputFileName,
 }
 
 void ResultsWriter::writeTTT(const string &inputFileName,
-                             const string &heuristic,
-                             const Times &times) const {
+                             const string &heuristic, const Times &times,
+                             int target) const {
   const string dir = "results_ttt/";
-  std::ofstream outFile(dir + heuristic + inputFileName + ".dat",
-                        std::ios_base::app);
+  std::ostringstream ss;
+  ss << dir << heuristic << target << "_" << inputFileName << ".dat";
+  std::cout << ss.str() << "\n";
+
+  std::ofstream outFile(ss.str(), std::ios_base::app);
   outFile << times.average << "\n";
   outFile.close();
 }

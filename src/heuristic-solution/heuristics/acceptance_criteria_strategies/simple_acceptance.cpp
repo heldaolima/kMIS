@@ -3,6 +3,8 @@
 void SimpleAcceptance::accept(Solution &current, Solution &best,
                               Solution &global, int iteration, clock_t t1) {
   if (current.getObjective() > best.getObjective()) {
+    std::cout << "got improved in the main loop:\n";
+    current.print();
     best = current;
     best.setIterationFoud(iteration);
     if (best.getObjective() > global.getObjective()) {
