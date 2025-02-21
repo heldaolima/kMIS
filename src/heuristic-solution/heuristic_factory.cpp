@@ -1,10 +1,16 @@
 #include "heuristic_factory.h"
 #include "heuristics/acceptance_criteria_strategies/acceptance_criteria_strategy.h"
+#include "heuristics/acceptance_criteria_strategies/factory.h"
 #include "heuristics/ils.h"
 #include "heuristics/local_search.h"
 #include "heuristics/ls_strategies/factories/local_search_factory.h"
+#include "heuristics/ls_strategies/factories/no_partial_ls_factory.h"
+#include "heuristics/ls_strategies/factories/use_partial_ls_factory.h"
 #include "heuristics/ls_strategies/ls_strategy.h"
 #include "heuristics/perturb_strategies/factories/perturbation_factory.h"
+#include "heuristics/perturb_strategies/factories/reactive_perturbation_factory.h"
+#include "heuristics/perturb_strategies/factories/simple_perturbation_factory.h"
+#include "heuristics/perturb_strategies/get_number_strategies/get_number_to_remove_strategy.h"
 #include "heuristics/stop_strategies/stop_iteration.h"
 #include "heuristics/stop_strategies/stop_target.h"
 #include "heuristics/stop_strategies/stop_time.h"
@@ -40,3 +46,52 @@ Heuristic *HeuristicFactory::createIls(
 }
 
 void HeuristicFactory::setTarget(int target) { this->target = target; }
+
+Heuristic *HeuristicFactory::ttt_createILS1(const Input *input) {
+  UsePartialLSFactory lsf(SWAP2_DO_NOT_APPLY);
+  LocalSearch *ls =
+      new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
+  StopStrategy *stop = new StopByTargetStrategy(target);
+  Perturbation *p = SimplePerturbationFactory(ROOT_OF_K).create();
+  AcceptanceCriteriaStrategy *ac =
+      AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
+
+  return new Ils(input, ls, stop, p, ac);
+}
+
+Heuristic *HeuristicFactory::ttt_createILS2(const Input *input) {
+  NoPartialLSFactory lsf(SWAP2_DO_NOT_APPLY);
+  LocalSearch *ls =
+      new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
+  StopStrategy *stop = new StopByTargetStrategy(target);
+  Perturbation *p = SimplePerturbationFactory(ROOT_OF_K).create();
+  AcceptanceCriteriaStrategy *ac =
+      AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
+
+  return new Ils(input, ls, stop, p, ac);
+}
+
+Heuristic *HeuristicFactory::ttt_createILS3(const Input *input) {
+
+  UsePartialLSFactory lsf(SWAP2_DO_NOT_APPLY);
+  LocalSearch *ls =
+      new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
+  StopStrategy *stop = new StopByTargetStrategy(target);
+  Perturbation *p = ReactivePerturbationFactory(ROOT_OF_K).create();
+  AcceptanceCriteriaStrategy *ac =
+      AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
+
+  return new Ils(input, ls, stop, p, ac);
+}
+
+Heuristic *HeuristicFactory::ttt_createILS4(const Input *input) {
+  UsePartialLSFactory lsf(SWAP2_COMPLETE);
+  LocalSearch *ls =
+      new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
+  StopStrategy *stop = new StopByTargetStrategy(target);
+  Perturbation *p = SimplePerturbationFactory(ROOT_OF_K).create();
+  AcceptanceCriteriaStrategy *ac =
+      AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
+
+  return new Ils(input, ls, stop, p, ac);
+}

@@ -28,6 +28,10 @@ public:
             const PerturbationFactory &perturbationFactory,
             const AcceptanceCriteriaFactory &acceptanceFactory) const;
   void setTarget(int target);
+  Heuristic *ttt_createILS1(const Input *input);
+  Heuristic *ttt_createILS2(const Input *input);
+  Heuristic *ttt_createILS3(const Input *input);
+  Heuristic *ttt_createILS4(const Input *input);
 };
 
 #endif
