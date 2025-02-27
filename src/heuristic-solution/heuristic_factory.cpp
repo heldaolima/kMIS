@@ -47,6 +47,7 @@ Heuristic *HeuristicFactory::createIls(
 
 void HeuristicFactory::setTarget(int target) { this->target = target; }
 
+// Main ILS: use data structures, only swap1 and simple perturbation
 Heuristic *HeuristicFactory::ttt_createILS1(const Input *input) {
   UsePartialLSFactory lsf(SWAP2_DO_NOT_APPLY);
   LocalSearch *ls =
@@ -59,6 +60,7 @@ Heuristic *HeuristicFactory::ttt_createILS1(const Input *input) {
   return new Ils(input, ls, stop, p, ac);
 }
 
+// ILS without data structures
 Heuristic *HeuristicFactory::ttt_createILS2(const Input *input) {
   NoPartialLSFactory lsf(SWAP2_DO_NOT_APPLY);
   LocalSearch *ls =
@@ -71,6 +73,7 @@ Heuristic *HeuristicFactory::ttt_createILS2(const Input *input) {
   return new Ils(input, ls, stop, p, ac);
 }
 
+// ILS with reactive perturbation
 Heuristic *HeuristicFactory::ttt_createILS3(const Input *input) {
 
   UsePartialLSFactory lsf(SWAP2_DO_NOT_APPLY);
@@ -84,6 +87,7 @@ Heuristic *HeuristicFactory::ttt_createILS3(const Input *input) {
   return new Ils(input, ls, stop, p, ac);
 }
 
+// ILS with VND and Complete Swap(2, 2)
 Heuristic *HeuristicFactory::ttt_createILS4(const Input *input) {
   UsePartialLSFactory lsf(SWAP2_COMPLETE);
   LocalSearch *ls =

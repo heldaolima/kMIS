@@ -10,13 +10,13 @@ def generate_probability_distribution_plot(csv_path, output_path):
     colors = plt.cm.Set1.colors
 
     for idx, algorithm in enumerate(data.columns):
-        if algorithm == "ILS-3":
-            continue
+        # if algorithm == "ILS-3":
+        #     continue
 
-        sorted_times = sorted(data[algorithm].dropna() * 1000)  
+        sorted_times = sorted(data[algorithm].dropna() * 1000)
         n = len(sorted_times)
 
-        color = colors[idx % len(colors)]  
+        color = colors[idx % len(colors)]
         line_style = line_styles[idx % len(line_styles)]  
 
         probabilities = [(i - 0.5) / n for i in range(1, n + 1)]
@@ -26,12 +26,12 @@ def generate_probability_distribution_plot(csv_path, output_path):
                  label=algorithm,
                  color=color,
                  linestyle=line_style,
-                 linewidth=2
+                 linewidth=4
                  )
 
     plt.xlabel("Time to Target (ms)", fontsize=30)
     plt.ylabel("Probability", fontsize=30)
-    plt.legend(fontsize=32)
+    plt.legend(fontsize=28)
 
     plt.tick_params(axis='both', which='major', labelsize=25)
     plt.grid(True, linestyle="--", alpha=0.7)
@@ -55,5 +55,5 @@ if __name__ == '__main__':
         print("No CSV files found in the directory.")
     else:
         for csv_file in csv_files:
-            output = os.path.join(args.directory, os.path.splitext(os.path.basename(csv_file))[0] + 'no_reactive_plot.png')
+            output = os.path.join(args.directory, os.path.splitext(os.path.basename(csv_file))[0] + '_plot.png')
             generate_probability_distribution_plot(csv_file, output)

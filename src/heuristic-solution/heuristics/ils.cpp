@@ -15,14 +15,9 @@ Solution Ils::run() {
   ExtendedKInter greedy(input);
   greedy.setTime(t1);
   Solution best = greedy.run();
-  /*std::cout << "solution on extendedKInter: \n";*/
-  /*best.print();*/
 
   localSearch->run(best, 0, t1);
   Solution globalBest = best;
-  std::cout << "initial solution: \n";
-  globalBest.print();
-  std::cout << "\n\n";
   globalBest.timeFound = best.timeFound;
 
   restart.setSubsetAsUsed(best.subsetsInSolution[0]);
@@ -31,11 +26,7 @@ Solution Ils::run() {
   Solution currentSolution;
   while (!stopStrategy->stopCondition()) {
     currentSolution = perturbation->perturb(best, input);
-    /*std::cout << "\nsolution after perturbation: \n";*/
-    /*currentSolution.print();*/
     localSearch->run(currentSolution, iteration, t1);
-    /*std::cout << "perturbed solution after vnd:\n";*/
-    /*currentSolution.print();*/
 
     acceptanceCriteria->accept(currentSolution, best, globalBest, iteration,
                                t1);
@@ -60,8 +51,6 @@ Solution Ils::Construction(double alpha) {
 Solution Ils::Construction() { return ExtendedKInter(input).run(); }
 
 void Ils::print() const {
-  std::cout << "ILS\n";
-  std::cout << "stop: ";
   stopStrategy->print();
   localSearch->print();
   perturbation->print();

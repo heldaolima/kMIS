@@ -20,6 +20,7 @@ string LocalSearch::toString() const {
 }
 
 /* VND */
+// TODO: decouple swap1 and swap2, since swap2 is not used anymore
 void LocalSearch::run(Solution& solution, int iteration, clock_t t1) const {
   int it = 1;
   clock_t t2 = clock();

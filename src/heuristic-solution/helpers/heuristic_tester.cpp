@@ -1,8 +1,6 @@
 #include "heuristic_tester.h"
 #include "../data_structures/partialSolution.h"
 #include "../data_structures/tabu.h"
-#include "../dbg.h"
-#include "random_utils.h"
 #include "tester.h"
 #include <ctime>
 
