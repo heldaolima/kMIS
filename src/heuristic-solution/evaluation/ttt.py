@@ -10,9 +10,6 @@ def generate_probability_distribution_plot(csv_path, output_path):
     colors = plt.cm.Set1.colors
 
     for idx, algorithm in enumerate(data.columns):
-        # if algorithm == "ILS-3":
-        #     continue
-
         sorted_times = sorted(data[algorithm].dropna() * 1000)
         n = len(sorted_times)
 
