@@ -32,6 +32,7 @@ public:
   Heuristic *ttt_createILS2(const Input *input);
   Heuristic *ttt_createILS3(const Input *input);
   Heuristic *ttt_createILS4(const Input *input);
+  Heuristic *createWithPerturbStrategy(const Input *input, NumberToRemoveEstrategyEnum strategy);
 };
 
 #endif

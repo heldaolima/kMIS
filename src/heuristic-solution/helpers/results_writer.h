@@ -18,6 +18,8 @@ public:
                     const Times &times, int k) const;
   void writeTTT(const string &inputFileName, const string &heuristic,
                 const Times &times, int target) const;
+  void writePartial(const string &inputFileName, const string &outPath, 
+                    const Times &times, const Objectives &objs);
 };
 
 #endif

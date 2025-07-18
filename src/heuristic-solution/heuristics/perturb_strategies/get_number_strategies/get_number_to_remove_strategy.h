@@ -3,7 +3,10 @@
 
 enum NumberToRemoveEstrategyEnum {
   ROOT_OF_K,
-  RANDOM_PROPORTION
+  CEIL_ROOT_OF_K,
+  RANDOM_PROPORTION,
+  FLOOR_LOG,
+  CEIL_LOG,
 };
 
 class GetNumberToRemoveStrategy {

@@ -37,3 +37,17 @@ void ResultsWriter::writeTTT(const string &inputFileName,
   outFile << times.average << "\n";
   outFile.close();
 }
+
+void ResultsWriter::writePartial(const string &inputFileName, const string &outPath, 
+                                const Times &times, const Objectives &objs) {
+
+  std::ofstream outFile(outPath, std::ios_base::app);
+
+  outFile << inputFileName << ",";
+  outFile << objs.best << "," << objs.worst << ",";
+  outFile << objs.average << "," << times.avgTimeToFindBest << ",";
+  outFile << times.average << "\n";
+
+  outFile.close();
+
+}

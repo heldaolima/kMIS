@@ -99,3 +99,15 @@ Heuristic *HeuristicFactory::ttt_createILS4(const Input *input) {
 
   return new Ils(input, ls, stop, p, ac);
 }
+
+Heuristic *HeuristicFactory::createWithPerturbStrategy(const Input *input, NumberToRemoveEstrategyEnum strategy) {
+  UsePartialLSFactory lsf(SWAP2_DO_NOT_APPLY);
+  LocalSearch *ls = 
+    new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
+  StopStrategy *stop = new StopByTime(input->k);
+  Perturbation *p = SimplePerturbationFactory(strategy).create();
+  AcceptanceCriteriaStrategy *ac =
+    AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
+
+  return new Ils(input, ls, stop, p, ac);
+}

@@ -25,6 +25,7 @@ private:
   const unsigned int numberOfTestsTTT = 100;
   ResultsWriter writer;
   bool ttt = false;
+  bool partial = false;
 
 public:
   HeuristicTester(const string &outputPath, const LS_StrategyFactory *lsFactory,
@@ -36,7 +37,10 @@ public:
   void testFile(const fs::directory_entry &inputFile) const override;
   void setTTT();
   bool isTTT();
+  void setPartial();
+  bool isPartial();
   void testTTT(const fs::directory_entry &inputFile, int target);
+  void testPartial(const fs::directory_entry &inputFile);
   ~HeuristicTester() {
     delete lsFactory;
     delete perturbationFactory;

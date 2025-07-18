@@ -33,7 +33,9 @@ HeuristicTester parseArguments(int argc, char **argv) {
       cxxopts::value<std::string>()->default_value("root"))(
       "t,ttt", "Run Time-To-Target experiment.")(
       "a,acceptance", "Type of acceptance criteria used [reactive | simple]",
-      cxxopts::value<std::string>()->default_value("simple"));
+      cxxopts::value<std::string>()->default_value("simple"))(
+      "c,calib", "Run partial experiments for perturbation calibration"
+    );
 
   const cxxopts::ParseResult result = options.parse(argc, argv);
   if (result.count("help")) {
@@ -114,6 +116,10 @@ HeuristicTester parseArguments(int argc, char **argv) {
                                 perturbationFactory, acceptanceFactory);
   if (result.count("ttt")) {
     tester.setTTT();
+  }
+
+  if (result.count("calib")) {
+    tester.setPartial();
   }
 
   return tester;
