@@ -16,8 +16,9 @@ public:
   ResultsWriter(const string &outFilePath, const string &header);
   void writeResults(const string &inputFileName, const Objectives &objs,
                     const Times &times, int k) const;
-  void writeTTT(const string &inputFileName, const string &heuristic,
-                const Times &times, int target) const;
+  void writeInstanceTTT(const string &instance, map<string, vector<double>> times, int target) const;
+  void writeGlobalTTT(const string &instance, const string& algorithm,
+                    const vector<double>& times);
   void writePartial(const string &inputFileName, const string &outPath, 
                     const Times &times, const Objectives &objs);
 };

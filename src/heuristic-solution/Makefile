@@ -40,3 +40,4 @@ main.out: $(OBJECTS)
 
 clean:
 	rm -f $(OBJECTS) $(SOURCES:.cpp=.d) main.out
+

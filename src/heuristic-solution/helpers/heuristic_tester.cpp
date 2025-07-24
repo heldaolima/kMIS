@@ -58,19 +58,21 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile,
   if (solvable) {
     heuristicFactory.setTarget(target);
 
-    Heuristic *ils1 = heuristicFactory.ttt_createILS1(input);
-    Heuristic *ils2 = heuristicFactory.ttt_createILS2(input);
-    Heuristic *ils3 = heuristicFactory.ttt_createILS3(input);
-    Heuristic *ils4 = heuristicFactory.ttt_createILS4(input);
-    vector<Heuristic *> heuristics = {
-      ils1, 
-      ils2, 
-      // ils3, 
-      ils4
-    };
+    map<string, Heuristic*> heuristics;
+    heuristics["ILS-1"] = heuristicFactory.ttt_createILS1(input);
+    heuristics["ILS-2"] = heuristicFactory.ttt_createILS2(input);
+    // heuristics["ILS-3"] = heuristicFactory.ttt_createILS3(input);
+    heuristics["ILS-4"] = heuristicFactory.ttt_createILS4(input);
 
-    for (auto h : heuristics) {
-      h->print();
+    map<string, vector<double>> results;
+    results["ILS-1"] = {};
+    results["ILS-2"] = {};
+    // results["ILS-3"] = {};
+    results["ILS-4"] = {};
+
+    for (const auto &h : heuristics){ 
+      h.second->print();
+      vector<Times> times;
       for (int i = 0; i < numberOfTestsTTT; i++) {
         Times times;
         clock_t t1, t2;
@@ -80,20 +82,21 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile,
 
         std::cout << "Running [" << i + 1 << "]\n";
         t1 = clock();
-        Solution solution = h->run();
+          Solution solution = h.second->run();
         t2 = clock();
-        solution.print();
 
         times.set(t1, t2);
+        results[h.first].push_back(times.current);
         std::cout << "Time found: " << times.current << "\n";
-        writer.writeTTT(inputFile.path().stem(), h->toString(), times, target);
       }
+      writer.writeGlobalTTT(inputFile.path().stem(), h.first, results[h.first]);
+    }
+    writer.writeInstanceTTT(inputFile.path().stem(), results, target);
+
+    for (const auto &h : heuristics){ 
+      delete h.second;
     }
 
-    delete ils1;
-    delete ils2;
-    delete ils3;
-    delete ils4;
     delete input;
   }
 }
@@ -112,30 +115,22 @@ void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
   bool solvable = true;
   const Input *input = new Input(inputFile.path(), &solvable);
 
-  vector<NumberToRemoveEstrategyEnum> strategies = {
-    ROOT_OF_K,
-    CEIL_ROOT_OF_K,
-    RANDOM_PROPORTION,
-    FLOOR_LOG,
-    CEIL_LOG,
-  };
-
-  vector<string> outputs = {
-    "partial_results/floor_root_k.csv",
-    "partial_results/ceil_root_k.csv",
-    "partial_results/random_proportion.csv",
-    "partial_results/floor_log.csv",
-    "partial_results/ceil_log.csv"
-  };
+  map<NumberToRemoveEstrategyEnum, string> strategies;
+  strategies[ROOT_OF_K] = "partial_results/floor_root_k.csv";
+  strategies[CEIL_ROOT_OF_K] = "partial_results/ceil_root_k.csv";
+  strategies[RANDOM_PROPORTION] = "partial_results/random_proportion.csv";
+  strategies[FLOOR_LOG] = "partial_results/floor_log.csv";
+  strategies[CEIL_LOG] = "partial_results/ceil_log.csv";
 
   if (solvable) {
-    vector<Heuristic*> heuristics;
-    for (auto strategy: strategies) {
-      heuristics.push_back(heuristicFactory.createWithPerturbStrategy(input, strategy));
+    map<NumberToRemoveEstrategyEnum, Heuristic*> heuristics;
+
+    for (const auto &strategy: strategies) {
+      heuristics[strategy.first] = heuristicFactory.createWithPerturbStrategy(input, strategy.first);
     }
 
-    for (int h = 0; h < heuristics.size(); h++) {
-      heuristics[h]->print();
+    for (const auto &h: heuristics) {
+      h.second->print();
       Times times;
       Objectives objs;
       for (int i = 0; i < NUMBER_OF_TESTS; i++) {
@@ -146,7 +141,7 @@ void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
 
         std::cout << "Running [" << i + 1 << "]\n";
         t1 = clock();
-        Solution solution = heuristics[h]->run();
+        Solution solution = h.second->run();
         t2 = clock();
         solution.print();
 
@@ -161,11 +156,11 @@ void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
       objs.average /= NUMBER_OF_TESTS;
       objs.averageFound /= NUMBER_OF_TESTS;
 
-      writer.writePartial(inputFile.path().stem(), outputs[h], times, objs);
+      writer.writePartial(inputFile.path().stem(), strategies[h.first], times, objs);
     }
 
-    for (int i = 0; i < heuristics.size(); i++) {
-      delete heuristics[i];
+    for (const auto &h: heuristics) {
+      delete h.second;
     }
 
     delete input;

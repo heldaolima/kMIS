@@ -1,11 +1,11 @@
 import os
 import random
 
-BASE = '/home/helder/coders/kMIS/src/instances/'
+BASE = os.getcwd()
 
 dirs = ['type1', 'type2', 'type3']
 num_files = 27
-output = 'selected_instances.txt'
+output = '../selected_instances.txt'
 
 if __name__ == '__main__':
     all_files = []
