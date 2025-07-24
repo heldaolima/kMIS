@@ -1,7 +1,8 @@
 import os
 import random
 
-BASE = os.getcwd()
+BASE = os.path.join(os.getcwd(), '..', '..', 'instances')
+print(BASE)
 
 dirs = ['type1', 'type2', 'type3']
 num_files = 27
