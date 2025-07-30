@@ -8,8 +8,8 @@
 #include "heuristics/ls_strategies/factories/use_partial_ls_factory.h"
 #include "heuristics/ls_strategies/ls_strategy.h"
 #include "heuristics/perturb_strategies/factories/perturbation_factory.h"
-#include "heuristics/perturb_strategies/factories/reactive_perturbation_factory.h"
 #include "heuristics/perturb_strategies/factories/simple_perturbation_factory.h"
+#include "heuristics/perturb_strategies/factories/reactive_perturbation_factory.h"
 #include "heuristics/perturb_strategies/get_number_strategies/get_number_to_remove_strategy.h"
 #include "heuristics/stop_strategies/stop_iteration.h"
 #include "heuristics/stop_strategies/stop_target.h"
@@ -53,7 +53,7 @@ Heuristic *HeuristicFactory::ttt_createILS1(const Input *input) {
   LocalSearch *ls =
       new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
   StopStrategy *stop = new StopByTargetStrategy(target);
-  Perturbation *p = SimplePerturbationFactory(ROOT_OF_K).create();
+  Perturbation *p = SimplePerturbationFactory(FLOOR_ROOT_OF_K).create();
   AcceptanceCriteriaStrategy *ac =
       AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
 
@@ -66,7 +66,7 @@ Heuristic *HeuristicFactory::ttt_createILS2(const Input *input) {
   LocalSearch *ls =
       new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
   StopStrategy *stop = new StopByTargetStrategy(target);
-  Perturbation *p = SimplePerturbationFactory(ROOT_OF_K).create();
+  Perturbation *p = SimplePerturbationFactory(FLOOR_ROOT_OF_K).create();
   AcceptanceCriteriaStrategy *ac =
       AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
 
@@ -80,7 +80,7 @@ Heuristic *HeuristicFactory::ttt_createILS3(const Input *input) {
   LocalSearch *ls =
       new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
   StopStrategy *stop = new StopByTargetStrategy(target);
-  Perturbation *p = ReactivePerturbationFactory(ROOT_OF_K).create();
+  Perturbation *p = ReactivePerturbationFactory(FLOOR_ROOT_OF_K).create();
   AcceptanceCriteriaStrategy *ac =
       AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
 
@@ -93,7 +93,7 @@ Heuristic *HeuristicFactory::ttt_createILS4(const Input *input) {
   LocalSearch *ls =
       new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
   StopStrategy *stop = new StopByTargetStrategy(target);
-  Perturbation *p = SimplePerturbationFactory(ROOT_OF_K).create();
+  Perturbation *p = SimplePerturbationFactory(FLOOR_ROOT_OF_K).create();
   AcceptanceCriteriaStrategy *ac =
       AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
 

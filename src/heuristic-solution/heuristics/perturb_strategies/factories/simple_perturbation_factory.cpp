@@ -8,7 +8,7 @@
 
 Perturbation *SimplePerturbationFactory::create() const {
   switch (choice) {
-  case ROOT_OF_K:
+  case FLOOR_ROOT_OF_K:
     return new SimplePerturbation(new GetRootOfK());
   case RANDOM_PROPORTION:
     return new SimplePerturbation(new GetRandomProportionOfK());

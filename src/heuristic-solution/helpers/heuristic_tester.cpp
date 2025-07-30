@@ -116,7 +116,7 @@ void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
   const Input *input = new Input(inputFile.path(), &solvable);
 
   map<NumberToRemoveEstrategyEnum, string> strategies;
-  strategies[ROOT_OF_K] = "partial_results/floor_root_k.csv";
+  strategies[FLOOR_ROOT_OF_K] = "partial_results/floor_root_k.csv";
   strategies[CEIL_ROOT_OF_K] = "partial_results/ceil_root_k.csv";
   strategies[RANDOM_PROPORTION] = "partial_results/random_proportion.csv";
   strategies[FLOOR_LOG] = "partial_results/floor_log.csv";

@@ -8,7 +8,7 @@ class GetRootOfK : public GetNumberToRemoveStrategy {
 public:
   virtual int getNumber(int k) const override;
   virtual void print() override {
-    std::cout << "GetRootOfK\n";
+    std::cout << "FloorRootOfK\n";
   }
 };
 

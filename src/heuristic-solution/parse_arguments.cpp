@@ -28,9 +28,9 @@ HeuristicTester parseArguments(int argc, char **argv) {
       "p,perturbation", "Type of perturbation [simple | reactive]",
       cxxopts::value<std::string>()->default_value("simple"))(
       "n,number",
-      "Type of strategy for removing subsets in perturbation phase [root | "
+      "Type of strategy for removing subsets in perturbation phase [c-root | f-root | c-log | f-log"
       "proportion]",
-      cxxopts::value<std::string>()->default_value("root"))(
+      cxxopts::value<std::string>()->default_value("f-root"))(
       "t,ttt", "Run Time-To-Target experiment.")(
       "a,acceptance", "Type of acceptance criteria used [reactive | simple]",
       cxxopts::value<std::string>()->default_value("simple"))(
@@ -78,8 +78,14 @@ HeuristicTester parseArguments(int argc, char **argv) {
 
   const std::string numberArg = result["number"].as<std::string>();
   NumberToRemoveEstrategyEnum getNumber;
-  if (numberArg == "root") {
-    getNumber = ROOT_OF_K;
+  if (numberArg == "f-root") {
+    getNumber = FLOOR_ROOT_OF_K;
+  } else if (numberArg == "c-root"){
+    getNumber = CEIL_ROOT_OF_K;
+  } else if (numberArg == "f-log") {
+    getNumber = FLOOR_LOG;
+  }else if (numberArg == "c-log") {
+    getNumber = CEIL_LOG;
   } else if (numberArg == "proportion") {
     getNumber = RANDOM_PROPORTION;
   } else {

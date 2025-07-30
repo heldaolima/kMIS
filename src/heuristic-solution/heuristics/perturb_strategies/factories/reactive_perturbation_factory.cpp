@@ -8,7 +8,7 @@
 
 Perturbation *ReactivePerturbationFactory::create() const {
   switch (choice) {
-  case ROOT_OF_K:
+  case FLOOR_ROOT_OF_K:
     return new ReactivePerturbation(new GetRootOfK());
   case RANDOM_PROPORTION:
     return new ReactivePerturbation(new GetRandomProportionOfK());
