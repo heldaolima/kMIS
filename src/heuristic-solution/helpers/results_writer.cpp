@@ -93,9 +93,6 @@ void ResultsWriter::writePartial(const string &inputFileName, const string &outP
 void ResultsWriter::writePartialDetailed(const string &inputFileName, const string &outPath,
                                          const double time, const int obj) {
   std::ofstream outFile(outPath, std::ios_base::app);
-
-  outFile << "instance,obj,time\n";
   outFile << inputFileName << "," << obj << "," << time << "\n";
-
   outFile.close();
 }

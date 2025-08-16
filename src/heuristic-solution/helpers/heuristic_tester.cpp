@@ -155,7 +155,7 @@ void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
         times.set(t1, t2);
         times.setTimeToFindBest(solution.timeFound);
         objs.set(solution.getObjective(), solution.getIterationFound(), i);
-        std::cout << "Time found: " << times.current << "\n";
+        std::cout << "Time found: " << times.current << " | Obj:" << solution.getObjective() << "\n";
         writer.writePartialDetailed(inputFile.path().stem().string(), strategiesDetailed[h.first], times.current, solution.getObjective());
       }
 
