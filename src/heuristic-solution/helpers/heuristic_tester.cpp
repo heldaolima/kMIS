@@ -7,7 +7,7 @@
 
 void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
   bool solvable = true;
-  const Input *input = new Input(inputFile.path(), &solvable);
+  const Input *input = new Input(inputFile.path().string(), &solvable);
 
   if (solvable) {
     Objectives objs;
@@ -38,7 +38,7 @@ void HeuristicTester::testFile(const fs::directory_entry &inputFile) const {
     objs.average /= NUMBER_OF_TESTS;
     objs.averageFound /= NUMBER_OF_TESTS;
 
-    writer.writeResults(inputFile.path().stem(), objs, times, input->k);
+    writer.writeResults(inputFile.path().stem().string(), objs, times, input->k);
 
     delete heuristic;
     delete input;
@@ -53,7 +53,7 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile,
                               int target) {
 
   bool solvable = true;
-  const Input *input = new Input(inputFile.path(), &solvable);
+  const Input *input = new Input(inputFile.path().string(), &solvable);
 
   if (solvable) {
     heuristicFactory.setTarget(target);
@@ -89,9 +89,9 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile,
         results[h.first].push_back(times.current);
         std::cout << "Time found: " << times.current << "\n";
       }
-      writer.writeGlobalTTT(inputFile.path().stem(), h.first, results[h.first]);
+      writer.writeGlobalTTT(inputFile.path().stem().string(), h.first, results[h.first]);
     }
-    writer.writeInstanceTTT(inputFile.path().stem(), results, target);
+    writer.writeInstanceTTT(inputFile.path().stem().string(), results, target);
 
     for (const auto &h : heuristics){ 
       delete h.second;
@@ -113,7 +113,7 @@ void HeuristicTester::setPartial() {
 void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
 
   bool solvable = true;
-  const Input *input = new Input(inputFile.path(), &solvable);
+  const Input *input = new Input(inputFile.path().string(), &solvable);
 
   map<NumberToRemoveEstrategyEnum, string> strategies;
   strategies[FLOOR_ROOT_OF_K] = "partial_results/floor_root_k.csv";
@@ -121,6 +121,13 @@ void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
   strategies[RANDOM_PROPORTION] = "partial_results/random_proportion.csv";
   strategies[FLOOR_LOG] = "partial_results/floor_log.csv";
   strategies[CEIL_LOG] = "partial_results/ceil_log.csv";
+
+  map<NumberToRemoveEstrategyEnum, string> strategiesDetailed;
+  strategies[FLOOR_ROOT_OF_K] = "partial_results/floor_root_k_detailed.csv";
+  strategies[CEIL_ROOT_OF_K] = "partial_results/ceil_root_k_detailed.csv";
+  strategies[RANDOM_PROPORTION] = "partial_results/random_proportion_detailed.csv";
+  strategies[FLOOR_LOG] = "partial_results/floor_log_detailed.csv";
+  strategies[CEIL_LOG] = "partial_results/ceil_log_detailed.csv";
 
   if (solvable) {
     map<NumberToRemoveEstrategyEnum, Heuristic*> heuristics;
@@ -149,6 +156,7 @@ void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
         times.setTimeToFindBest(solution.timeFound);
         objs.set(solution.getObjective(), solution.getIterationFound(), i);
         std::cout << "Time found: " << times.current << "\n";
+        writer.writePartialDetailed(inputFile.path().stem().string(), strategiesDetailed[h.first], times.current, solution.getObjective());
       }
 
       times.avgTimeToFindBest /= NUMBER_OF_TESTS;
@@ -156,7 +164,7 @@ void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
       objs.average /= NUMBER_OF_TESTS;
       objs.averageFound /= NUMBER_OF_TESTS;
 
-      writer.writePartial(inputFile.path().stem(), strategies[h.first], times, objs);
+      writer.writePartial(inputFile.path().stem().string(), strategies[h.first], times, objs);
     }
 
     for (const auto &h: heuristics) {

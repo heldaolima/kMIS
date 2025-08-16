@@ -19,8 +19,10 @@ public:
   void writeInstanceTTT(const string &instance, map<string, vector<double>> times, int target) const;
   void writeGlobalTTT(const string &instance, const string& algorithm,
                     const vector<double>& times);
-  void writePartial(const string &inputFileName, const string &outPath, 
+  void writePartial(const string &inputFileName, const string &outPath,
                     const Times &times, const Objectives &objs);
-};
+  void writePartialDetailed(const string &inputFileName, const string &outPath,
+                            const double time, const int obj);
+  };
 
 #endif
