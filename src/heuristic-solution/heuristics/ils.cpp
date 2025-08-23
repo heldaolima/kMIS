@@ -27,7 +27,6 @@ Solution Ils::run() {
   while (!stopStrategy->stopCondition()) {
     currentSolution = perturbation->perturb(best, input);
     localSearch->run(currentSolution, iteration, t1);
-
     acceptanceCriteria->accept(currentSolution, best, globalBest, iteration,
                                t1);
 

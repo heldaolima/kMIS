@@ -1,4 +1,5 @@
 #include "local_search.h"
+#include "../dbg.h"
 
 bool LocalSearch::swap1(Solution &solution, int iteration) const {
   return this->_swap1->swap(input, solution, iteration);
@@ -22,17 +23,30 @@ string LocalSearch::toString() const {
 /* VND */
 // TODO: decouple swap1 and swap2, since swap2 is not used anymore
 void LocalSearch::run(Solution& solution, int iteration, clock_t t1) const {
+  // in case it's not vnd
+  if (!this->_swap2->willBeUsed()) {
+    debug("will not use swap2");
+    bool improved = swap1(solution, iteration);
+    clock_t t2 = clock();
+    if (improved) {
+      solution.setTimeFound(t1, t2);
+    }
+    return;
+  } 
+
+  debug("will use swap2");
   int it = 1;
   clock_t t2 = clock();
   bool improved;
 
   Solution copy;
-
   while (it <= 2) {
     copy = solution;
 
     if (it == 1) {
       improved = swap1(copy, iteration);
+      debug("Getting out of swap1, solution is %d", copy.getObjective());
+      
       t2 = clock();
       if (improved) {
         copy.setTimeFound(t1, t2);

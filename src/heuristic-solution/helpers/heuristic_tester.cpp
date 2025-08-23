@@ -123,11 +123,11 @@ void HeuristicTester::testPartial(const fs::directory_entry &inputFile) {
   strategies[CEIL_LOG] = "partial_results/ceil_log.csv";
 
   map<NumberToRemoveEstrategyEnum, string> strategiesDetailed;
-  strategies[FLOOR_ROOT_OF_K] = "partial_results/floor_root_k_detailed.csv";
-  strategies[CEIL_ROOT_OF_K] = "partial_results/ceil_root_k_detailed.csv";
-  strategies[RANDOM_PROPORTION] = "partial_results/random_proportion_detailed.csv";
-  strategies[FLOOR_LOG] = "partial_results/floor_log_detailed.csv";
-  strategies[CEIL_LOG] = "partial_results/ceil_log_detailed.csv";
+  strategiesDetailed[FLOOR_ROOT_OF_K] = "partial_results/floor_root_k_detailed.csv";
+  strategiesDetailed[CEIL_ROOT_OF_K] = "partial_results/ceil_root_k_detailed.csv";
+  strategiesDetailed[RANDOM_PROPORTION] = "partial_results/random_proportion_detailed.csv";
+  strategiesDetailed[FLOOR_LOG] = "partial_results/floor_log_detailed.csv";
+  strategiesDetailed[CEIL_LOG] = "partial_results/ceil_log_detailed.csv";
 
   if (solvable) {
     map<NumberToRemoveEstrategyEnum, Heuristic*> heuristics;

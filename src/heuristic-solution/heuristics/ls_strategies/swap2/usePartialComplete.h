@@ -14,6 +14,7 @@ public:
   virtual string toString() const override {
     return "LS_Swap2_UsePartial_Complete";
   }
+  virtual bool willBeUsed() const override { return true; }
 };
 
 #endif

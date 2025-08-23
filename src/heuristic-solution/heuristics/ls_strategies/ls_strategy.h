@@ -8,6 +8,7 @@ public:
   virtual ~LocalSearchStrategy(); 
   virtual void print() const = 0;
   virtual bool swap(const Input *input, Solution &solution, int iteration) = 0;
+  virtual bool willBeUsed() const = 0;
   virtual string toString() const = 0;
 };
 

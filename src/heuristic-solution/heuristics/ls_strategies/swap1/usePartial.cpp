@@ -2,11 +2,14 @@
 #include "../../../data_structures/partialSolution.h"
 #include "../../../data_structures/tabu.h"
 #include "../../../globals.h"
+#include "../../../dbg.h"
 
 bool LS_Swap1_UsePartial::swap(const Input *input, Solution &solution,
                                int iteration) {
   partialSolutions.computeOne(solution);
 
+  bool improved = false;
+  Solution newSolution = solution;
   for (int idxRemove = 0; idxRemove < input->k; idxRemove++) {
     const int remove = solution.subsetsInSolution[idxRemove];
     if (!partialSolutions.interesting(remove) || tabu.isTabu(remove, iteration))
@@ -22,16 +25,22 @@ bool LS_Swap1_UsePartial::swap(const Input *input, Solution &solution,
             partialSolutions.listOne[remove].bits, input->subsets[i].bits);
 
         int newObjective = newSolutionBits.count();
-        if (newObjective > solution.getObjective()) {
+        if (newObjective > newSolution.getObjective()) { // compare it with the current improving solution
           tabu.setTabu(input->subsets[i].identifier, iteration);
-
-          solution.swap(idxRemove, input->subsets[i].identifier,
-                        newSolutionBits, newObjective);
-          return true;
+          
+          newSolution.swap(idxRemove, input->subsets[i].identifier,
+            newSolutionBits, newObjective);
+          debug("Got an improvement. Old solution was=%d, new solution is=%d", solution.getObjective(), newSolution.getObjective());
+          improved = true;
         }
       }
     }
   }
 
-  return false;
+  if (improved) {
+    solution = newSolution;
+    debug("There was an improvement, so now current solution is %d", solution.getObjective());
+  }
+
+  return improved;
 }

@@ -11,6 +11,7 @@ public:
   virtual void print() const override { std::cout << toString() << "\n"; }
 
   virtual string toString() const override { return "LS_Swap1_UsePartial"; }
+  virtual bool willBeUsed() const override { return true; };
 };
 
 #endif

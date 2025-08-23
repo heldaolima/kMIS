@@ -22,9 +22,9 @@ OBJECTS = $(SOURCES:.cpp=.o)
 
 .PHONY: all clean
 
-all: main.exe
+all: main.out
 
-main.exe: $(OBJECTS)
+main.out: $(OBJECTS)
 	$(CC) $(FLAGS) -o $@ $^
 
 %.o: %.cpp

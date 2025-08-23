@@ -9,6 +9,7 @@ public:
                     int iteration) override;
   virtual void print() const override { std::cout << toString() << "\n"; }
   virtual string toString() const override { return "LS_Swap2_DoNothing"; }
+  virtual bool willBeUsed() const override { return false; };
 };
 
 #endif
