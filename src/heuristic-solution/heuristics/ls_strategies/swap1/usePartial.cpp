@@ -9,7 +9,7 @@ bool LS_Swap1_UsePartial::swap(const Input *input, Solution &solution,
   partialSolutions.computeOne(solution);
 
   bool improved = false;
-  Solution newSolution = solution;
+  Solution newBest = solution;
   for (int idxRemove = 0; idxRemove < input->k; idxRemove++) {
     const int remove = solution.subsetsInSolution[idxRemove];
     if (!partialSolutions.interesting(remove) || tabu.isTabu(remove, iteration))
@@ -25,12 +25,12 @@ bool LS_Swap1_UsePartial::swap(const Input *input, Solution &solution,
             partialSolutions.listOne[remove].bits, input->subsets[i].bits);
 
         int newObjective = newSolutionBits.count();
-        if (newObjective > newSolution.getObjective()) { // compare it with the current improving solution
+        if (newObjective > newBest.getObjective()) { // compare it with the current improving solution
           tabu.setTabu(input->subsets[i].identifier, iteration);
           
-          newSolution.swap(idxRemove, input->subsets[i].identifier,
+          newBest.swap(idxRemove, input->subsets[i].identifier,
             newSolutionBits, newObjective);
-          debug("Got an improvement. Old solution was=%d, new solution is=%d", solution.getObjective(), newSolution.getObjective());
+          // debug("Got an improvement. Old solution was=%d, new solution is=%d", solution.getObjective(), newBest.getObjective());
           improved = true;
         }
       }
@@ -38,8 +38,8 @@ bool LS_Swap1_UsePartial::swap(const Input *input, Solution &solution,
   }
 
   if (improved) {
-    solution = newSolution;
-    debug("There was an improvement, so now current solution is %d", solution.getObjective());
+    solution = newBest;
+    // debug("There was an improvement, so now current solution is %d", solution.getObjective());
   }
 
   return improved;
