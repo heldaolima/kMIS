@@ -21,7 +21,7 @@ HeuristicTester parseArguments(int argc, char **argv) {
       "s,stop", "Type of stop condition [time | iterations | target]",
       cxxopts::value<std::string>()->default_value("time"))(
       "swap2", "Type of swap(2,2) strategy [before-and-after | complete | no] ",
-      cxxopts::value<std::string>()->default_value("before-and-after"))(
+      cxxopts::value<std::string>()->default_value("no"))(
       "f,file", "Output file name",
       cxxopts::value<std::string>()->default_value("results_ils.csv"))(
       "h,help", "Print usage")(
@@ -30,7 +30,7 @@ HeuristicTester parseArguments(int argc, char **argv) {
       "n,number",
       "Type of strategy for removing subsets in perturbation phase [c-root | f-root | c-log | f-log"
       "proportion]",
-      cxxopts::value<std::string>()->default_value("f-root"))(
+      cxxopts::value<std::string>()->default_value("f-log"))(
       "t,ttt", "Run Time-To-Target experiment.")(
       "a,acceptance", "Type of acceptance criteria used [reactive | simple]",
       cxxopts::value<std::string>()->default_value("simple"))(

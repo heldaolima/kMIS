@@ -61,13 +61,13 @@ void HeuristicTester::testTTT(const fs::directory_entry &inputFile,
     map<string, Heuristic*> heuristics;
     heuristics["ILS-1"] = heuristicFactory.ttt_createILS1(input);
     heuristics["ILS-2"] = heuristicFactory.ttt_createILS2(input);
-    // heuristics["ILS-3"] = heuristicFactory.ttt_createILS3(input);
+    heuristics["ILS-3"] = heuristicFactory.ttt_createILS3(input);
     heuristics["ILS-4"] = heuristicFactory.ttt_createILS4(input);
 
     map<string, vector<double>> results;
     results["ILS-1"] = {};
     results["ILS-2"] = {};
-    // results["ILS-3"] = {};
+    results["ILS-3"] = {};
     results["ILS-4"] = {};
 
     for (const auto &h : heuristics){ 

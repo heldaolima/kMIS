@@ -27,6 +27,9 @@ all: main.out
 main.out: $(OBJECTS)
 	$(CC) $(FLAGS) -o $@ $^
 
+run_standard:
+	./main.out -d -f results_ils.csv --swap2=no -n f-log
+
 %.o: %.cpp
 	$(CC) $(FLAGS) -c -o $@ $<
 

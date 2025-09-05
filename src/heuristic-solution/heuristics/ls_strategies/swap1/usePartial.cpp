@@ -30,7 +30,6 @@ bool LS_Swap1_UsePartial::swap(const Input *input, Solution &solution,
           
           newBest.swap(idxRemove, input->subsets[i].identifier,
             newSolutionBits, newObjective);
-          // debug("Got an improvement. Old solution was=%d, new solution is=%d", solution.getObjective(), newBest.getObjective());
           improved = true;
         }
       }

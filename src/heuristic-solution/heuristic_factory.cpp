@@ -53,7 +53,7 @@ Heuristic *HeuristicFactory::ttt_createILS1(const Input *input) {
   LocalSearch *ls =
       new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
   StopStrategy *stop = new StopByTargetStrategy(target);
-  Perturbation *p = SimplePerturbationFactory(FLOOR_ROOT_OF_K).create();
+  Perturbation *p = SimplePerturbationFactory(FLOOR_LOG).create();
   AcceptanceCriteriaStrategy *ac =
       AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
 
@@ -66,7 +66,7 @@ Heuristic *HeuristicFactory::ttt_createILS2(const Input *input) {
   LocalSearch *ls =
       new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
   StopStrategy *stop = new StopByTargetStrategy(target);
-  Perturbation *p = SimplePerturbationFactory(FLOOR_ROOT_OF_K).create();
+  Perturbation *p = SimplePerturbationFactory(FLOOR_LOG).create();
   AcceptanceCriteriaStrategy *ac =
       AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
 
@@ -80,7 +80,7 @@ Heuristic *HeuristicFactory::ttt_createILS3(const Input *input) {
   LocalSearch *ls =
       new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
   StopStrategy *stop = new StopByTargetStrategy(target);
-  Perturbation *p = ReactivePerturbationFactory(FLOOR_ROOT_OF_K).create();
+  Perturbation *p = ReactivePerturbationFactory(FLOOR_LOG).create();
   AcceptanceCriteriaStrategy *ac =
       AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
 
@@ -93,7 +93,7 @@ Heuristic *HeuristicFactory::ttt_createILS4(const Input *input) {
   LocalSearch *ls =
       new LocalSearch(input, lsf.createSwap1(), lsf.createSwap2());
   StopStrategy *stop = new StopByTargetStrategy(target);
-  Perturbation *p = SimplePerturbationFactory(FLOOR_ROOT_OF_K).create();
+  Perturbation *p = SimplePerturbationFactory(FLOOR_LOG).create();
   AcceptanceCriteriaStrategy *ac =
       AcceptanceCriteriaFactory(ACCEPTANCE_SIMPLE).create(input, ls);
 
