@@ -1,7 +1,6 @@
 *.out
 *.o
 *.log
-*.txt
 *.out.*
 *.dat
 *.csv
