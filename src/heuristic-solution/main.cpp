@@ -34,8 +34,6 @@ vector<string> loadFiles(const string& path) {
 }
 
 int main(int argc, char *argv[]) {
-  std::cout << "hallo\n";
-
   seed();
 
   const string path = "../instances/";
